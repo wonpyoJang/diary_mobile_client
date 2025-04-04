@@ -1,0 +1,97 @@
+name: diary_mobile_client
+description: "A new Flutter project."
+
+# Prevent accidental publishing to pub.dev.
+publish_to: "none"
+
+version: 0.0.1+13
+
+environment:
+  sdk: ^3.5.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+
+  # State management libraries
+  flutter_bloc: ^9.0.0
+  hydrated_bloc: ^10.0.0
+
+  # Utility libraries
+  equatable: ^2.0.0
+  get_it: ^8.0.3
+  injectable: ^2.5.0
+  rxdart: ^0.28.0
+  path_provider: ^2.1.5
+  flutter_slidable: ^4.0.0
+  uuid: ^4.5.1
+  crypto: ^3.0.6
+  google_generative_ai: ^0.4.6
+  google_fonts: ^6.2.1
+  sentry_flutter: ^8.12.0
+  mesh_gradient: ^1.3.8
+  mesh: ^0.4.2
+  screenshot: ^3.0.0
+  image_gallery_saver_plus: ^4.0.1
+  html: ^0.15.5
+  url_launcher: ^6.2.5
+  permission_handler: ^11.3.1
+  share_plus: ^10.0.0
+  flutter_gen: ^5.9.0
+  table_calendar: ^3.1.3
+  fpdart: ^1.1.1
+  logger: ^2.5.0
+  dio: ^5.8.0+1
+  intl: ^0.19.0
+  device_info_plus: ^11.3.3
+  firebase_core: ^3.13.0 
+  firebase_analytics: 
+  firebase_crashlytics: 
+  flutter_dotenv: ^5.2.1
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^4.0.0
+  build_runner: ^2.4.7
+  injectable_generator:
+  flutter_launcher_icons: ^0.14.3
+
+flutter:
+  uses-material-design: true
+
+  # Enable generation of localized Strings from arb files.
+  generate: true
+
+  assets:
+    # Add assets from the images directory to the application.
+    - assets/images/
+    - assets/images/feature/moment/write_moment/
+    - .env
+
+  fonts:
+    - family: SpoqaHanSansNeo
+      fonts:
+        - asset: assets/fonts/SpoqaHanSansNeo-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/SpoqaHanSansNeo-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/SpoqaHanSansNeo-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/SpoqaHanSansNeo-Light.ttf
+          weight: 300
+        - asset: assets/fonts/SpoqaHanSansNeo-Thin.ttf
+          weight: 100
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/app_icon.webp" # 앱 아이콘 경로 설정
+  adaptive_icon_background: "#ffffff" # 안드로이드 어댑티브 아이콘 배경색
+  adaptive_icon_foreground: "assets/app_icon.webp" # 안드로이드 어댑티브 아이콘 전경 이미지

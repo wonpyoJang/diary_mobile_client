@@ -1,0 +1,87 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// **************************************************************************
+// InjectableConfigGenerator
+// **************************************************************************
+
+// ignore_for_file: type=lint
+// coverage:ignore-file
+
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:dio/dio.dart' as _i361;
+import 'package:get_it/get_it.dart' as _i174;
+import 'package:injectable/injectable.dart' as _i526;
+
+import 'bus/bus.dart' as _i461;
+import 'core/device/infrastructure/interfaces/i_device_info_local_provider.dart'
+    as _i23;
+import 'core/device/infrastructure/providers/device_info_local_provider.dart'
+    as _i505;
+import 'core/http_client/dio_module.dart' as _i871;
+import 'core/http_client/http_client.dart' as _i356;
+import 'core/llm/llm_service.dart' as _i681;
+import 'feature/moment/application/moments/moment_list_bloc.dart' as _i269;
+import 'feature/moment/domain/entity/moment.dart' as _i900;
+import 'feature/moment/moment_calendar/application/moment_calendar_bloc.dart'
+    as _i307;
+import 'feature/moment/write_moment/application/write_moment_bloc.dart'
+    as _i812;
+import 'feature/moment/write_moment/domain/interface/i_write_moment_repository.dart'
+    as _i79;
+import 'feature/moment/write_moment/infrastucture/interfaces/i_write_moment_external_provider.dart'
+    as _i1039;
+import 'feature/moment/write_moment/infrastucture/interfaces/i_write_moment_internal_provider.dart'
+    as _i772;
+import 'feature/moment/write_moment/infrastucture/providers/write_moment_external_provider.dart'
+    as _i550;
+import 'feature/moment/write_moment/infrastucture/providers/write_moment_internal_provider.dart'
+    as _i603;
+import 'feature/moment/write_moment/infrastucture/repositories/write_moment_repository.dart'
+    as _i767;
+import 'feature/settings/application/settings_bloc.dart' as _i584;
+
+// initializes the registration of main-scope dependencies inside of GetIt
+_i174.GetIt $initGetIt(
+  _i174.GetIt getIt, {
+  String? environment,
+  _i526.EnvironmentFilter? environmentFilter,
+}) {
+  final gh = _i526.GetItHelper(
+    getIt,
+    environment,
+    environmentFilter,
+  );
+  final dioModule = _$DioModule();
+  gh.factory<_i584.SettingsBloc>(() => _i584.SettingsBloc());
+  gh.factory<_i307.MomentCalendarBloc>(() => _i307.MomentCalendarBloc());
+  gh.singleton<_i681.Gemini>(() => _i681.Gemini());
+  gh.lazySingleton<_i361.Dio>(() => dioModule.dio());
+  gh.lazySingleton<_i461.Bus>(() => _i461.Bus());
+  gh.singleton<_i356.HttpClient>(() => _i356.HttpClient(gh<_i361.Dio>()));
+  gh.lazySingleton<_i23.IDeviceInfoLocalProvider>(
+      () => _i505.DeviceInfoLocalProvider());
+  gh.lazySingleton<_i772.IWriteMomentInternalProvider>(
+      () => _i603.WriteMomentInternalProvider(gh<_i356.HttpClient>()));
+  gh.factory<_i269.MomentListBloc>(() => _i269.MomentListBloc(gh<_i461.Bus>()));
+  gh.lazySingleton<_i1039.IWriteMomentExternalProvider>(
+      () => _i550.WriteMomentExternalProvider(gh<_i681.Gemini>()));
+  gh.lazySingleton<_i79.IWriteMomentRepository>(() =>
+      _i767.WriteMomentRepository(
+        writeMomentExternalProvider: gh<_i1039.IWriteMomentExternalProvider>(),
+        writeMomentInternalProvider: gh<_i772.IWriteMomentInternalProvider>(),
+        deviceInfoLocalProvider: gh<_i23.IDeviceInfoLocalProvider>(),
+      ));
+  gh.factoryParam<_i812.WriteMomentBloc, _i900.Moment?, DateTime>((
+    moment,
+    date,
+  ) =>
+      _i812.WriteMomentBloc(
+        gh<_i461.Bus>(),
+        moment,
+        date,
+        gh<_i79.IWriteMomentRepository>(),
+      ));
+  return getIt;
+}
+
+class _$DioModule extends _i871.DioModule {}
