@@ -88,10 +88,17 @@ class MomentCalendarPageState extends State<MomentCalendarPage> {
   }
 }
 
-class Calendar extends StatelessWidget {
+class Calendar extends StatefulWidget {
   const Calendar({
     super.key,
   });
+
+  @override
+  State<Calendar> createState() => _CalendarState();
+}
+
+class _CalendarState extends State<Calendar> {
+  late PageController pageController;
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +113,9 @@ class Calendar extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 28.0),
               child: TableCalendar(
+                onCalendarCreated: (pageController) {
+                  pageController = pageController;
+                },
                 rowHeight: 65,
                 onPageChanged: (DateTime page) {
                   context.read<MomentCalendarBloc>().add(ChangePage(page));
@@ -173,7 +183,7 @@ class Calendar extends StatelessWidget {
                 // firstDay: listState.firstDay ??
                 firstDay: DateTime.now().subtract(const Duration(days: 365)),
                 lastDay: DateTime.now(),
-                focusedDay: DateTime.now(),
+                focusedDay: calendarState.selectedDay ?? DateTime.now(),
                 // onDaySelected: (selectedDay, focusedDay) {
                 //   Navigator.of(context).push(MaterialPageRoute(
                 //   builder: (context) => WriteMomentPage(

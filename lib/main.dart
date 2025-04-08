@@ -30,7 +30,7 @@ void main() async {
     (options) {
       options.dsn =
           'https://0fe47ef991f8086b23902a62d982e3f2@o4508755775848448.ingest.us.sentry.io/4508755779584000';
-      // Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing.
+      // Set tracesSampleRate to 1.0 to capture 100% of transactions   for tracing.
       // We recommend adjusting this value in production.
       options.tracesSampleRate = 1.0;
       // The sampling rate for profiling is relative to tracesSampleRate
