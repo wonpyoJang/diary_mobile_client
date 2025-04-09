@@ -1,0 +1,8 @@
+{
+    "[dart]": {
+        "editor.formatOnSave": true,
+        "editor.rulers": [80], // 80자 가이드라인 표시
+        "editor.wordWrap": "on"
+        },
+    "dart.lineLength": 80
+}
