@@ -6,18 +6,34 @@ class ScreenUtil {
 
   static double? getAdaptiveSize(BuildContext context,
       {double? phone, double? tablet, double? desktop}) {
-    final deviceWidth = MediaQuery.of(context).size.width;
-    final deviceHeight = MediaQuery.of(context).size.height;
-    final isLandscape = deviceWidth > deviceHeight;
+    final deviceOrientation = MediaQuery.of(context).orientation;
+    final isLandscape = deviceOrientation == Orientation.landscape;
 
-    if (deviceWidth > desktopWidthTreshold) {
+    final deviceWidthWhenPortrait = isLandscape
+        ? MediaQuery.of(context).size.height
+        : MediaQuery.of(context).size.width;
+
+    if (deviceWidthWhenPortrait > desktopWidthTreshold) {
       return desktop;
     }
 
-    if (deviceWidth > tabletWidthTreshold) {
+    if (deviceWidthWhenPortrait > tabletWidthTreshold) {
       return tablet;
     }
 
     return phone;
+  }
+
+  static bool isLandscape(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+    final deviceHeight = MediaQuery.of(context).size.height;
+    final isWidthGreaterThanHeight = deviceWidth > deviceHeight;
+    final deviceOrientation = MediaQuery.of(context).orientation;
+
+    if (deviceOrientation == Orientation.landscape) {
+      return true;
+    }
+
+    return isWidthGreaterThanHeight;
   }
 }
