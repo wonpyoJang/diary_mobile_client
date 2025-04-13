@@ -2,6 +2,7 @@
 import 'package:diary_mobile_client/src/feature/moment/domain/entity/emotional_intensity.dart';
 import 'package:diary_mobile_client/src/feature/moment/domain/enums/emotion.dart';
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 
 class Moment extends Equatable {
   const Moment(
@@ -18,7 +19,9 @@ class Moment extends Equatable {
   final List<EmotionalIntensity> emotionalIntensities;
 
   String getFormattedDateTime() {
-    return '${date.year}년 ${date.month}월 ${date.day}일 ${date.hour}시 ${date.minute}분';
+    final DateFormat formatter =
+        DateFormat('yyyy년 MM월 dd일 EEEE a hh시 mm분 ss초', 'ko_KR');
+    return formatter.format(date);
   }
 
   Map<String, dynamic> toJson() {
