@@ -11,11 +11,22 @@ class WriteMomentInternalProvider implements IWriteMomentInternalProvider {
   WriteMomentInternalProvider(this.client);
 
   @override
-  Future<Either<HttpFailure, Unit>> log(String log) async {
-    final result = await client.request(path: "log", method: HttpMethod.post);
+  Future<Either<HttpFailure, Unit>> log(String log, {String? deviceId}) async {
+    final result = await client.request(
+      path: "/logs/logs",
+      method: HttpMethod.post,
+      body: {
+        "log": log,
+        "deviceId": deviceId ?? "Unknown Installation ID",
+      },
+    );
     return result.fold(
-      (failure) => left(failure),
-      (response) => right(unit),
+      (failure) {
+        return left(failure);
+      },
+      (response) {
+        return right(unit);
+      },
     );
   }
 }

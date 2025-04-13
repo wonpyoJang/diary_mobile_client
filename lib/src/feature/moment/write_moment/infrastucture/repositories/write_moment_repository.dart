@@ -30,12 +30,14 @@ class WriteMomentRepository implements IWriteMomentRepository {
         final emotionalIntensities =
             emotionalIntensityDtos.map((e) => e.toDomain()).toList();
 
-        final log = """
-        일기: ${moment.reflection}
-        감정: ${emotionalIntensities.map((e) => e.toString()).join(', ')}
-        """;
+        final fidOrFailure = await writeMomentExternalProvider.getFirebaseId();
 
-        return (await writeMomentInternalProvider.log(log)).fold(
+        final log =
+            """일기: ${moment.reflection}\n감정: ${emotionalIntensities.map((e) => e.emotion.koName).join(', ')}\n${fidOrFailure.fold((failure) => "Unknown Installation ID", (fid) => "Firebase Installation ID: $fid")}""";
+
+        return (await writeMomentInternalProvider.log(log,
+                deviceId: fidOrFailure.fold((failure) => null, (fid) => fid)))
+            .fold(
           (failure) => right(
               moment.copyWith(emotionalIntensities: emotionalIntensities)),
           (response) => right(

@@ -7,7 +7,7 @@ abstract class DioModule {
   @lazySingleton
   Dio dio() {
     final dio = Dio(BaseOptions(
-      baseUrl: 'https://jsonplaceholder.typicode.com',
+      baseUrl: 'http://52.27.251.22:8000',
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
       responseType: ResponseType.json,

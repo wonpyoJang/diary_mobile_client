@@ -3,6 +3,7 @@ import 'package:diary_mobile_client/src/core/http_client/http_response.dart';
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
+import 'dart:convert';
 
 enum HttpMethod {
   get,
@@ -24,16 +25,22 @@ class HttpClient {
       Map<String, dynamic>? body}) async {
     late Response response;
 
+    final encodedBody = body != null ? jsonEncode(body) : null;
+
     try {
       switch (method) {
         case HttpMethod.get:
           response = await dio.get(path);
+          break;
         case HttpMethod.post:
-          response = await dio.post(path, data: body);
+          response = await dio.post(path, data: encodedBody);
+          break;
         case HttpMethod.put:
-          response = await dio.put(path, data: body);
+          response = await dio.put(path, data: encodedBody);
+          break;
         case HttpMethod.delete:
           response = await dio.delete(path);
+          break;
       }
     } on DioException catch (e) {
       return left(HttpFailure(message: e.toString()));

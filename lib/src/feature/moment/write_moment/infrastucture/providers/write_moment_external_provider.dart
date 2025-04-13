@@ -1,3 +1,5 @@
+import 'package:diary_mobile_client/src/core/firebase/firebase_client.dart';
+import 'package:diary_mobile_client/src/core/firebase/firebase_failure.dart';
 import 'package:diary_mobile_client/src/core/llm/llm_failure.dart';
 import 'package:diary_mobile_client/src/core/llm/llm_query.dart';
 import 'package:diary_mobile_client/src/core/llm/llm_service.dart';
@@ -11,8 +13,18 @@ import 'package:injectable/injectable.dart';
 @LazySingleton(as: IWriteMomentExternalProvider)
 class WriteMomentExternalProvider implements IWriteMomentExternalProvider {
   final Gemini gemini;
+  final FirebaseClient firebaseClient;
 
-  WriteMomentExternalProvider(this.gemini);
+  WriteMomentExternalProvider(this.gemini, this.firebaseClient);
+
+  @override
+  Future<Either<FirebaseFailure, String>> getFirebaseId() async {
+    final fid = await firebaseClient.getFirebaseId();
+    if (fid == null) {
+      return left(const FirebaseFailure(message: "Firebase ID를 가져오는데 실패했습니다."));
+    }
+    return right(fid);
+  }
 
   @override
   Future<Either<LLMFailure, List<EmotionalIntensityDto>>> analyze(
