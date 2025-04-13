@@ -1,3 +1,4 @@
+// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
@@ -13,10 +14,12 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
 import 'bus/bus.dart' as _i461;
+import 'core/analytics/analytics_manager.dart' as _i958;
 import 'core/device/infrastructure/interfaces/i_device_info_local_provider.dart'
     as _i23;
 import 'core/device/infrastructure/providers/device_info_local_provider.dart'
     as _i505;
+import 'core/firebase/firebase_client.dart' as _i248;
 import 'core/http_client/dio_module.dart' as _i871;
 import 'core/http_client/http_client.dart' as _i356;
 import 'core/llm/llm_service.dart' as _i681;
@@ -55,16 +58,21 @@ _i174.GetIt $initGetIt(
   gh.factory<_i584.SettingsBloc>(() => _i584.SettingsBloc());
   gh.factory<_i307.MomentCalendarBloc>(() => _i307.MomentCalendarBloc());
   gh.singleton<_i681.Gemini>(() => _i681.Gemini());
+  gh.singleton<_i248.FirebaseClient>(() => _i248.FirebaseClient());
   gh.lazySingleton<_i361.Dio>(() => dioModule.dio());
+  gh.lazySingleton<_i958.AnalyticsManager>(() => _i958.AnalyticsManager());
   gh.lazySingleton<_i461.Bus>(() => _i461.Bus());
+  gh.lazySingleton<_i1039.IWriteMomentExternalProvider>(
+      () => _i550.WriteMomentExternalProvider(
+            gh<_i681.Gemini>(),
+            gh<_i248.FirebaseClient>(),
+          ));
   gh.singleton<_i356.HttpClient>(() => _i356.HttpClient(gh<_i361.Dio>()));
   gh.lazySingleton<_i23.IDeviceInfoLocalProvider>(
       () => _i505.DeviceInfoLocalProvider());
   gh.lazySingleton<_i772.IWriteMomentInternalProvider>(
       () => _i603.WriteMomentInternalProvider(gh<_i356.HttpClient>()));
   gh.factory<_i269.MomentListBloc>(() => _i269.MomentListBloc(gh<_i461.Bus>()));
-  gh.lazySingleton<_i1039.IWriteMomentExternalProvider>(
-      () => _i550.WriteMomentExternalProvider(gh<_i681.Gemini>()));
   gh.lazySingleton<_i79.IWriteMomentRepository>(() =>
       _i767.WriteMomentRepository(
         writeMomentExternalProvider: gh<_i1039.IWriteMomentExternalProvider>(),

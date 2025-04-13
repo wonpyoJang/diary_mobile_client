@@ -33,7 +33,7 @@ class WriteMomentRepository implements IWriteMomentRepository {
         final fidOrFailure = await writeMomentExternalProvider.getFirebaseId();
 
         final log =
-            """일기: ${moment.reflection}\n감정: ${emotionalIntensities.map((e) => e.emotion.koName).join(', ')}\n${fidOrFailure.fold((failure) => "Unknown Installation ID", (fid) => "Firebase Installation ID: $fid")}""";
+            """일기: ${moment.reflection}\n\nAI가 분석한 감정: ${emotionalIntensities.map((e) => e.emotion.koName).join(', ')}\n\n${fidOrFailure.fold((failure) => "유저 ID:Unknown User", (fid) => "유저 ID: $fid")}""";
 
         return (await writeMomentInternalProvider.log(log,
                 deviceId: fidOrFailure.fold((failure) => null, (fid) => fid)))

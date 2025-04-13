@@ -11,8 +11,15 @@ PODS:
   - Firebase/Crashlytics (11.10.0):
     - Firebase/CoreOnly
     - FirebaseCrashlytics (~> 11.10.0)
+  - Firebase/Installations (11.10.0):
+    - Firebase/CoreOnly
+    - FirebaseInstallations (~> 11.10.0)
   - firebase_analytics (11.4.5):
     - Firebase/Analytics (= 11.10.0)
+    - firebase_core
+    - Flutter
+  - firebase_app_installations (0.3.2-5):
+    - Firebase/Installations (= 11.10.0)
     - firebase_core
     - Flutter
   - firebase_core (3.13.0):
@@ -153,6 +160,7 @@ PODS:
 DEPENDENCIES:
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
+  - firebase_app_installations (from `.symlinks/plugins/firebase_app_installations/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
   - Flutter (from `Flutter`)
@@ -188,6 +196,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/device_info_plus/ios"
   firebase_analytics:
     :path: ".symlinks/plugins/firebase_analytics/ios"
+  firebase_app_installations:
+    :path: ".symlinks/plugins/firebase_app_installations/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_crashlytics:
@@ -213,6 +223,7 @@ SPEC CHECKSUMS:
   device_info_plus: 21fcca2080fbcd348be798aa36c3e5ed849eefbe
   Firebase: 1fe1c0a7d9aaea32efe01fbea5f0ebd8d70e53a2
   firebase_analytics: 1998960b8fa16fd0cd9e77a6f9fd35a2009ad65e
+  firebase_app_installations: 787a2ddbbb74c81003de5663231a7cba31b8e68b
   firebase_core: 2d4534e7b489907dcede540c835b48981d890943
   firebase_crashlytics: 961a0812ba79ed8f89a8d5d1e3763daa6267a87a
   FirebaseAnalytics: 4e42333f02cf78ed93703a5c36f36dd518aebdef
