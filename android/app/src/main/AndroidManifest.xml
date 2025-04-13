@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="diary_mobile_client"
+        android:label="크레파스"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
