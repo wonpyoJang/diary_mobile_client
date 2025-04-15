@@ -25,7 +25,7 @@ class Moment extends Equatable {
   }
 
   String getFormattedDay() {
-    final DateFormat formatter = DateFormat('yyyy년 MM월 dd일', 'ko_KR');
+    final DateFormat formatter = DateFormat('yyyy년 MM월 dd일 EEEE', 'ko_KR');
     return formatter.format(date);
   }
 
