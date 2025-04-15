@@ -34,7 +34,7 @@ class WriteMomentRepository implements IWriteMomentRepository {
         final fidOrFailure = await writeMomentExternalProvider.getFirebaseId();
 
         final log =
-            """[일기]\n\n일기 날짜: ${moment.getFormattedDay()}\n${moment.reflection}\n------------------------------------\n[메타 데이터]\n\n감정분석일시: ${DateFormat('yy년 MM월 dd일 EEEE a hh시 mm분 ss초', 'ko').format(DateTime.now())}\nAI가 분석한 감정: ${emotionalIntensities.map((e) => e.emotion.koName).join(', ')}\n\n${fidOrFailure.fold((failure) => "유저 ID:Unknown User", (fid) => "유저 ID: $fid")}""";
+            """[일기]\n\n일기 날짜: ${moment.getFormattedDay()}\n${moment.reflection}\n------------------------------------\n[메타 데이터]\n\n감정분석일시: ${DateFormat('yy년 MM월 dd일 EEEE a hh시 mm분 ss초', 'ko').format(DateTime.now())}\nAI가 분석한 감정: ${emotionalIntensities.map((e) => "${e.emotion.koName} (${e.intensity})").join(', ')}\n\n${fidOrFailure.fold((failure) => "유저 ID:Unknown User", (fid) => "유저 ID: $fid")}""";
 
         return (await writeMomentInternalProvider.log(log,
                 deviceId: fidOrFailure.fold((failure) => null, (fid) => fid)))
