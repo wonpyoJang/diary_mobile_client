@@ -24,6 +24,11 @@ class Moment extends Equatable {
     return formatter.format(date);
   }
 
+  String getFormattedDay() {
+    final DateFormat formatter = DateFormat('yyyy년 MM월 dd일', 'ko_KR');
+    return formatter.format(date);
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,

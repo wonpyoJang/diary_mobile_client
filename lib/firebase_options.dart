@@ -58,7 +58,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'REDACTED_API_KEY',
-    appId: '1:257631743105:android:38d34537d703091c16f180',
+    appId: '1:257631743105:android:3918ef6f34fd4d5a16f180',
     messagingSenderId: '257631743105',
     projectId: 'emotion-diary-b72b2',
     storageBucket: 'emotion-diary-b72b2.firebasestorage.app',
