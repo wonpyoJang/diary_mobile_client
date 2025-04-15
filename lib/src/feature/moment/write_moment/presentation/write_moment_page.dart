@@ -88,7 +88,8 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                 ),
               BlocListener<WriteMomentBloc, WriteMomentState>(
                 listenWhen: (prev, next) {
-                  return next.moment.emotionalIntensities.isEmpty;
+                  return prev.isLoading == true &&
+                      next.moment.emotionalIntensities.isEmpty;
                 },
                 listener: (context, state) async {
                   ScaffoldMessenger.of(context).showSnackBar(
