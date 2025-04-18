@@ -7,6 +7,7 @@ import 'package:diary_mobile_client/src/feature/moment/moment_calendar/presentat
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/write_moment_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -28,6 +29,8 @@ class MomentCalendarPage extends StatefulWidget {
 }
 
 class MomentCalendarPageState extends State<MomentCalendarPage> {
+  late PageController pageController;
+
   @override
   void initState() {
     super.initState();
@@ -59,15 +62,22 @@ class MomentCalendarPageState extends State<MomentCalendarPage> {
           body: SafeArea(
             child: Column(
               children: [
-                Container(
-                  width: deviceWidth,
-                  height: deviceWidth * (206 / 375),
-                  color: const Color(0xFFD9D9D9),
+                CalendarHeader(
+                  onTapRight: () {
+                    pageController.nextPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut);
+                  },
+                  onTapLeft: () {
+                    pageController.previousPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut);
+                  },
                 ),
-                const SizedBox(height: 51),
-                const CalendarHeader(),
                 const SizedBox(height: 21),
-                const Calendar(),
+                Calendar(onCalendarCreated: (pageController) {
+                  this.pageController = pageController;
+                }),
               ],
             ),
           ),
@@ -88,17 +98,12 @@ class MomentCalendarPageState extends State<MomentCalendarPage> {
   }
 }
 
-class Calendar extends StatefulWidget {
+class Calendar extends StatelessWidget {
+  final Function(PageController) onCalendarCreated;
   const Calendar({
     super.key,
+    required this.onCalendarCreated,
   });
-
-  @override
-  State<Calendar> createState() => _CalendarState();
-}
-
-class _CalendarState extends State<Calendar> {
-  late PageController pageController;
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +119,7 @@ class _CalendarState extends State<Calendar> {
               padding: const EdgeInsets.symmetric(horizontal: 28.0),
               child: TableCalendar(
                 onCalendarCreated: (pageController) {
-                  pageController = pageController;
+                  onCalendarCreated(pageController);
                 },
                 rowHeight: 65,
                 onPageChanged: (DateTime page) {
@@ -266,8 +271,12 @@ class _CalendarState extends State<Calendar> {
 }
 
 class CalendarHeader extends StatelessWidget {
+  final Function onTapRight;
+  final Function onTapLeft;
   const CalendarHeader({
     super.key,
+    required this.onTapRight,
+    required this.onTapLeft,
   });
 
   @override
@@ -279,34 +288,54 @@ class CalendarHeader extends StatelessWidget {
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 28.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Text(
-                  DateFormat('MMMM')
-                      .format(state.selectedPage ?? DateTime.now()),
-                  style: const TextStyle(
-                      fontSize: 32,
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.w700,
-                      height: 20 / 32,
-                      letterSpacing: -0.8,
-                      color: Color(0xFF53545B)),
-                ),
-              ),
-              const SizedBox(width: 9),
+              const SizedBox(height: 3),
               Text(
                 DateFormat('yyyy').format(state.selectedPage ?? DateTime.now()),
                 style: const TextStyle(
                   fontSize: 16,
                   fontFamily: 'Pretendard',
                   fontWeight: FontWeight.w400,
-                  height: 20 / 16,
+                  height: 1.5,
                   letterSpacing: -0.4,
-                  color: Color(0xFF53545B),
+                  color: Color(0xFF959490),
                 ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () => onTapLeft(),
+                    child: SvgPicture.asset(
+                      'assets/images/feature/moment/moment_calendar/left.svg',
+                      width: 26,
+                      height: 26,
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  Text(
+                    DateFormat('MMMM')
+                        .format(state.selectedPage ?? DateTime.now()),
+                    style: const TextStyle(
+                        fontSize: 32,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w700,
+                        height: 1.25,
+                        letterSpacing: -0.8,
+                        color: Color(0xFF53545B)),
+                  ),
+                  const SizedBox(width: 20),
+                  InkWell(
+                    onTap: () => onTapRight(),
+                    child: SvgPicture.asset(
+                      'assets/images/feature/moment/moment_calendar/right.svg',
+                      width: 26,
+                      height: 26,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

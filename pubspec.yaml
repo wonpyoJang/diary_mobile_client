@@ -52,6 +52,7 @@ dependencies:
   firebase_crashlytics: 
   flutter_dotenv: ^5.2.1
   firebase_app_installations: ^0.3.2+5
+  flutter_svg: ^2.0.17
 
 
 
@@ -74,6 +75,7 @@ flutter:
     # Add assets from the images directory to the application.
     - assets/images/
     - assets/images/feature/moment/write_moment/
+    - assets/images/feature/moment/moment_calendar/
     - .env
 
   fonts:
