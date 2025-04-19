@@ -15,7 +15,7 @@ class EmotionPalette extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int crossAxisCount = 4;
+    int crossAxisCount = 3;
     if (kIsWeb) {
       final double screenWidth = MediaQuery.of(context).size.width;
       crossAxisCount = screenWidth > 600 ? 8 : 4;

@@ -10,115 +10,129 @@ Future<dynamic> verificationDialog(BuildContext context) {
     context: context,
     builder: (dialogContext) => BlocProvider.value(
       value: BlocProvider.of<WriteMomentBloc>(context),
-      child: Dialog(
-        insetPadding: const EdgeInsets.symmetric(horizontal: 24),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Padding(
-          padding:
-              const EdgeInsets.only(top: 20, left: 16, right: 16, bottom: 16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text("오늘은 다양한 감정이\n느껴지는 하루에요",
-                  style: TextStyle(
-                    color: Color(0xFF4D4E58),
-                    fontFamily: "SpoqaHanSansNeo",
-                    fontSize: 20,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.w500,
-                    height: 1.2,
-                    letterSpacing: -0.4,
-                  )),
-              const SizedBox(height: 20),
-              BlocBuilder<WriteMomentBloc, WriteMomentState>(
-                builder: (context, state) {
-                  return EmotionPalette(
-                      emotionalIntensities: state.moment.emotionalIntensities);
-                },
-              ),
-              const SizedBox(height: 16),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+      child: SizedBox(
+        width: 272,
+        child: Dialog(
+          insetPadding: const EdgeInsets.symmetric(horizontal: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding:
+                const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 16),
+            child: SizedBox(
+              width: 272,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text("이 분석이 맞나요?",
-                            style: TextStyle(
-                                color: Color(0xFF4D4E58),
-                                fontFamily: "SpoqaHanSansNeo",
-                                fontSize: 16,
-                                letterSpacing: 0.32)),
-                      ],
+                  const SizedBox(
+                    height: 29,
+                    child: Center(
+                      child: Text("오늘의 감정",
+                          style: TextStyle(
+                            color: Color(0xFF808080),
+                            fontFamily: "Pretendard",
+                            fontSize: 16,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: -0.32,
+                          )),
                     ),
+                  ),
+                  const SizedBox(height: 2),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    decoration: const BoxDecoration(
+                        border: Border(
+                      top: BorderSide(width: 1, color: Color(0xFF808080)),
+                      bottom: BorderSide(width: 1, color: Color(0xFF808080)),
+                    )),
+                    child: BlocBuilder<WriteMomentBloc, WriteMomentState>(
+                      builder: (context, state) {
+                        return EmotionPalette(
+                            emotionalIntensities:
+                                state.moment.emotionalIntensities);
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  const SizedBox(
+                    height: 29,
+                    child: Center(
+                      child: Text("이 분석이 맞나요?",
+                          style: TextStyle(
+                              color: Color(0xFF808080),
+                              fontFamily: "SpoqaHanSansNeo",
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              letterSpacing: -0.32)),
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pop(dialogContext);
+                            AnalyticsManager.logEvent(
+                                'editor_right_emotion_not_match');
+                          },
+                          child: Container(
+                            height: 36,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFF956C),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Center(
+                              child: Text('달라요 👎',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelLarge
+                                      ?.copyWith(
+                                          fontSize: 16,
+                                          fontFamily: "SpoqaHanSansNeo",
+                                          letterSpacing: -0.32,
+                                          color: Colors.white)),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pop(dialogContext);
+                            AnalyticsManager.logEvent(
+                                'editor_right_emotion_match');
+                          },
+                          child: Container(
+                            height: 36,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFF956C),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Center(
+                              child: Text('맞아요 👍',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelLarge
+                                      ?.copyWith(
+                                          fontSize: 16,
+                                          fontFamily: "SpoqaHanSansNeo",
+                                          letterSpacing: -0.32,
+                                          color: Colors.white)),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              const SizedBox(height: 4),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.pop(dialogContext);
-                        AnalyticsManager.logEvent(
-                            'editor_right_emotion_not_match');
-                      },
-                      child: Container(
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFADCBFF),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: Center(
-                          child: Text('달라요 👎',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelLarge
-                                  ?.copyWith(
-                                      fontSize: 16,
-                                      fontFamily: "SpoqaHanSansNeo",
-                                      letterSpacing: -0.32,
-                                      color: const Color(0xFF4D4E58))),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.pop(dialogContext);
-                        AnalyticsManager.logEvent('editor_right_emotion_match');
-                      },
-                      child: Container(
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFADCBFF),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: Center(
-                          child: Text('맞아요 👍',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelLarge
-                                  ?.copyWith(
-                                      fontSize: 16,
-                                      fontFamily: "SpoqaHanSansNeo",
-                                      letterSpacing: -0.32,
-                                      color: const Color(0xFF4D4E58))),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
         ),
       ),
