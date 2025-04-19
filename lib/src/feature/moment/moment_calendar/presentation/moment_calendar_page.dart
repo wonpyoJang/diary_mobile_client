@@ -74,7 +74,7 @@ class MomentCalendarPageState extends State<MomentCalendarPage> {
                         curve: Curves.easeInOut);
                   },
                 ),
-                const SizedBox(height: 21),
+                const SizedBox(height: 15),
                 Calendar(onCalendarCreated: (pageController) {
                   this.pageController = pageController;
                 }),
@@ -117,155 +117,204 @@ class Calendar extends StatelessWidget {
           builder: (context, calendarState) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 28.0),
-              child: TableCalendar(
-                onCalendarCreated: (pageController) {
-                  onCalendarCreated(pageController);
-                },
-                rowHeight: 65,
-                onPageChanged: (DateTime page) {
-                  context.read<MomentCalendarBloc>().add(ChangePage(page));
-                  final now = DateTime.now();
-                  final direction = page.isAfter(DateTime(now.year, now.month))
-                      ? 'next'
-                      : 'previous';
-                  AnalyticsManager.logEvent('calendar_page_changed',
-                      parameters: {
-                        'direction': direction,
-                      });
-                },
-                daysOfWeekHeight: 27,
-                daysOfWeekStyle: DaysOfWeekStyle(
-                  dowTextFormatter: (date, locale) =>
-                      DateFormat.E(locale).format(date).toUpperCase(),
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Color(0xFFE7E7E7),
-                        width: 1.0,
-                      ),
+              child: Column(
+                children: [
+                  const DaysOfWeek(),
+                  const SizedBox(height: 12),
+                  TableCalendar(
+                    // headerVisible: true,
+                    // daysOfWeekVisible: true,
+                    // headerStyle: const HeaderStyle(
+                    //   headerMargin: EdgeInsets.only(bottom: 12),
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.green,
+                    //   ),
+                    // ),
+
+                    onCalendarCreated: (pageController) {
+                      onCalendarCreated(pageController);
+                    },
+                    rowHeight: 65,
+                    onPageChanged: (DateTime page) {
+                      context.read<MomentCalendarBloc>().add(ChangePage(page));
+                      final now = DateTime.now();
+                      final direction =
+                          page.isAfter(DateTime(now.year, now.month))
+                              ? 'next'
+                              : 'previous';
+                      AnalyticsManager.logEvent('calendar_page_changed',
+                          parameters: {
+                            'direction': direction,
+                          });
+                    },
+                    daysOfWeekVisible: false,
+                    headerVisible: false,
+                    selectedDayPredicate: (day) {
+                      return isSameDay(calendarState.selectedDay, day);
+                    },
+                    onDaySelected: (selectedDay, focusedDay) {
+                      context
+                          .read<MomentCalendarBloc>()
+                          .add(SelectDay(selectedDay));
+                      AnalyticsManager.logEvent('calendar_day_selected',
+                          parameters: {
+                            'day': selectedDay.toString(),
+                            'focusedDay': focusedDay.toString(),
+                          });
+                    },
+                    calendarFormat: calendarState.calendarFormat,
+                    onFormatChanged: (format) {
+                      // context
+                      //     .read<MomentCalendarBloc>()
+                      //     .add(ChangeCalendarFormat(format));
+                    },
+                    eventLoader: (day) {
+                      return listState.moments[day] ?? [];
+                    },
+                    // firstDay: listState.firstDay ??
+                    firstDay: DateTime(1970),
+                    lastDay: DateTime(DateTime.now().year + 100),
+                    focusedDay: calendarState.selectedDay ?? DateTime.now(),
+                    // onDaySelected: (selectedDay, focusedDay) {
+                    //   Navigator.of(context).push(MaterialPageRoute(
+                    //   builder: (context) => WriteMomentPage(
+                    //       arguments: WriteMomentPageArguments(
+                    //           moment: null, isBlendMode: true, date: selectedDay))));
+                    // },
+                    calendarBuilders: CalendarBuilders(
+                      markerBuilder: (context, day, moments) {
+                        if (moments.isEmpty) {
+                          return const SizedBox.shrink();
+                        }
+
+                        final firstMoment = (moments as List<Moment>).first;
+
+                        final firstEmotionColor =
+                            firstMoment.emotionalIntensities.isNotEmpty
+                                ? firstMoment
+                                    .emotionalIntensities.first.emotion.color
+                                : Colors.grey;
+                        return Container(
+                          height: 10,
+                          width: 10,
+                          decoration: BoxDecoration(
+                            color: firstEmotionColor,
+                            shape: BoxShape.circle,
+                          ),
+                        );
+                      },
+                      selectedBuilder: (context, day, focusedDay) {
+                        return DayArea(
+                          day: day.day.toString(),
+                          dayColor: const Color(0xFFEC7D61),
+                          areaColor: const Color(0xFFF3E9E5),
+                        );
+                      },
+                      defaultBuilder: (context, day, focusedDay) {
+                        return DayArea(
+                          day: day.day.toString(),
+                          dayColor: const Color(0xFF000000),
+                          areaColor: const Color(0xFFF6F6F6),
+                        );
+                      },
+                      outsideBuilder: (context, day, focusedDay) {
+                        return const DayArea(
+                          day: "",
+                          dayColor: Color(0xFF000000),
+                          areaColor: Color(0xFFF6F6F6),
+                        );
+                      },
+                      disabledBuilder: (context, day, focusedDay) {
+                        return DayArea(
+                          day: day.day.toString(),
+                          dayColor: const Color(0xFF000000),
+                          areaColor: const Color(0xFFF6F6F6),
+                        );
+                      },
                     ),
                   ),
-                  weekdayStyle: const TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.w400,
-                    height: 20 / 14,
-                    letterSpacing: -0.35,
-                    color: Color(0xFF959490),
-                  ),
-                  weekendStyle: const TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.w400,
-                    height: 20 / 14,
-                    letterSpacing: -0.35,
-                    color: Color(0xFFFF7D71),
-                  ),
-                ),
-                headerVisible: false,
-                selectedDayPredicate: (day) {
-                  return isSameDay(calendarState.selectedDay, day);
-                },
-                onDaySelected: (selectedDay, focusedDay) {
-                  context
-                      .read<MomentCalendarBloc>()
-                      .add(SelectDay(selectedDay));
-                  AnalyticsManager.logEvent('calendar_day_selected',
-                      parameters: {
-                        'day': selectedDay.toString(),
-                        'focusedDay': focusedDay.toString(),
-                      });
-                },
-                calendarFormat: calendarState.calendarFormat,
-                onFormatChanged: (format) {
-                  // context
-                  //     .read<MomentCalendarBloc>()
-                  //     .add(ChangeCalendarFormat(format));
-                },
-                eventLoader: (day) {
-                  return listState.moments[day] ?? [];
-                },
-                // firstDay: listState.firstDay ??
-                firstDay: DateTime.now().subtract(const Duration(days: 365)),
-                lastDay: DateTime.now(),
-                focusedDay: calendarState.selectedDay ?? DateTime.now(),
-                // onDaySelected: (selectedDay, focusedDay) {
-                //   Navigator.of(context).push(MaterialPageRoute(
-                //   builder: (context) => WriteMomentPage(
-                //       arguments: WriteMomentPageArguments(
-                //           moment: null, isBlendMode: true, date: selectedDay))));
-                // },
-                calendarBuilders: CalendarBuilders(
-                  markerBuilder: (context, day, moments) {
-                    if (moments.isEmpty) {
-                      return const SizedBox.shrink();
-                    }
-
-                    final firstMoment = (moments as List<Moment>).first;
-
-                    final firstEmotionColor = firstMoment
-                            .emotionalIntensities.isNotEmpty
-                        ? firstMoment.emotionalIntensities.first.emotion.color
-                        : Colors.grey;
-                    return Container(
-                      height: 10,
-                      width: 10,
-                      decoration: BoxDecoration(
-                        color: firstEmotionColor,
-                        shape: BoxShape.circle,
-                      ),
-                    );
-                  },
-                  defaultBuilder: (context, day, focusedDay) {
-                    return Container(
-                      color: Colors.white,
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 8.0, left: 10),
-                          child: Text(
-                            day.day.toString(),
-                            style: const TextStyle(
-                              fontFamily: "Pretendard",
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              height: 20 / 12,
-                              letterSpacing: -0.3,
-                              color: Color(0xFF000000),
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                  outsideBuilder: (context, day, focusedDay) {
-                    return Container(
-                      color: Colors.white,
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 8.0, left: 10),
-                          child: Text(
-                            day.day.toString(),
-                            style: const TextStyle(
-                              fontFamily: "Pretendard",
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              height: 20 / 12,
-                              letterSpacing: -0.3,
-                              color: Color(0x33000000),
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                ],
               ),
             );
           },
         );
       },
+    );
+  }
+}
+
+class DayArea extends StatelessWidget {
+  final String day;
+  final Color areaColor;
+  final Color dayColor;
+  const DayArea(
+      {super.key,
+      required this.day,
+      required this.areaColor,
+      required this.dayColor});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: areaColor,
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 8.0, left: 10),
+          child: Text(
+            day,
+            style: TextStyle(
+              fontFamily: "Pretendard",
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+              height: 20 / 12,
+              letterSpacing: -0.3,
+              color: dayColor,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class DaysOfWeek extends StatelessWidget {
+  const DaysOfWeek({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final List<String> days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        ...days.map((day) => Flexible(
+              child: Container(
+                height: 32,
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Color(0xFF7F7F7F),
+                      width: 1.0,
+                    ),
+                  ),
+                ),
+                child: Center(
+                  child: Text(day,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w400,
+                        height: 20 / 14,
+                        letterSpacing: -0.35,
+                        color: Color(0xFF959490),
+                      )),
+                ),
+              ),
+            ))
+      ],
     );
   }
 }
