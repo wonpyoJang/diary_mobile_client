@@ -17,11 +17,11 @@ class MomentWritingArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 414,
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: const Color(0xFFECE5DE),
+        color: Colors.white,
       ),
       child: TextField(
         scrollPadding: const EdgeInsets.all(0),
@@ -52,16 +52,17 @@ class MomentWritingArea extends StatelessWidget {
             hintStyle: Theme.of(context).textTheme.bodyMedium,
             counterStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontFamily: "Pretendard",
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 0.32,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.24,
                 )),
         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               fontFamily: "Pretendard",
               fontSize: 16,
-              fontWeight: FontWeight.w500,
-              letterSpacing: -0.24,
-              color: const Color(0xFF808080),
+              fontWeight: FontWeight.w400,
+              letterSpacing: -0.32,
+              height: 1.25,
+              color: const Color(0xFF4D5E58),
             ),
         onChanged: (String text) {
           context.read<WriteMomentBloc>().add(TextChangedEvent(text));

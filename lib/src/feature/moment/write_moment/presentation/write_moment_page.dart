@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:diary_mobile_client/src/core/analytics/analytics_manager.dart';
+import 'package:diary_mobile_client/src/feature/common/loading_indicator.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/emotion_blending_dialog.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/title.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/verification_dialog.dart';
@@ -51,216 +54,254 @@ class WriteMomentPageState extends State<WriteMomentPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: BlocProvider(
-        create: (context) => getIt<WriteMomentBloc>(
-            param1: widget.arguments.moment, param2: widget.arguments.date),
-        child: Builder(builder: (context) {
-          return MultiBlocListener(
-            listeners: [
-              BlocListener<WriteMomentBloc, WriteMomentState>(
-                listenWhen: (prev, next) {
-                  return (prev.errorMessage != next.errorMessage) &&
-                      (next.errorMessage.isNotEmpty);
-                },
-                listener: (context, state) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(state.errorMessage),
-                    ),
-                  );
-                },
-              ),
-              if (widget.arguments.isBlendMode)
-                BlocListener<WriteMomentBloc, WriteMomentState>(
-                  listenWhen: (prev, next) {
-                    return prev.moment.emotionalIntensities !=
-                            next.moment.emotionalIntensities &&
-                        next.moment.emotionalIntensities.length > 1;
-                  },
-                  listener: (context, state) async {
-                    await verificationDialog(context);
-
-                    if (context.mounted) {
-                      await showEmotionBlending(context, state.moment);
-                    }
-                  },
+    return BlocProvider(
+      create: (context) => getIt<WriteMomentBloc>(
+          param1: widget.arguments.moment, param2: widget.arguments.date),
+      child: Builder(builder: (context) {
+        return Material(
+          child: Stack(
+            children: [
+              // Image.asset(
+              //   "assets/images/common/background/background.png",
+              //   width: MediaQuery.of(context).size.width,
+              //   height: MediaQuery.of(context).size.height,
+              //   fit: BoxFit.cover,
+              // ),
+              Positioned.fill(child: Container(color: const Color(0xFFD3D3D3))),
+              Positioned.fill(
+                child: Opacity(
+                  opacity: 0.08,
+                  child: Image.asset(
+                    "assets/images/common/background/background.png", // 이미지 경로
+                    colorBlendMode: BlendMode.overlay,
+                    fit: BoxFit.cover, // 100% 100% 대응
+                    alignment:
+                        const Alignment(-0.03, 0.0), // -1.523px에 해당하는 정렬값 근사치
+                  ),
                 ),
-              BlocListener<WriteMomentBloc, WriteMomentState>(
-                listenWhen: (prev, next) {
-                  return prev.isLoading == true &&
-                      next.moment.emotionalIntensities.isEmpty;
-                },
-                listener: (context, state) async {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("드러난 감정이 없습니다."),
+              ),
+              // 오버레이용 blend 효과 레이어
+
+              // const Align(
+              //     alignment: Alignment.topCenter, child: PaperTextureOverlay()),
+              SafeArea(
+                child: MultiBlocListener(
+                  listeners: [
+                    BlocListener<WriteMomentBloc, WriteMomentState>(
+                      listenWhen: (prev, next) {
+                        return (prev.errorMessage != next.errorMessage) &&
+                            (next.errorMessage.isNotEmpty);
+                      },
+                      listener: (context, state) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(state.errorMessage),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              )
-            ],
-            child: Scaffold(
-              backgroundColor: Theme.of(context).colorScheme.surface,
-              body: Stack(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                    },
-                    child: Container(
-                      color: Theme.of(context).colorScheme.surface,
-                      child: SafeArea(
-                        child: SingleChildScrollView(
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 12.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(height: 40),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
+                    if (widget.arguments.isBlendMode)
+                      BlocListener<WriteMomentBloc, WriteMomentState>(
+                        listenWhen: (prev, next) {
+                          return prev.moment.emotionalIntensities !=
+                                  next.moment.emotionalIntensities &&
+                              next.moment.emotionalIntensities.length > 1;
+                        },
+                        listener: (context, state) async {
+                          await verificationDialog(context);
+
+                          if (context.mounted) {
+                            await showEmotionBlending(context, state.moment);
+                          }
+                        },
+                      ),
+                    BlocListener<WriteMomentBloc, WriteMomentState>(
+                      listenWhen: (prev, next) {
+                        return prev.isLoading == true &&
+                            next.moment.emotionalIntensities.isEmpty;
+                      },
+                      listener: (context, state) async {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("드러난 감정이 없습니다."),
+                          ),
+                        );
+                      },
+                    )
+                  ],
+                  child: Scaffold(
+                    backgroundColor: Colors.transparent,
+                    body: Stack(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            FocusManager.instance.primaryFocus?.unfocus();
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 8),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 6.0, right: 28),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     DateBox(date: widget.arguments.date),
-                                    const Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 12.0, bottom: 3),
-                                      child: MomentWritingPageTitle(),
+                                    const SizedBox(width: 4.0),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const MomentWritingPageTitle(),
+                                          const SizedBox(height: 10),
+                                          Container(
+                                              height: 1,
+                                              width: double.infinity,
+                                              color: const Color(0xFF7F7F7F))
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 17),
-                                MomentWritingArea(
+                              ),
+                              const SizedBox(height: 17),
+                              Expanded(
+                                child: MomentWritingArea(
                                     controller: _controller,
                                     mode: widget.arguments.moment != null
                                         ? WriteMode.edit
                                         : WriteMode.create),
-                                BlocBuilder<WriteMomentBloc, WriteMomentState>(
-                                  builder: (context, state) {
-                                    if (state
-                                        .moment.emotionalIntensities.isEmpty) {
-                                      return const SizedBox(height: 23);
-                                    } else {
-                                      return Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 15.0, bottom: 29),
-                                        child: Screenshot(
-                                          controller: _screenshotController,
-                                          child: EmotionPalette(
-                                              emotionalIntensities: state
-                                                  .moment.emotionalIntensities),
-                                        ),
-                                      );
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
+                              ),
+                              const SizedBox(height: 104),
+                              // BlocBuilder<WriteMomentBloc, WriteMomentState>(
+                              //   builder: (context, state) {
+                              //     if (state
+                              //         .moment.emotionalIntensities.isEmpty) {
+                              //       return const SizedBox(height: 23);
+                              //     } else {
+                              //       return Padding(
+                              //         padding: const EdgeInsets.only(
+                              //             top: 15.0, bottom: 29),
+                              //         child: Screenshot(
+                              //           controller: _screenshotController,
+                              //           child: EmotionPalette(
+                              //               emotionalIntensities: state
+                              //                   .moment.emotionalIntensities),
+                              //         ),
+                              //       );
+                              //     }
+                              //   },
+                              // ),
+                            ],
                           ),
                         ),
-                      ),
+                        BlocBuilder<WriteMomentBloc, WriteMomentState>(
+                          builder: (context, state) {
+                            if (state.moment.emotionalIntensities.isNotEmpty) {
+                              return Align(
+                                alignment: Alignment.bottomCenter,
+                                child: InkWell(
+                                  onTap: () async {
+                                    AnalyticsManager.logEvent(
+                                        'editor_share_emotion');
+                                    if (kIsWeb) {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text('알림'),
+                                            content: const Text(
+                                                '웹에서는 지원하지 않는 기능입니다.\n앱 다운로드 링크: https://testflight.apple.com/join/9Z7cKQSj'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                child: const Text('확인'),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                              TextButton(
+                                                child: const Text('다운로드'),
+                                                onPressed: () {
+                                                  launchUrl(
+                                                    Uri.parse(
+                                                        'https://testflight.apple.com/join/9Z7cKQSj'),
+                                                    mode: LaunchMode
+                                                        .externalApplication,
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    } else {
+                                      final image =
+                                          await _screenshotController.capture();
+                                      if (image != null) {
+                                        final directory =
+                                            await getApplicationDocumentsDirectory();
+                                        final timestamp = DateTime.now()
+                                            .millisecondsSinceEpoch;
+                                        final imagePath = File(
+                                            '${directory.path}/emotion_palette_$timestamp.png');
+                                        await imagePath.writeAsBytes(image);
+                                        await Share.shareXFiles(
+                                            [XFile(imagePath.path)],
+                                            text:
+                                                '오늘의 기분을 공유합니다.\n\n[${DateTime.now().month}월 ${DateTime.now().day}일의 일기]\n${state.moment.reflection}');
+                                      }
+                                    }
+                                  },
+                                  child: Container(
+                                    height: 60,
+                                    margin: const EdgeInsets.only(
+                                        bottom: 20, left: 16, right: 16),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFADCBFF),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    child: Center(
+                                        child: Text('오늘의 기분 공유하기',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .labelLarge
+                                                ?.copyWith(
+                                                    fontSize: 20,
+                                                    letterSpacing: -0.4,
+                                                    color: const Color(
+                                                        0xFF4D4E58)))),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return const Align(
+                                alignment: Alignment.bottomRight,
+                                child: ExtractEmotionButon(),
+                              );
+                            }
+                          },
+                        ),
+                      ],
                     ),
                   ),
-                  BlocBuilder<WriteMomentBloc, WriteMomentState>(
-                    builder: (context, state) {
-                      if (state.moment.emotionalIntensities.isNotEmpty) {
-                        return Align(
-                          alignment: Alignment.bottomCenter,
-                          child: InkWell(
-                            onTap: () async {
-                              AnalyticsManager.logEvent('editor_share_emotion');
-                              if (kIsWeb) {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('알림'),
-                                      content: const Text(
-                                          '웹에서는 지원하지 않는 기능입니다.\n앱 다운로드 링크: https://testflight.apple.com/join/9Z7cKQSj'),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          child: const Text('확인'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                        TextButton(
-                                          child: const Text('다운로드'),
-                                          onPressed: () {
-                                            launchUrl(
-                                              Uri.parse(
-                                                  'https://testflight.apple.com/join/9Z7cKQSj'),
-                                              mode: LaunchMode
-                                                  .externalApplication,
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              } else {
-                                final image =
-                                    await _screenshotController.capture();
-                                if (image != null) {
-                                  final directory =
-                                      await getApplicationDocumentsDirectory();
-                                  final timestamp =
-                                      DateTime.now().millisecondsSinceEpoch;
-                                  final imagePath = File(
-                                      '${directory.path}/emotion_palette_$timestamp.png');
-                                  await imagePath.writeAsBytes(image);
-                                  await Share.shareXFiles(
-                                      [XFile(imagePath.path)],
-                                      text:
-                                          '오늘의 기분을 공유합니다.\n\n[${DateTime.now().month}월 ${DateTime.now().day}일의 일기]\n${state.moment.reflection}');
-                                }
-                              }
-                            },
-                            child: Container(
-                              height: 60,
-                              margin: const EdgeInsets.only(
-                                  bottom: 20, left: 16, right: 16),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFADCBFF),
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              child: Center(
-                                  child: Text('오늘의 기분 공유하기',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelLarge
-                                          ?.copyWith(
-                                              fontSize: 20,
-                                              letterSpacing: -0.4,
-                                              color: const Color(0xFF4D4E58)))),
-                            ),
-                          ),
-                        );
-                      } else {
-                        return const Align(
-                          alignment: Alignment.bottomCenter,
-                          child: ExtractEmotionButon(),
-                        );
-                      }
-                    },
-                  ),
-                  BlocBuilder<WriteMomentBloc, WriteMomentState>(
-                    builder: (context, state) {
-                      if (state.isLoading) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else {
-                        return const SizedBox();
-                      }
-                    },
-                  )
-                ],
+                ),
               ),
-            ),
-          );
-        }),
-      ),
+              BlocBuilder<WriteMomentBloc, WriteMomentState>(
+                builder: (context, state) {
+                  if (state.isLoading) {
+                    return const Center(child: CommonLoadingIndicator());
+                  } else {
+                    return const SizedBox();
+                  }
+                },
+              )
+            ],
+          ),
+        );
+      }),
     );
   }
 }
@@ -282,15 +323,66 @@ class DateBox extends StatelessWidget {
     final dayFirstDigit = dayStr[0];
     final daySecondDigit = dayStr[1];
 
-    return Text(
-        "$monthFirstDigit $monthSecondDigit\n$dayFirstDigit $daySecondDigit",
-        style: const TextStyle(
-          color: Color(0xFF4D4E58),
-          fontSize: 28,
-          fontWeight: FontWeight.w700,
-          height: 1.0,
-          letterSpacing: -0.24,
-          fontFamily: "SpoqaHanSansNeo",
-        ));
+    return SizedBox(
+      width: 59,
+      height: 56,
+      child: Center(
+        child: Text(
+            "$monthFirstDigit $monthSecondDigit\n$dayFirstDigit $daySecondDigit",
+            style: const TextStyle(
+              color: Color(0xFF53545B),
+              fontSize: 28,
+              fontWeight: FontWeight.w400,
+              height: 1.0,
+              letterSpacing: -0.24,
+              fontFamily: "SpoqaHanSansNeo",
+            )),
+      ),
+    );
   }
 }
+
+// class PaperTextureOverlay extends StatelessWidget {
+//   const PaperTextureOverlay({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Center(
+//       child: SizedBox(
+//         width: 360,
+//         height: 640,
+//         child: RotatedBox(
+//           quarterTurns: 3, // -90도 회전
+//           child: Stack(
+//             children: [
+//               Container(color: Colors.grey[300]), // lightgray 배경
+
+//               // 종이 질감 레이어
+//               Positioned.fill(
+//                 child: FractionallySizedBox(
+//                   widthFactor: 1.01121, // 101.121%
+//                   heightFactor: 1.0,
+//                   alignment: const Alignment(-0.0085 * 2, 0), // -1.523px 위치 조정
+//                   child: ColorFiltered(
+//                     colorFilter: const ColorFilter.mode(
+//                       Colors.white,
+//                       BlendMode.overlay, // CSS의 mix-blend-mode: overlay 대체
+//                     ),
+//                     child: ImageFiltered(
+//                       imageFilter:
+//                           ImageFilter.blur(sigmaX: 0.2, sigmaY: 0.2), // 부드러운 처리
+//                       child: Image.asset(
+//                         "assets/images/common/background/background.png",
+//                         fit: BoxFit.cover,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

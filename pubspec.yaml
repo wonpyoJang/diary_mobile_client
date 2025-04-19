@@ -53,6 +53,7 @@ dependencies:
   flutter_dotenv: ^5.2.1
   firebase_app_installations: ^0.3.2+5
   flutter_svg: ^2.0.17
+  loading_indicator: ^3.1.1
 
 
 
@@ -76,6 +77,7 @@ flutter:
     - assets/images/
     - assets/images/feature/moment/write_moment/
     - assets/images/feature/moment/moment_calendar/
+    - assets/images/common/background/
     - .env
 
   fonts:

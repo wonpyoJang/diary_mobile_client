@@ -1,6 +1,7 @@
 import 'package:diary_mobile_client/src/core/analytics/analytics_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../application/write_moment_bloc.dart';
 import '../../application/write_moment_event.dart';
@@ -15,6 +16,7 @@ class ExtractEmotionButon extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<WriteMomentBloc, WriteMomentState>(
       builder: (context, state) {
+        final isActive = state.moment.reflection.length < 20 || state.isLoading;
         return InkWell(
           onTap: () {
             AnalyticsManager.logEvent('write_extract_emotion',
@@ -32,20 +34,21 @@ class ExtractEmotionButon extends StatelessWidget {
             FocusManager.instance.primaryFocus?.unfocus();
           },
           child: Container(
-            margin: const EdgeInsets.only(bottom: 20, left: 16, right: 16),
-            height: 60,
+            margin: const EdgeInsets.only(bottom: 30, right: 30),
+            width: 44,
+            height: 44,
             decoration: BoxDecoration(
-              color: state.moment.reflection.length < 20 || state.isLoading
-                  ? const Color(0xFFB0B0B0)
-                  : const Color(0xFFADCBFF),
-              borderRadius: BorderRadius.circular(8.0),
+              color:
+                  isActive ? const Color(0xFFD7D8D8) : const Color(0xFFFF965C),
+              borderRadius: BorderRadius.circular(22.0),
             ),
             child: Center(
-                child: Text('감정 확인하기',
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        fontSize: 20,
-                        letterSpacing: -0.4,
-                        color: const Color(0xFF4D4E58)))),
+                child: SvgPicture.asset(
+              "assets/images/feature/moment/write_moment/next.svg",
+              colorFilter: isActive
+                  ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)
+                  : null,
+            )),
           ),
         );
       },
