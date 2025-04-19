@@ -81,17 +81,11 @@ class MomentCalendarPageState extends State<MomentCalendarPage> {
               ],
             ),
           ),
-          floatingActionButton: WriteMomentButton(
-            onTap: () async {
-              AnalyticsManager.logEvent('calendar_write_button_clicked');
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => WriteMomentPage(
-                      arguments: WriteMomentPageArguments(
-                          moment: null,
-                          isBlendMode: true,
-                          date: DateTime.now()))));
-            },
-          ),
+          // floatingActionButton: WriteMomentButton(
+          //   onTap: () async {
+
+          //   },
+          // ),
         );
       }),
     );
@@ -134,7 +128,7 @@ class Calendar extends StatelessWidget {
                     onCalendarCreated: (pageController) {
                       onCalendarCreated(pageController);
                     },
-                    rowHeight: 65,
+                    rowHeight: 68,
                     onPageChanged: (DateTime page) {
                       context.read<MomentCalendarBloc>().add(ChangePage(page));
                       final now = DateTime.now();
@@ -161,6 +155,14 @@ class Calendar extends StatelessWidget {
                             'day': selectedDay.toString(),
                             'focusedDay': focusedDay.toString(),
                           });
+                      AnalyticsManager.logEvent(
+                          'calendar_write_button_clicked');
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => WriteMomentPage(
+                              arguments: WriteMomentPageArguments(
+                                  moment: null,
+                                  isBlendMode: true,
+                                  date: selectedDay))));
                     },
                     calendarFormat: calendarState.calendarFormat,
                     onFormatChanged: (format) {
@@ -174,7 +176,7 @@ class Calendar extends StatelessWidget {
                     // firstDay: listState.firstDay ??
                     firstDay: DateTime(1970),
                     lastDay: DateTime(DateTime.now().year + 100),
-                    focusedDay: calendarState.selectedDay ?? DateTime.now(),
+                    focusedDay: DateTime.now(),
                     // onDaySelected: (selectedDay, focusedDay) {
                     //   Navigator.of(context).push(MaterialPageRoute(
                     //   builder: (context) => WriteMomentPage(
@@ -185,29 +187,29 @@ class Calendar extends StatelessWidget {
                       markerBuilder: (context, day, moments) {
                         if (moments.isEmpty) {
                           return const SizedBox.shrink();
+                        } else {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 23.0),
+                            child: SvgPicture.asset(
+                              "assets/images/feature/moment/moment_calendar/check_marker.svg",
+                              width: 14,
+                              height: 12,
+                            ),
+                          );
                         }
-
-                        final firstMoment = (moments as List<Moment>).first;
-
-                        final firstEmotionColor =
-                            firstMoment.emotionalIntensities.isNotEmpty
-                                ? firstMoment
-                                    .emotionalIntensities.first.emotion.color
-                                : Colors.grey;
-                        return Container(
-                          height: 10,
-                          width: 10,
-                          decoration: BoxDecoration(
-                            color: firstEmotionColor,
-                            shape: BoxShape.circle,
-                          ),
-                        );
                       },
                       selectedBuilder: (context, day, focusedDay) {
                         return DayArea(
                           day: day.day.toString(),
                           dayColor: const Color(0xFFEC7D61),
                           areaColor: const Color(0xFFF3E9E5),
+                        );
+                      },
+                      todayBuilder: (context, day, focusedDay) {
+                        return DayArea(
+                          day: day.day.toString(),
+                          dayColor: const Color(0xFF000000),
+                          areaColor: const Color(0xFFF6F6F6),
                         );
                       },
                       defaultBuilder: (context, day, focusedDay) {
@@ -256,11 +258,11 @@ class DayArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: areaColor,
+      decoration: BoxDecoration(color: areaColor),
       child: Align(
         alignment: Alignment.topCenter,
         child: Padding(
-          padding: const EdgeInsets.only(top: 8.0, left: 10),
+          padding: const EdgeInsets.only(top: 10.0),
           child: Text(
             day,
             style: TextStyle(
