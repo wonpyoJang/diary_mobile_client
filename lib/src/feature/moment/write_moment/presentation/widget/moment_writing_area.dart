@@ -9,10 +9,12 @@ class MomentWritingArea extends StatelessWidget {
     super.key,
     required TextEditingController controller,
     required this.mode,
+    required this.focusNode,
   }) : _controller = controller;
 
   final TextEditingController _controller;
   final WriteMode mode;
+  final FocusNode focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +26,15 @@ class MomentWritingArea extends StatelessWidget {
         color: Colors.white,
       ),
       child: TextField(
+        focusNode: focusNode,
         scrollPadding: const EdgeInsets.all(0),
         maxLines: null,
         minLines: null,
         expands: true,
         controller: _controller,
         maxLength: 600,
-        autofocus: mode == WriteMode.create,
+        enabled: mode != WriteMode.view,
+        autofocus: mode != WriteMode.view,
         decoration: InputDecoration(
             hintText: ([
               '오늘 하루는 어떠셨나요?'

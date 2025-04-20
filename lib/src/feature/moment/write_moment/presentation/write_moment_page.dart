@@ -6,6 +6,7 @@ import 'package:diary_mobile_client/src/feature/common/yes_or_no_dialog.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_bloc.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_event.dart';
 import 'package:diary_mobile_client/src/feature/moment/domain/entity/emotional_intensity.dart';
+import 'package:diary_mobile_client/src/feature/moment/write_moment/application/write_moment_event.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/emotion_blending_dialog.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/emotion_palette.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/title.dart';
@@ -50,6 +51,7 @@ class WriteMomentPage extends StatefulWidget {
 class WriteMomentPageState extends State<WriteMomentPage> {
   final TextEditingController _controller = TextEditingController();
   final ScreenshotController _screenshotController = ScreenshotController();
+  final FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
@@ -133,6 +135,17 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                           ),
                         );
                       },
+                    ),
+                    BlocListener<WriteMomentBloc, WriteMomentState>(
+                      listenWhen: (prev, next) {
+                        return prev.mode != next.mode &&
+                            next.mode == WriteMode.edit;
+                      },
+                      listener: (context, state) {
+                        Future.delayed(const Duration(microseconds: 400), () {
+                          _focusNode.requestFocus();
+                        });
+                      },
                     )
                   ],
                   child: Screenshot(
@@ -155,11 +168,15 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                                 ),
                                 const SizedBox(height: 17),
                                 Expanded(
-                                  child: MomentWritingArea(
-                                      controller: _controller,
-                                      mode: widget.arguments.moment != null
-                                          ? WriteMode.edit
-                                          : WriteMode.create),
+                                  child: BlocBuilder<WriteMomentBloc,
+                                      WriteMomentState>(
+                                    builder: (context, state) {
+                                      return MomentWritingArea(
+                                          focusNode: _focusNode,
+                                          controller: _controller,
+                                          mode: state.mode);
+                                    },
+                                  ),
                                 ),
                                 const SizedBox(height: 104),
                                 // BlocBuilder<WriteMomentBloc, WriteMomentState>(
@@ -186,15 +203,16 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                           ),
                           BlocBuilder<WriteMomentBloc, WriteMomentState>(
                             builder: (context, state) {
-                              if (state
-                                  .moment.emotionalIntensities.isNotEmpty) {
+                              if (state.mode != WriteMode.view) {
                                 return Align(
                                   alignment: Alignment.bottomRight,
                                   child: Padding(
                                     padding: const EdgeInsets.only(
                                         bottom: 30, right: 27),
                                     child: InkWell(
-                                      onTap: () async {},
+                                      onTap: () async {
+                                        Navigator.of(context).pop();
+                                      },
                                       child: Container(
                                         height: 44,
                                         width: 44,
@@ -305,10 +323,15 @@ class HeaderArea extends StatelessWidget {
                             padding: const EdgeInsets.only(top: 9.0),
                             child: PullDownButton(
                                 itemBuilder: (context) => [
-                                      PullDownMenuItem(
-                                        title: '수정하기',
-                                        onTap: () {},
-                                      ),
+                                      if (state.mode == WriteMode.view)
+                                        PullDownMenuItem(
+                                          title: '수정하기',
+                                          onTap: () {
+                                            context
+                                                .read<WriteMomentBloc>()
+                                                .add(const ChangeToEdit());
+                                          },
+                                        ),
                                       PullDownMenuItem(
                                         title: '삭제하기',
                                         onTap: () {

@@ -10,7 +10,7 @@ import '../../domain/entity/moment.dart';
 import 'write_moment_event.dart';
 import 'write_moment_state.dart';
 
-enum WriteMode { create, edit }
+enum WriteMode { create, edit, view }
 
 @injectable
 class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
@@ -44,7 +44,7 @@ class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
     @factoryParam this.date,
     this.writeMomentRepository,
   ) : super(WriteMomentState(
-            mode: moment != null ? WriteMode.edit : WriteMode.create,
+            mode: moment != null ? WriteMode.view : WriteMode.create,
             moment: moment ??
                 Moment(
                   id: const Uuid().v1(),
@@ -90,5 +90,9 @@ class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
         )));
       }
     }, transformer: debounce(const Duration(milliseconds: 500)));
+
+    on<ChangeToEdit>((event, emit) {
+      emit(state.copyWith(mode: WriteMode.edit));
+    });
   }
 }

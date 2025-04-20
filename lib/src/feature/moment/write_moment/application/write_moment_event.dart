@@ -22,3 +22,10 @@ class Analyzed extends WriteMomentEvent {
   @override
   List<Object?> get props => [];
 }
+
+class ChangeToEdit extends WriteMomentEvent {
+  const ChangeToEdit();
+
+  @override
+  List<Object?> get props => [];
+}
