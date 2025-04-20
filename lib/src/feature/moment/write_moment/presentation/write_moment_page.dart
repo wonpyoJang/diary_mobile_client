@@ -319,20 +319,25 @@ class HeaderArea extends StatelessWidget {
                                       4 ||
                                   true) ...[
                                 const SizedBox(width: 9),
-                                const Padding(
-                                  padding: EdgeInsets.only(bottom: 8),
-                                  child: SizedBox(
-                                      child: Text(
-                                    "more +",
-                                    style: TextStyle(
-                                      fontFamily: "Pretendard",
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      color: Color(0xFF959490),
-                                      height: 2,
-                                      letterSpacing: -0.24,
-                                    ),
-                                  )),
+                                InkWell(
+                                  onTap: () async {
+                                    await verificationDialog(context);
+                                  },
+                                  child: const Padding(
+                                    padding: EdgeInsets.only(bottom: 8),
+                                    child: SizedBox(
+                                        child: Text(
+                                      "more +",
+                                      style: TextStyle(
+                                        fontFamily: "Pretendard",
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        color: Color(0xFF959490),
+                                        height: 2,
+                                        letterSpacing: -0.24,
+                                      ),
+                                    )),
+                                  ),
                                 )
                               ]
                             ],
