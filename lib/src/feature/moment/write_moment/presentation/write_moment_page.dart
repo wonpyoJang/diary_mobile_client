@@ -479,6 +479,7 @@ class EmotionList extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         ...emotionalIntensies.take(4).map((e) => EmotionItem(
+              size: EmotionItemSize.small,
               emotionalIntensity: e,
             ))
       ],

@@ -33,7 +33,9 @@ class EmotionPalette extends StatelessWidget {
           itemBuilder: (context, index) {
             final emotionalIntensity = state.moment.emotionalIntensities[index];
             return Center(
-              child: EmotionItem(emotionalIntensity: emotionalIntensity),
+              child: EmotionItem(
+                  emotionalIntensity: emotionalIntensity,
+                  size: EmotionItemSize.large),
             );
           },
         );
@@ -42,11 +44,26 @@ class EmotionPalette extends StatelessWidget {
   }
 }
 
+enum EmotionItemSize {
+  large(imageSize: 50, fontSize: 16, fontHeight: 20, letterSpacing: -0.32),
+  small(imageSize: 30, fontSize: 9, fontHeight: 11, letterSpacing: -0.117);
+
+  const EmotionItemSize(
+      {required this.imageSize,
+      required this.fontSize,
+      required this.fontHeight,
+      required this.letterSpacing});
+
+  final double imageSize;
+  final double fontSize;
+  final double fontHeight;
+  final double letterSpacing;
+}
+
 class EmotionItem extends StatelessWidget {
-  const EmotionItem({
-    super.key,
-    required this.emotionalIntensity,
-  });
+  final EmotionItemSize size;
+  const EmotionItem(
+      {super.key, required this.emotionalIntensity, required this.size});
 
   final EmotionalIntensity emotionalIntensity;
 
@@ -79,15 +96,15 @@ class EmotionItem extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            height: 20,
+            height: size.fontHeight,
             child: Text(
               emotionalIntensity.emotion.koName,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: "SpoqaHanSansNeo",
-                fontSize: 16,
-                color: Color(0xFF808080),
+                fontSize: size.fontSize,
+                color: const Color(0xFF808080),
                 fontWeight: FontWeight.w400,
-                letterSpacing: -0.32,
+                letterSpacing: size.letterSpacing,
               ),
               textAlign: TextAlign.center,
             ),
@@ -95,8 +112,8 @@ class EmotionItem extends StatelessWidget {
           const SizedBox(height: 2),
           Image.asset(
             'assets/images/feature/moment/write_moment/pattern1.png',
-            width: 50,
-            height: 50,
+            width: size.imageSize,
+            height: size.imageSize,
             color: emotionalIntensity.emotion.color, // 감정색으로 변경
             colorBlendMode: BlendMode.srcIn,
           )
