@@ -157,12 +157,26 @@ class Calendar extends StatelessWidget {
                           });
                       AnalyticsManager.logEvent(
                           'calendar_write_button_clicked');
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => WriteMomentPage(
-                              arguments: WriteMomentPageArguments(
-                                  moment: null,
-                                  isBlendMode: true,
-                                  date: selectedDay))));
+
+                      final selectedDayMoments =
+                          listState.moments[calendarState.selectedDay];
+
+                      if (selectedDayMoments != null &&
+                          selectedDayMoments.isNotEmpty) {
+                        Navigator.of(context).pushNamed(
+                            WriteMomentPage.routeName,
+                            arguments: WriteMomentPageArguments(
+                                moment: selectedDayMoments.first,
+                                isBlendMode: true,
+                                date: selectedDayMoments.first.date));
+                      } else {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => WriteMomentPage(
+                                arguments: WriteMomentPageArguments(
+                                    moment: null,
+                                    isBlendMode: true,
+                                    date: selectedDay))));
+                      }
                     },
                     calendarFormat: calendarState.calendarFormat,
                     onFormatChanged: (format) {
