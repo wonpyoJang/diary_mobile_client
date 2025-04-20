@@ -54,6 +54,7 @@ dependencies:
   firebase_app_installations: ^0.3.2+5
   flutter_svg: ^2.0.17
   loading_indicator: ^3.1.1
+  pull_down_button: ^0.10.2
 
 
 

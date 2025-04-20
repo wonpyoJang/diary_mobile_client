@@ -2,13 +2,17 @@ import 'dart:ui';
 
 import 'package:diary_mobile_client/src/core/analytics/analytics_manager.dart';
 import 'package:diary_mobile_client/src/feature/common/loading_indicator.dart';
+import 'package:diary_mobile_client/src/feature/moment/domain/entity/emotional_intensity.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/emotion_blending_dialog.dart';
+import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/emotion_palette.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/title.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/verification_dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pull_down_button/pull_down_button.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -18,7 +22,6 @@ import '../../../../injection.dart';
 import '../../domain/entity/moment.dart';
 import '../application/write_moment_bloc.dart';
 import '../application/write_moment_state.dart';
-import 'widget/emotion_palette.dart';
 import 'widget/extract_emotion_button.dart';
 import 'widget/moment_writing_area.dart';
 
@@ -141,31 +144,8 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const SizedBox(height: 8),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 6.0, right: 28),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    DateBox(date: widget.arguments.date),
-                                    const SizedBox(width: 4.0),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          const MomentWritingPageTitle(),
-                                          const SizedBox(height: 10),
-                                          Container(
-                                              height: 1,
-                                              width: double.infinity,
-                                              color: const Color(0xFF7F7F7F))
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              HeaderArea(
+                                date: widget.arguments.date,
                               ),
                               const SizedBox(height: 17),
                               Expanded(
@@ -202,77 +182,75 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                           builder: (context, state) {
                             if (state.moment.emotionalIntensities.isNotEmpty) {
                               return Align(
-                                alignment: Alignment.bottomCenter,
-                                child: InkWell(
-                                  onTap: () async {
-                                    AnalyticsManager.logEvent(
-                                        'editor_share_emotion');
-                                    if (kIsWeb) {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text('알림'),
-                                            content: const Text(
-                                                '웹에서는 지원하지 않는 기능입니다.\n앱 다운로드 링크: https://testflight.apple.com/join/9Z7cKQSj'),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                child: const Text('확인'),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                              TextButton(
-                                                child: const Text('다운로드'),
-                                                onPressed: () {
-                                                  launchUrl(
-                                                    Uri.parse(
-                                                        'https://testflight.apple.com/join/9Z7cKQSj'),
-                                                    mode: LaunchMode
-                                                        .externalApplication,
-                                                  );
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    } else {
-                                      final image =
-                                          await _screenshotController.capture();
-                                      if (image != null) {
-                                        final directory =
-                                            await getApplicationDocumentsDirectory();
-                                        final timestamp = DateTime.now()
-                                            .millisecondsSinceEpoch;
-                                        final imagePath = File(
-                                            '${directory.path}/emotion_palette_$timestamp.png');
-                                        await imagePath.writeAsBytes(image);
-                                        await Share.shareXFiles(
-                                            [XFile(imagePath.path)],
-                                            text:
-                                                '오늘의 기분을 공유합니다.\n\n[${DateTime.now().month}월 ${DateTime.now().day}일의 일기]\n${state.moment.reflection}');
+                                alignment: Alignment.bottomRight,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      bottom: 30, right: 27),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      AnalyticsManager.logEvent(
+                                          'editor_share_emotion');
+                                      if (kIsWeb) {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: const Text('알림'),
+                                              content: const Text(
+                                                  '웹에서는 지원하지 않는 기능입니다.\n앱 다운로드 링크: https://testflight.apple.com/join/9Z7cKQSj'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  child: const Text('확인'),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                                TextButton(
+                                                  child: const Text('다운로드'),
+                                                  onPressed: () {
+                                                    launchUrl(
+                                                      Uri.parse(
+                                                          'https://testflight.apple.com/join/9Z7cKQSj'),
+                                                      mode: LaunchMode
+                                                          .externalApplication,
+                                                    );
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      } else {
+                                        final image =
+                                            await _screenshotController
+                                                .capture();
+                                        if (image != null) {
+                                          final directory =
+                                              await getApplicationDocumentsDirectory();
+                                          final timestamp = DateTime.now()
+                                              .millisecondsSinceEpoch;
+                                          final imagePath = File(
+                                              '${directory.path}/emotion_palette_$timestamp.png');
+                                          await imagePath.writeAsBytes(image);
+                                          await Share.shareXFiles(
+                                              [XFile(imagePath.path)],
+                                              text:
+                                                  '오늘의 기분을 공유합니다.\n\n[${DateTime.now().month}월 ${DateTime.now().day}일의 일기]\n${state.moment.reflection}');
+                                        }
                                       }
-                                    }
-                                  },
-                                  child: Container(
-                                    height: 60,
-                                    margin: const EdgeInsets.only(
-                                        bottom: 20, left: 16, right: 16),
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFFADCBFF),
-                                      borderRadius: BorderRadius.circular(8.0),
+                                    },
+                                    child: Container(
+                                      height: 44,
+                                      width: 44,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFFF956C),
+                                        borderRadius:
+                                            BorderRadius.circular(22.0),
+                                      ),
+                                      child: Center(
+                                          child: SvgPicture.asset(
+                                              "assets/images/feature/moment/write_moment/next.svg")),
                                     ),
-                                    child: Center(
-                                        child: Text('오늘의 기분 공유하기',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .labelLarge
-                                                ?.copyWith(
-                                                    fontSize: 20,
-                                                    letterSpacing: -0.4,
-                                                    color: const Color(
-                                                        0xFF4D4E58)))),
                                   ),
                                 ),
                               );
@@ -302,6 +280,156 @@ class WriteMomentPageState extends State<WriteMomentPage> {
           ),
         );
       }),
+    );
+  }
+}
+
+class HeaderArea extends StatelessWidget {
+  final DateTime date;
+  const HeaderArea({super.key, required this.date});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 6.0, right: 28),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          DateBox(date: date),
+          const SizedBox(width: 4.0),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                BlocBuilder<WriteMomentBloc, WriteMomentState>(
+                  builder: (context, state) {
+                    if (state.moment.emotionalIntensities.isNotEmpty) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              EmotionList(
+                                  emotionalIntensies:
+                                      state.moment.emotionalIntensities),
+                              if (state.moment.emotionalIntensities.length >
+                                      4 ||
+                                  true) ...[
+                                const SizedBox(width: 9),
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 8),
+                                  child: SizedBox(
+                                      child: Text(
+                                    "more +",
+                                    style: TextStyle(
+                                      fontFamily: "Pretendard",
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xFF959490),
+                                      height: 2,
+                                      letterSpacing: -0.24,
+                                    ),
+                                  )),
+                                )
+                              ]
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 9.0),
+                            child: PullDownButton(
+                                itemBuilder: (context) => [
+                                      PullDownMenuItem(
+                                        title: '수정하기',
+                                        onTap: () {},
+                                      ),
+                                      PullDownMenuItem(
+                                        title: '삭제하기',
+                                        onTap: () {},
+                                      ),
+                                      PullDownMenuItem(
+                                        title: '공유하기',
+                                        onTap: () {},
+                                      ),
+                                    ],
+                                buttonBuilder: (context, showMenu) {
+                                  return MenuButton(
+                                    onTap: showMenu,
+                                  );
+                                }),
+                          )
+                        ],
+                      );
+                    } else {
+                      return const MomentWritingPageTitle();
+                    }
+                  },
+                ),
+                const SizedBox(height: 10),
+                Container(
+                    height: 1,
+                    width: double.infinity,
+                    color: const Color(0xFF7F7F7F))
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class MenuButton extends StatelessWidget {
+  final Function onTap;
+  const MenuButton({super.key, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => onTap(),
+      child: Container(
+          width: 24,
+          height: 24,
+          decoration: BoxDecoration(
+            color: const Color(0xFFF3E9E5),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Center(
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 2,
+            children: [
+              ...[1, 2, 3].map((e) => Container(
+                    width: 4,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFF956C),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ))
+            ],
+          ))),
+    );
+  }
+}
+
+class EmotionList extends StatelessWidget {
+  final List<EmotionalIntensity> emotionalIntensies;
+  const EmotionList({super.key, required this.emotionalIntensies});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      spacing: 13,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        ...emotionalIntensies.take(4).map((e) => EmotionItem(
+              emotionalIntensity: e,
+            ))
+      ],
     );
   }
 }

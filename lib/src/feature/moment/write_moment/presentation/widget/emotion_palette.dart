@@ -33,61 +33,75 @@ class EmotionPalette extends StatelessWidget {
           itemBuilder: (context, index) {
             final emotionalIntensity = state.moment.emotionalIntensities[index];
             return Center(
-              child: GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        backgroundColor: Theme.of(context).colorScheme.surface,
-                        title: Text(emotionalIntensity.emotion.koName,
-                            style: Theme.of(context).textTheme.bodyMedium),
-                        content: Text(emotionalIntensity.emotion.explanation,
-                            style: Theme.of(context).textTheme.bodyMedium),
-                        actions: <Widget>[
-                          TextButton(
-                            child: Text('닫기',
-                                style: Theme.of(context).textTheme.bodyMedium),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 20,
-                      child: Text(
-                        emotionalIntensity.emotion.koName,
-                        style: const TextStyle(
-                          fontFamily: "SpoqaHanSansNeo",
-                          fontSize: 16,
-                          color: Color(0xFF808080),
-                          fontWeight: FontWeight.w400,
-                          letterSpacing: -0.32,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Image.asset(
-                      'assets/images/feature/moment/write_moment/pattern1.png',
-                      width: 50,
-                      height: 50,
-                      color: emotionalIntensity.emotion.color, // 감정색으로 변경
-                      colorBlendMode: BlendMode.srcIn,
-                    )
-                  ],
-                ),
-              ),
+              child: EmotionItem(emotionalIntensity: emotionalIntensity),
             );
           },
         );
       },
+    );
+  }
+}
+
+class EmotionItem extends StatelessWidget {
+  const EmotionItem({
+    super.key,
+    required this.emotionalIntensity,
+  });
+
+  final EmotionalIntensity emotionalIntensity;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              title: Text(emotionalIntensity.emotion.koName,
+                  style: Theme.of(context).textTheme.bodyMedium),
+              content: Text(emotionalIntensity.emotion.explanation,
+                  style: Theme.of(context).textTheme.bodyMedium),
+              actions: <Widget>[
+                TextButton(
+                  child:
+                      Text('닫기', style: Theme.of(context).textTheme.bodyMedium),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+      child: Column(
+        children: [
+          SizedBox(
+            height: 20,
+            child: Text(
+              emotionalIntensity.emotion.koName,
+              style: const TextStyle(
+                fontFamily: "SpoqaHanSansNeo",
+                fontSize: 16,
+                color: Color(0xFF808080),
+                fontWeight: FontWeight.w400,
+                letterSpacing: -0.32,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Image.asset(
+            'assets/images/feature/moment/write_moment/pattern1.png',
+            width: 50,
+            height: 50,
+            color: emotionalIntensity.emotion.color, // 감정색으로 변경
+            colorBlendMode: BlendMode.srcIn,
+          )
+        ],
+      ),
     );
   }
 }
