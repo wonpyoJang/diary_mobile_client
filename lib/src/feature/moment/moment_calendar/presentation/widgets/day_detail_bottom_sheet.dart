@@ -38,8 +38,10 @@ class _DayDetailBottomSheetState extends State<DayDetailBottomSheet> {
           builder: (context, listState) {
             return BlocBuilder<MomentCalendarBloc, MomentCalendarState>(
               builder: (context, calendarState) {
-                final item =
-                    listState.moments[calendarState.selectedDay]?.first;
+                final item = listState.moments
+                        .containsKey(calendarState.selectedDay)
+                    ? listState.moments[calendarState.selectedDay]?.firstOrNull
+                    : null;
 
                 return Container(
                     decoration: const BoxDecoration(
