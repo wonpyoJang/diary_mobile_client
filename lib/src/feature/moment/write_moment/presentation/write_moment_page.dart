@@ -203,7 +203,7 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                           ),
                           BlocBuilder<WriteMomentBloc, WriteMomentState>(
                             builder: (context, state) {
-                              if (state.mode != WriteMode.view) {
+                              if (state.mode == WriteMode.view) {
                                 return Align(
                                   alignment: Alignment.bottomRight,
                                   child: Padding(
@@ -279,14 +279,14 @@ class HeaderArea extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                BlocBuilder<WriteMomentBloc, WriteMomentState>(
-                  builder: (context, state) {
-                    if (state.moment.emotionalIntensities.isNotEmpty) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    BlocBuilder<WriteMomentBloc, WriteMomentState>(
+                      builder: (context, state) {
+                        if (state.moment.emotionalIntensities.isNotEmpty) {
+                          return Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               EmotionList(
@@ -318,102 +318,14 @@ class HeaderArea extends StatelessWidget {
                                 )
                               ]
                             ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 9.0),
-                            child: PullDownButton(
-                                itemBuilder: (context) => [
-                                      if (state.mode == WriteMode.view)
-                                        PullDownMenuItem(
-                                          title: '수정하기',
-                                          onTap: () {
-                                            context
-                                                .read<WriteMomentBloc>()
-                                                .add(const ChangeToEdit());
-                                          },
-                                        ),
-                                      PullDownMenuItem(
-                                        title: '삭제하기',
-                                        onTap: () {
-                                          showYesOrNoDialog(context,
-                                              title: "삭제하시겠습니까?",
-                                              onConfirm: (value) {
-                                            context.read<MomentListBloc>().add(
-                                                DeleteMoment(state.moment));
-                                            Navigator.of(context).pop();
-                                          });
-                                        },
-                                      ),
-                                      PullDownMenuItem(
-                                        title: '공유하기',
-                                        onTap: () async {
-                                          AnalyticsManager.logEvent(
-                                              'editor_share_emotion');
-                                          if (kIsWeb) {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: const Text('알림'),
-                                                  content: const Text(
-                                                      '웹에서는 지원하지 않는 기능입니다.\n앱 다운로드 링크: https://testflight.apple.com/join/9Z7cKQSj'),
-                                                  actions: <Widget>[
-                                                    TextButton(
-                                                      child: const Text('확인'),
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                    TextButton(
-                                                      child: const Text('다운로드'),
-                                                      onPressed: () {
-                                                        launchUrl(
-                                                          Uri.parse(
-                                                              'https://testflight.apple.com/join/9Z7cKQSj'),
-                                                          mode: LaunchMode
-                                                              .externalApplication,
-                                                        );
-                                                      },
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          } else {
-                                            final image =
-                                                await screenshotController
-                                                    .capture();
-                                            if (image != null) {
-                                              final directory =
-                                                  await getApplicationDocumentsDirectory();
-                                              final timestamp = DateTime.now()
-                                                  .millisecondsSinceEpoch;
-                                              final imagePath = File(
-                                                  '${directory.path}/emotion_palette_$timestamp.png');
-                                              await imagePath
-                                                  .writeAsBytes(image);
-                                              await Share.shareXFiles(
-                                                  [XFile(imagePath.path)],
-                                                  text:
-                                                      '오늘의 기분을 공유합니다.\n\n[${DateTime.now().month}월 ${DateTime.now().day}일의 일기]\n${state.moment.reflection}');
-                                            }
-                                          }
-                                        },
-                                      ),
-                                    ],
-                                buttonBuilder: (context, showMenu) {
-                                  return MenuButton(
-                                    onTap: showMenu,
-                                  );
-                                }),
-                          )
-                        ],
-                      );
-                    } else {
-                      return const MomentWritingPageTitle();
-                    }
-                  },
+                          );
+                        } else {
+                          return const MomentWritingPageTitle();
+                        }
+                      },
+                    ),
+                    Menus(screenshotController: screenshotController)
+                  ],
                 ),
                 const SizedBox(height: 10),
                 Container(
@@ -425,6 +337,105 @@ class HeaderArea extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class Menus extends StatelessWidget {
+  const Menus({
+    super.key,
+    required this.screenshotController,
+  });
+
+  final ScreenshotController screenshotController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<WriteMomentBloc, WriteMomentState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.only(top: 9.0),
+          child: PullDownButton(
+              itemBuilder: (context) => [
+                    if (state.mode == WriteMode.view)
+                      PullDownMenuItem(
+                        title: '수정하기',
+                        onTap: () {
+                          context
+                              .read<WriteMomentBloc>()
+                              .add(const ChangeToEdit());
+                        },
+                      ),
+                    PullDownMenuItem(
+                      title: '삭제하기',
+                      onTap: () {
+                        showYesOrNoDialog(context, title: "삭제하시겠습니까?",
+                            onConfirm: (value) {
+                          context
+                              .read<MomentListBloc>()
+                              .add(DeleteMoment(state.moment));
+                          Navigator.of(context).pop();
+                        });
+                      },
+                    ),
+                    PullDownMenuItem(
+                      title: '공유하기',
+                      onTap: () async {
+                        AnalyticsManager.logEvent('editor_share_emotion');
+                        if (kIsWeb) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('알림'),
+                                content: const Text(
+                                    '웹에서는 지원하지 않는 기능입니다.\n앱 다운로드 링크: https://testflight.apple.com/join/9Z7cKQSj'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: const Text('확인'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: const Text('다운로드'),
+                                    onPressed: () {
+                                      launchUrl(
+                                        Uri.parse(
+                                            'https://testflight.apple.com/join/9Z7cKQSj'),
+                                        mode: LaunchMode.externalApplication,
+                                      );
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else {
+                          final image = await screenshotController.capture();
+                          if (image != null) {
+                            final directory =
+                                await getApplicationDocumentsDirectory();
+                            final timestamp =
+                                DateTime.now().millisecondsSinceEpoch;
+                            final imagePath = File(
+                                '${directory.path}/emotion_palette_$timestamp.png');
+                            await imagePath.writeAsBytes(image);
+                            await Share.shareXFiles([XFile(imagePath.path)],
+                                text:
+                                    '오늘의 기분을 공유합니다.\n\n[${DateTime.now().month}월 ${DateTime.now().day}일의 일기]\n${state.moment.reflection}');
+                          }
+                        }
+                      },
+                    ),
+                  ],
+              buttonBuilder: (context, showMenu) {
+                return MenuButton(
+                  onTap: showMenu,
+                );
+              }),
+        );
+      },
     );
   }
 }
