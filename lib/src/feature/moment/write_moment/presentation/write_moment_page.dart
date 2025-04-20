@@ -422,13 +422,17 @@ class MenuButton extends StatelessWidget {
 
 class EmotionList extends StatelessWidget {
   final List<EmotionalIntensity> emotionalIntensies;
-  const EmotionList({super.key, required this.emotionalIntensies});
+  final MainAxisAlignment mainAxisAlignment;
+  const EmotionList(
+      {super.key,
+      required this.emotionalIntensies,
+      this.mainAxisAlignment = MainAxisAlignment.start});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       spacing: 13,
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: mainAxisAlignment,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         ...emotionalIntensies.take(4).map((e) => EmotionItem(

@@ -158,8 +158,7 @@ class Calendar extends StatelessWidget {
                       AnalyticsManager.logEvent(
                           'calendar_write_button_clicked');
 
-                      final selectedDayMoments =
-                          listState.moments[calendarState.selectedDay];
+                      final selectedDayMoments = listState.moments[selectedDay];
 
                       if (selectedDayMoments != null &&
                           selectedDayMoments.isNotEmpty) {
