@@ -313,7 +313,7 @@ class HeaderArea extends StatelessWidget {
                                         title: '삭제하기',
                                         onTap: () {
                                           showYesOrNoDialog(context,
-                                              title: "삭제하시겠습니다까?",
+                                              title: "삭제하시겠습니까?",
                                               onConfirm: (value) {
                                             context.read<MomentListBloc>().add(
                                                 DeleteMoment(state.moment));
