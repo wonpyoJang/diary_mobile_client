@@ -44,7 +44,7 @@ class SplashPageState extends State<SplashPage> {
             return Opacity(
               opacity: opacity,
               child: const Text(
-                'Welcome to the 크레파스 감정일기!',
+                '크레파스 감정일기',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,

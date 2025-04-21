@@ -75,7 +75,7 @@ class WriteMomentPageState extends State<WriteMomentPage> {
               //   height: MediaQuery.of(context).size.height,
               //   fit: BoxFit.cover,
               // ),
-              Positioned.fill(child: Container(color: const Color(0xFFD3D3D3))),
+              Positioned.fill(child: Container(color: const Color(0xFFF6F6F6))),
               Positioned.fill(
                 child: Opacity(
                   opacity: 0.08,

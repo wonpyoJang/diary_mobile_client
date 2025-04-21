@@ -1,3 +1,4 @@
+import 'package:diary_mobile_client/src/feature/common/simple_dialog.dart';
 import 'package:diary_mobile_client/src/feature/moment/domain/entity/emotional_intensity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -71,27 +72,11 @@ class EmotionItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Theme.of(context).colorScheme.surface,
-              title: Text(emotionalIntensity.emotion.koName,
-                  style: Theme.of(context).textTheme.bodyMedium),
-              content: Text(emotionalIntensity.emotion.explanation,
-                  style: Theme.of(context).textTheme.bodyMedium),
-              actions: <Widget>[
-                TextButton(
-                  child:
-                      Text('닫기', style: Theme.of(context).textTheme.bodyMedium),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
+        showSimpleDialog(context,
+            title: emotionalIntensity.emotion.koName,
+            message: emotionalIntensity.emotion.explanation,
+            confirmText: "닫기",
+            onConfirm: (value) {});
       },
       child: Column(
         children: [
