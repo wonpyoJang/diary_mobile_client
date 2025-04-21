@@ -141,7 +141,14 @@ class ContentPanel extends StatelessWidget {
                       },
                     );
                   } else {
-                    final status = await Permission.storage.request();
+                    late PermissionStatus status;
+
+                    if (Platform.isAndroid) {
+                      status = await Permission.photos.request();
+                    } else {
+                      status = await Permission.storage.request();
+                    }
+
                     if (status.isGranted) {
                       try {
                         final directory =
@@ -179,8 +186,12 @@ class ContentPanel extends StatelessWidget {
                         AnalyticsManager.logEvent(
                             'emotion_blending_save_image_permission_denied');
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('갤러리 쓰기 권한이 필요합니다.'),
+                          SnackBar(
+                            content: InkWell(
+                                onTap: () {
+                                  openAppSettings();
+                                },
+                                child: const Text('갤러리 쓰기 권한이 필요합니다.')),
                           ),
                         );
                       }
