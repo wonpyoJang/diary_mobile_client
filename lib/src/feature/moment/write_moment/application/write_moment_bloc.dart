@@ -60,7 +60,8 @@ class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
 
       emit(response.fold(
         (failure) => state.copyWith(isLoading: false, failure: failure),
-        (moment) => state.copyWith(isLoading: false, moment: moment),
+        (moment) => state.copyWith(
+            isLoading: false, moment: moment, mode: WriteMode.view),
       ));
     }, transformer: throttle(const Duration(milliseconds: 500)));
 
