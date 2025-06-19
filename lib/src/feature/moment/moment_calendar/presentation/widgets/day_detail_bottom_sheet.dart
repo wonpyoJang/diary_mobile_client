@@ -1,9 +1,7 @@
-import 'package:diary_mobile_client/src/core/analytics/analytics_manager.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_bloc.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_state.dart';
 import 'package:diary_mobile_client/src/feature/moment/moment_calendar/application/moment_calendar_bloc.dart';
 import 'package:diary_mobile_client/src/feature/moment/moment_calendar/application/moment_calendar_state.dart';
-import 'package:diary_mobile_client/src/feature/moment/moment_list/presentation/widgets/moment_card.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/write_moment_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,6 +16,7 @@ showDayDetailBottomSheet(BuildContext context) {
 }
 
 class DayDetailBottomSheet extends StatefulWidget {
+  
   const DayDetailBottomSheet({super.key});
 
   @override

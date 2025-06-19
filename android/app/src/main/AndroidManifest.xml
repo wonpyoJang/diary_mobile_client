@@ -12,7 +12,7 @@
         android:requestLegacyExternalStorage="true"
         android:label="크레파스 감정일기"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"
