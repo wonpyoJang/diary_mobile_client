@@ -58,3 +58,8 @@ Custom fonts and images are located under `assets/`. Application icons and splas
 
 Feel free to fork the project and submit pull requests. Issues and feature requests are also welcome!
 
+## Contributors
+
+- 공서진 - 기획자 & 디자이너
+- 장원표 - 개발자
+
