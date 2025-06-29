@@ -16,7 +16,6 @@ showDayDetailBottomSheet(BuildContext context) {
 }
 
 class DayDetailBottomSheet extends StatefulWidget {
-  
   const DayDetailBottomSheet({super.key});
 
   @override
@@ -43,35 +42,33 @@ class _DayDetailBottomSheetState extends State<DayDetailBottomSheet> {
                     ? listState.moments[calendarState.selectedDay]?.firstOrNull
                     : null;
 
-                return SingleChildScrollView(
-                  controller: scrollController,
-                  child: Container(
-                      constraints: const BoxConstraints(
-                        minHeight: 500,
+                return Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.0),
+                        topRight: Radius.circular(20.0),
                       ),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20.0),
-                          topRight: Radius.circular(20.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color.fromARGB(52, 149, 148, 144),
+                          spreadRadius: 0,
+                          blurRadius: 16,
+                          offset: Offset(0, -4), // changes position of shadow
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromARGB(52, 149, 148, 144),
-                            spreadRadius: 0,
-                            blurRadius: 16,
-                            offset: Offset(0, -4), // changes position of shadow
-                          ),
-                        ],
-                        border: Border(
-                          top: BorderSide(
-                            color: Color.fromARGB(26, 128, 128, 128),
-                            width: 1.0,
-                          ),
+                      ],
+                      border: Border(
+                        top: BorderSide(
+                          color: Color.fromARGB(26, 128, 128, 128),
+                          width: 1.0,
                         ),
                       ),
+                    ),
+                    child: SingleChildScrollView(
+                      controller: scrollController,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
                         children: [
                           const Handle(),
                           SizedBox(
@@ -98,88 +95,88 @@ class _DayDetailBottomSheetState extends State<DayDetailBottomSheet> {
                             EmotionList(
                               emotionalIntensies: item.emotionalIntensities,
                               mainAxisAlignment: MainAxisAlignment.center,
-                            )
+                            ),
                         ],
-                      )
-                      // child: ListView.builder(
-                      //   controller: scrollController,
-                      //   physics: const ClampingScrollPhysics(),
-                      //   restorationId: 'sampleItemListView',
-                      //   itemCount:
-                      //       (listState.moments[calendarState.selectedDay]?.length ??
-                      //               0) +
-                      //           2,
-                      //   itemBuilder: (context, index) {
-                      //     final lastIndex = (listState
-                      //                 .moments[calendarState.selectedDay]?.length ??
-                      //             0) +
-                      //         1;
-
-                      //     if (index == 0) {
-                      //       return Column(
-                      //         children: [
-                      //           const Handle(),
-                      //           SizedBox(
-                      //             width: double.infinity,
-                      //             child: Center(
-                      //               child: Padding(
-                      //                 padding: const EdgeInsets.only(
-                      //                     top: 2.0, bottom: 31),
-                      //                 child: Text(
-                      //                   DateFormat('MMMM d, yyyy')
-                      //                       .format(calendarState.selectedDay!),
-                      //                   style: const TextStyle(
-                      //                     fontSize: 16,
-                      //                     fontWeight: FontWeight.w600,
-                      //                     height: 20 / 16,
-                      //                     letterSpacing: -0.4,
-                      //                   ),
-                      //                 ),
-                      //               ),
-                      //             ),
-                      //           )
-                      //         ],
-                      //       );
-                      //     } else if (index == lastIndex) {
-                      //       return Padding(
-                      //         padding: const EdgeInsets.all(16.0),
-                      //         child: ElevatedButton(
-                      //           onPressed: () {
-                      //             Navigator.of(context).push(MaterialPageRoute(
-                      //               builder: (context) => WriteMomentPage(
-                      //                 arguments: WriteMomentPageArguments(
-                      //                   moment: null,
-                      //                   isBlendMode: true,
-                      //                   date: calendarState.selectedDay!,
-                      //                 ),
-                      //               ),
-                      //             ));
-                      //             AnalyticsManager.logEvent(
-                      //                 'day_detail_write_button_clicked');
-                      //           },
-                      //           child: const Text('일기 추가하기'),
-                      //         ),
-                      //       );
-                      //     }
-
-                      //     final item = listState
-                      //         .moments[calendarState.selectedDay]![index - 1];
-
-                      //     return MomentCard(
-                      //       item: item,
-                      //       onTap: () {
-                      //         Navigator.of(context).pushNamed(
-                      //             WriteMomentPage.routeName,
-                      //             arguments: WriteMomentPageArguments(
-                      //                 moment: item,
-                      //                 isBlendMode: true,
-                      //                 date: item.date));
-                      //       },
-                      //     );
-                      //   },
-                      // ),
                       ),
-                );
+                    )
+                    // child: ListView.builder(
+                    //   controller: scrollController,
+                    //   physics: const ClampingScrollPhysics(),
+                    //   restorationId: 'sampleItemListView',
+                    //   itemCount:
+                    //       (listState.moments[calendarState.selectedDay]?.length ??
+                    //               0) +
+                    //           2,
+                    //   itemBuilder: (context, index) {
+                    //     final lastIndex = (listState
+                    //                 .moments[calendarState.selectedDay]?.length ??
+                    //             0) +
+                    //         1;
+
+                    //     if (index == 0) {
+                    //       return Column(
+                    //         children: [
+                    //           const Handle(),
+                    //           SizedBox(
+                    //             width: double.infinity,
+                    //             child: Center(
+                    //               child: Padding(
+                    //                 padding: const EdgeInsets.only(
+                    //                     top: 2.0, bottom: 31),
+                    //                 child: Text(
+                    //                   DateFormat('MMMM d, yyyy')
+                    //                       .format(calendarState.selectedDay!),
+                    //                   style: const TextStyle(
+                    //                     fontSize: 16,
+                    //                     fontWeight: FontWeight.w600,
+                    //                     height: 20 / 16,
+                    //                     letterSpacing: -0.4,
+                    //                   ),
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           )
+                    //         ],
+                    //       );
+                    //     } else if (index == lastIndex) {
+                    //       return Padding(
+                    //         padding: const EdgeInsets.all(16.0),
+                    //         child: ElevatedButton(
+                    //           onPressed: () {
+                    //             Navigator.of(context).push(MaterialPageRoute(
+                    //               builder: (context) => WriteMomentPage(
+                    //                 arguments: WriteMomentPageArguments(
+                    //                   moment: null,
+                    //                   isBlendMode: true,
+                    //                   date: calendarState.selectedDay!,
+                    //                 ),
+                    //               ),
+                    //             ));
+                    //             AnalyticsManager.logEvent(
+                    //                 'day_detail_write_button_clicked');
+                    //           },
+                    //           child: const Text('일기 추가하기'),
+                    //         ),
+                    //       );
+                    //     }
+
+                    //     final item = listState
+                    //         .moments[calendarState.selectedDay]![index - 1];
+
+                    //     return MomentCard(
+                    //       item: item,
+                    //       onTap: () {
+                    //         Navigator.of(context).pushNamed(
+                    //             WriteMomentPage.routeName,
+                    //             arguments: WriteMomentPageArguments(
+                    //                 moment: item,
+                    //                 isBlendMode: true,
+                    //                 date: item.date));
+                    //       },
+                    //     );
+                    //   },
+                    // ),
+                    );
               },
             );
           },
