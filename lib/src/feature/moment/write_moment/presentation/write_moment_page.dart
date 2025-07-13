@@ -15,6 +15,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pull_down_button/pull_down_button.dart';
 import 'package:screenshot/screenshot.dart';
@@ -177,6 +178,39 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                                           mode: state.mode);
                                     },
                                   ),
+                                ),
+                                const SizedBox(height: 16),
+                                BlocBuilder<WriteMomentBloc, WriteMomentState>(
+                                  builder: (context, state) {
+                                    final medias = state.moment.medias;
+                                    if (medias.isEmpty) {
+                                      return const SizedBox.shrink();
+                                    }
+                                    return SizedBox(
+                                      height: 120,
+                                      child: ListView.separated(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: medias.length,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16),
+                                        separatorBuilder: (context, index) =>
+                                            const SizedBox(width: 12),
+                                        itemBuilder: (context, index) {
+                                          final media = medias[index];
+                                          return ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: Image.file(
+                                              File(media.path),
+                                              width: 100,
+                                              height: 100,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
                                 ),
                                 const SizedBox(height: 104),
                                 // BlocBuilder<WriteMomentBloc, WriteMomentState>(
@@ -366,6 +400,12 @@ class Menus extends StatelessWidget {
                               .add(const ChangeToEdit());
                         },
                       ),
+                    PullDownMenuItem(
+                      title: '사진 추가하기',
+                      onTap: () async {
+                        context.read<WriteMomentBloc>().add(const AddMedias());
+                      },
+                    ),
                     PullDownMenuItem(
                       title: '삭제하기',
                       onTap: () {

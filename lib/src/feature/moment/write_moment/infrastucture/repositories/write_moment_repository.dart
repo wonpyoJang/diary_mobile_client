@@ -1,4 +1,5 @@
 import 'package:diary_mobile_client/src/core/device/infrastructure/interfaces/i_device_info_local_provider.dart';
+import 'package:diary_mobile_client/src/core/media/infrastructure/interfaces/i_media_info_local_provider.dart';
 import 'package:diary_mobile_client/src/feature/moment/domain/entity/moment.dart';
 import 'package:diary_mobile_client/src/feature/moment/infrastructure/dtos/moment_dto.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/domain/failures/write_moment_failures.dart';
@@ -6,6 +7,7 @@ import 'package:diary_mobile_client/src/feature/moment/write_moment/domain/inter
 import 'package:diary_mobile_client/src/feature/moment/write_moment/infrastucture/interfaces/i_write_moment_internal_provider.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/infrastucture/interfaces/i_write_moment_external_provider.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
 
@@ -14,11 +16,23 @@ class WriteMomentRepository implements IWriteMomentRepository {
   final IWriteMomentExternalProvider writeMomentExternalProvider;
   final IWriteMomentInternalProvider writeMomentInternalProvider;
   final IDeviceInfoLocalProvider deviceInfoLocalProvider;
+  final IMeidaInfoLocalProvider mediaInfoLocalProvider;
   WriteMomentRepository({
     required this.writeMomentExternalProvider,
     required this.writeMomentInternalProvider,
     required this.deviceInfoLocalProvider,
+    required this.mediaInfoLocalProvider,
   });
+
+  @override
+  Future<Either<WriteMomentFailure, List<XFile>>> selectMedias() async {
+    final result = await mediaInfoLocalProvider.selectMedias();
+
+    return result.fold(
+      (failure) => left(SelectMediasFailed(message: failure.message)),
+      (medias) => right(medias),
+    );
+  }
 
   @override
   Future<Either<WriteMomentFailure, Moment>> analyze(Moment moment) async {

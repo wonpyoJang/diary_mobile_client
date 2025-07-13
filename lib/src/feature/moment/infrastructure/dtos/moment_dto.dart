@@ -1,5 +1,6 @@
 import 'package:diary_mobile_client/src/feature/moment/domain/entity/moment.dart';
 import 'package:diary_mobile_client/src/feature/moment/infrastructure/dtos/emotional_intensity_dto.dart';
+import 'package:image_picker/image_picker.dart';
 
 class MomentDto {
   final String id;
@@ -7,6 +8,7 @@ class MomentDto {
   final String date;
   final String modifiedAt;
   final List<EmotionalIntensityDto> emotionalIntensities;
+  final List<XFile> medias;
 
   MomentDto({
     required this.id,
@@ -14,6 +16,7 @@ class MomentDto {
     required this.date,
     required this.modifiedAt,
     required this.emotionalIntensities,
+    required this.medias,
   });
 
   Moment toDomain() {
@@ -24,6 +27,7 @@ class MomentDto {
       modifiedAt: DateTime.parse(modifiedAt),
       emotionalIntensities:
           emotionalIntensities.map((e) => e.toDomain()).toList(),
+      medias: medias,
     );
   }
 
@@ -36,6 +40,7 @@ class MomentDto {
       emotionalIntensities: domain.emotionalIntensities
           .map((e) => EmotionalIntensityDto.fromDomain(e))
           .toList(),
+      medias: domain.medias,
     );
   }
 
@@ -48,6 +53,9 @@ class MomentDto {
       emotionalIntensities: (json['emotionalIntensities'] as List<dynamic>)
           .map((e) => EmotionalIntensityDto.fromJson(e))
           .toList(),
+      medias: (json['medias'] as List<dynamic>)
+          .map((e) => XFile(e['path'] as String))
+          .toList(),
     );
   }
 
@@ -59,6 +67,7 @@ class MomentDto {
       'modifiedAt': modifiedAt,
       'emotionalIntensities':
           emotionalIntensities.map((e) => e.toJson()).toList(),
+      'medias': medias.map((e) => e.path).toList(),
     };
   }
 }

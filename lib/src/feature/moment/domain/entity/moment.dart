@@ -2,6 +2,7 @@
 import 'package:diary_mobile_client/src/feature/moment/domain/entity/emotional_intensity.dart';
 import 'package:diary_mobile_client/src/feature/moment/domain/enums/emotion.dart';
 import 'package:equatable/equatable.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class Moment extends Equatable {
@@ -10,13 +11,15 @@ class Moment extends Equatable {
       required this.reflection,
       required this.date,
       required this.modifiedAt,
-      required this.emotionalIntensities});
+      required this.emotionalIntensities,
+      required this.medias});
 
   final String id;
   final String reflection;
   final DateTime date;
   final DateTime modifiedAt;
   final List<EmotionalIntensity> emotionalIntensities;
+  final List<XFile> medias;
 
   String getFormattedDateTime() {
     final DateFormat formatter =
@@ -56,6 +59,9 @@ class Moment extends Equatable {
                 intensity: e['intensity'] as double,
               ))
           .toList(),
+      medias: (json['medias'] as List<dynamic>)
+          .map((e) => XFile(e['path'] as String))
+          .toList(),
     );
   }
 
@@ -69,6 +75,7 @@ class Moment extends Equatable {
     DateTime? date,
     DateTime? modifiedAt,
     List<EmotionalIntensity>? emotionalIntensities,
+    List<XFile>? medias,
   }) {
     return Moment(
       id: id ?? this.id,
@@ -76,6 +83,7 @@ class Moment extends Equatable {
       date: date ?? this.date,
       modifiedAt: modifiedAt ?? this.modifiedAt,
       emotionalIntensities: emotionalIntensities ?? this.emotionalIntensities,
+      medias: medias ?? this.medias,
     );
   }
 }

@@ -29,3 +29,10 @@ class ChangeToEdit extends WriteMomentEvent {
   @override
   List<Object?> get props => [];
 }
+
+class AddMedias extends WriteMomentEvent {
+  const AddMedias();
+
+  @override
+  List<Object?> get props => [];
+}

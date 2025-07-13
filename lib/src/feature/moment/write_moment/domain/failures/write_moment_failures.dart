@@ -15,3 +15,12 @@ class MomentAnalyzeFailed extends WriteMomentFailure {
   @override
   List<Object?> get props => [message];
 }
+
+class SelectMediasFailed extends WriteMomentFailure {
+  final String message;
+
+  const SelectMediasFailed({required this.message}) : super(message: message);
+
+  @override
+  List<Object?> get props => [message];
+}

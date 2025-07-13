@@ -1,5 +1,6 @@
 import 'package:diary_mobile_client/src/feature/moment/write_moment/domain/failures/write_moment_failures.dart';
 import 'package:equatable/equatable.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../domain/entity/moment.dart';
 import 'write_moment_bloc.dart';
@@ -11,6 +12,7 @@ class WriteMomentState extends Equatable {
   final bool isSaved;
   final String errorMessage;
   final WriteMomentFailure? failure;
+  final List<XFile> medias;
 
   const WriteMomentState({
     required this.mode,
@@ -19,6 +21,7 @@ class WriteMomentState extends Equatable {
     this.isSaved = false,
     this.errorMessage = '',
     this.failure,
+    this.medias = const [],
   });
 
   WriteMomentState copyWith({
@@ -28,6 +31,7 @@ class WriteMomentState extends Equatable {
     String? errorMessage,
     WriteMomentFailure? failure,
     WriteMode? mode, // mode 추가
+    List<XFile>? medias,
   }) {
     return WriteMomentState(
       moment: moment ?? this.moment,
@@ -36,10 +40,11 @@ class WriteMomentState extends Equatable {
       errorMessage: errorMessage ?? this.errorMessage,
       failure: failure ?? this.failure,
       mode: mode ?? this.mode, // mode 추가
+      medias: medias ?? this.medias,
     );
   }
 
   @override
   List<Object?> get props =>
-      [mode, moment, isLoading, isSaved, errorMessage, failure];
+      [mode, moment, isLoading, isSaved, errorMessage, failure, medias];
 }

@@ -52,6 +52,7 @@ class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
                   date: date,
                   modifiedAt: DateTime.now(),
                   emotionalIntensities: const [],
+                  medias: const [],
                 ))) {
     on<Analyzed>((event, emit) async {
       emit(state.copyWith(isLoading: true));
@@ -77,19 +78,70 @@ class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
             date: state.moment.date,
             modifiedAt: state.moment.modifiedAt,
             emotionalIntensities: state.moment.emotionalIntensities,
+            medias: state.moment.medias,
           ),
           isSaved: true,
         ));
       } else {
         emit(state.copyWith(
-            moment: Moment(
-          id: state.moment.id,
-          reflection: event.newText,
-          date: state.moment.date,
-          modifiedAt: state.moment.modifiedAt,
-          emotionalIntensities: state.moment.emotionalIntensities,
-        )));
+          moment: Moment(
+            id: state.moment.id,
+            reflection: event.newText,
+            date: state.moment.date,
+            modifiedAt: state.moment.modifiedAt,
+            emotionalIntensities: state.moment.emotionalIntensities,
+            medias: state.moment.medias,
+          ),
+        ));
       }
+    }, transformer: debounce(const Duration(milliseconds: 500)));
+
+    on<AddMedias>((event, emit) async {
+      emit(state.copyWith(isLoading: true));
+      final response = await writeMomentRepository.selectMedias();
+
+      response.fold(
+        (failure) => emit(state.copyWith(
+          isLoading: false,
+          failure: failure,
+        )),
+        (medias) {
+          if (state.mode == WriteMode.create &&
+              medias.isEmpty &&
+              state.isSaved == false) {
+            bus.publish(MomentCreatedMessage(moment: state.moment, date: date));
+            emit(state.copyWith(
+              isLoading: false,
+              medias: medias,
+              moment: Moment(
+                id: state.moment.id,
+                reflection: state.moment.reflection,
+                date: state.moment.date,
+                modifiedAt: state.moment.modifiedAt,
+                emotionalIntensities: state.moment.emotionalIntensities,
+                medias: medias,
+              ),
+              isSaved: true,
+            ));
+          } else {
+            emit(state.copyWith(
+              isLoading: false,
+              medias: [
+                ...state.medias,
+                ...medias,
+              ],
+              moment: Moment(
+                id: state.moment.id,
+                reflection: state.moment.reflection,
+                date: state.moment.date,
+                modifiedAt: state.moment.modifiedAt,
+                emotionalIntensities: state.moment.emotionalIntensities,
+                medias: [...state.moment.medias, ...medias],
+              ),
+            ));
+          }
+        },
+      );
     }, transformer: debounce(const Duration(milliseconds: 500)));
 
     on<ChangeToEdit>((event, emit) {
