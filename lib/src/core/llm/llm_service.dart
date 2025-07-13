@@ -6,8 +6,8 @@ import 'package:diary_mobile_client/src/core/llm/llm_query.dart';
 import 'package:diary_mobile_client/src/core/llm/llm_response.dart';
 import 'package:flutter/services.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:injectable/injectable.dart';
+import 'package:firebase_ai/firebase_ai.dart';
 
 class LLMService {
   static const platform = MethodChannel('com.example.llm');
@@ -21,11 +21,8 @@ class LLMService {
 
 @singleton
 class Gemini {
-  static const apiKey = "REDACTED_API_KEY";
-  static final model = GenerativeModel(
-    model: 'gemini-1.5-flash-latest',
-    apiKey: apiKey,
-  );
+  static final model =
+      FirebaseAI.googleAI().generativeModel(model: 'gemini-2.5-flash');
 
   @Deprecated('Use query() instead')
   static Future<String> oldQuery({required String prompt}) async {
