@@ -37,7 +37,9 @@ class WriteMomentExternalProvider implements IWriteMomentExternalProvider {
           context:
               "감정의 종류는 다음과 같아\n${Emotion.values.map((e) => e.name).toList().join(',')}",
           data: "[일기]\n${text.reflection}",
-          outputExample: """
+          medias: text.medias,
+          outputExample: """,
+,
       CASE1:
       {
         "emotions": [

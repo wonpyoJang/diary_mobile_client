@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:diary_mobile_client/main.dart';
 import 'package:diary_mobile_client/src/core/llm/llm_failure.dart';
@@ -33,9 +34,20 @@ class Gemini {
 
   static Future<Either<LLMFailure, LLMResponse>> query(
       {required LLMQuery query}) async {
-    final prompt = query.toPrompt();
+    final prompt = TextPart(query.toPrompt());
 
-    final content = [Content.text(prompt)];
+    final imageParts = await Future.wait(query.medias.map((e) async {
+      final image = await File(e.path).readAsBytes();
+      final imagePart = InlineDataPart(e.mimeType ?? 'image/jpeg', image);
+      return imagePart;
+    }));
+
+    final content = [
+      Content.multi([
+        prompt,
+        ...imageParts,
+      ])
+    ];
 
     GenerateContentResponse result;
 
@@ -85,6 +97,6 @@ class Gemini {
           message: "[AI] 응답을 JSON 형식으로 변환했는데 결과값이 빈 값이에요. 다시 시도해주세요."));
     }
 
-    return right(LLMResponse(prompt: prompt, response: json));
+    return right(LLMResponse(prompt: prompt.text, response: json));
   }
 }
