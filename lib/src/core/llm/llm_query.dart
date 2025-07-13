@@ -1,4 +1,4 @@
-import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class LLMQuery {
   final String direction;
@@ -6,7 +6,7 @@ class LLMQuery {
   final String data;
   final String outputDirection;
   final String outputExample;
-  final List<XFile> medias;
+  final List<File> medias;
 
   LLMQuery({
     required this.direction,

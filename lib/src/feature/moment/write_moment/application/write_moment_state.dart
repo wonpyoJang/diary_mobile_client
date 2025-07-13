@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:diary_mobile_client/src/feature/moment/write_moment/domain/failures/write_moment_failures.dart';
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,7 +14,7 @@ class WriteMomentState extends Equatable {
   final bool isSaved;
   final String errorMessage;
   final WriteMomentFailure? failure;
-  final List<XFile> medias;
+  final List<File> medias;
 
   const WriteMomentState({
     required this.mode,
@@ -31,7 +33,7 @@ class WriteMomentState extends Equatable {
     String? errorMessage,
     WriteMomentFailure? failure,
     WriteMode? mode, // mode 추가
-    List<XFile>? medias,
+    List<File>? medias,
   }) {
     return WriteMomentState(
       moment: moment ?? this.moment,

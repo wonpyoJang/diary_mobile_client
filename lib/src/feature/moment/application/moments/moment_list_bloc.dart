@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:io';
 
 import 'package:diary_mobile_client/src/feature/moment/application/moment_messages.dart';
 import 'package:diary_mobile_client/src/feature/moment/domain/entity/emotional_intensity.dart';
@@ -122,7 +123,7 @@ class MomentListBloc extends HydratedBloc<MomentListEvent, MomentListState> {
                       ))
                   .toList(),
           medias: (momentJson['medias'] as List<dynamic>)
-              .map((e) => XFile(e['path'] as String))
+              .map((e) => File(e['path'] as String))
               .toList(),
         );
       }).toList();

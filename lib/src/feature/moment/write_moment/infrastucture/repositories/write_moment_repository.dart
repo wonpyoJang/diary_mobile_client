@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:diary_mobile_client/src/core/device/infrastructure/interfaces/i_device_info_local_provider.dart';
 import 'package:diary_mobile_client/src/core/media/infrastructure/interfaces/i_media_info_local_provider.dart';
 import 'package:diary_mobile_client/src/feature/moment/domain/entity/moment.dart';
@@ -25,12 +27,23 @@ class WriteMomentRepository implements IWriteMomentRepository {
   });
 
   @override
-  Future<Either<WriteMomentFailure, List<XFile>>> selectMedias() async {
+  Future<Either<WriteMomentFailure, List<File>>> selectMedias() async {
     final result = await mediaInfoLocalProvider.selectMedias();
 
     return result.fold(
       (failure) => left(SelectMediasFailed(message: failure.message)),
-      (medias) => right(medias),
+      (medias) async {
+        List<File> files = medias.map((e) => File(e.path)).toList();
+        final saveResultOrFailure = await mediaInfoLocalProvider.saveMedias(
+          files.map((e) => e.readAsBytesSync()).toList(),
+          files.map((e) => e.path).toList(),
+        );
+
+        return saveResultOrFailure.fold(
+          (failure) => left(SelectMediasFailed(message: failure.message)),
+          (_) => right(files),
+        );
+      },
     );
   }
 

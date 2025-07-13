@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:diary_mobile_client/src/feature/moment/domain/entity/moment.dart';
 import 'package:diary_mobile_client/src/feature/moment/infrastructure/dtos/emotional_intensity_dto.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,7 +10,7 @@ class MomentDto {
   final String date;
   final String modifiedAt;
   final List<EmotionalIntensityDto> emotionalIntensities;
-  final List<XFile> medias;
+  final List<File> medias;
 
   MomentDto({
     required this.id,
@@ -54,7 +56,7 @@ class MomentDto {
           .map((e) => EmotionalIntensityDto.fromJson(e))
           .toList(),
       medias: (json['medias'] as List<dynamic>)
-          .map((e) => XFile(e['path'] as String))
+          .map((e) => File(e['path'] as String))
           .toList(),
     );
   }

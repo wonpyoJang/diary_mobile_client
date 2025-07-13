@@ -38,7 +38,10 @@ class Gemini {
 
     final imageParts = await Future.wait(query.medias.map((e) async {
       final image = await File(e.path).readAsBytes();
-      final imagePart = InlineDataPart(e.mimeType ?? 'image/jpeg', image);
+      // 파일의 매직넘버(헤더)를 읽어서 이미지 타입을 추론하는 함수
+
+      final mimeType = _detectMimeType(image);
+      final imagePart = InlineDataPart(mimeType, image);
       return imagePart;
     }));
 
@@ -98,5 +101,46 @@ class Gemini {
     }
 
     return right(LLMResponse(prompt: prompt.text, response: json));
+  }
+
+  static String _detectMimeType(List<int> bytes) {
+    if (bytes.length >= 4) {
+      // JPEG: FF D8 FF
+      if (bytes[0] == 0xFF && bytes[1] == 0xD8 && bytes[2] == 0xFF) {
+        return 'image/jpeg';
+      }
+      // PNG: 89 50 4E 47
+      if (bytes[0] == 0x89 &&
+          bytes[1] == 0x50 &&
+          bytes[2] == 0x4E &&
+          bytes[3] == 0x47) {
+        return 'image/png';
+      }
+      // GIF: 47 49 46 38
+      if (bytes[0] == 0x47 &&
+          bytes[1] == 0x49 &&
+          bytes[2] == 0x46 &&
+          bytes[3] == 0x38) {
+        return 'image/gif';
+      }
+      // WEBP: 52 49 46 46 ("RIFF") + "WEBP" at offset 8
+      if (bytes.length >= 12 &&
+          bytes[0] == 0x52 &&
+          bytes[1] == 0x49 &&
+          bytes[2] == 0x46 &&
+          bytes[3] == 0x46 &&
+          bytes[8] == 0x57 &&
+          bytes[9] == 0x45 &&
+          bytes[10] == 0x42 &&
+          bytes[11] == 0x50) {
+        return 'image/webp';
+      }
+      // BMP: 42 4D
+      if (bytes[0] == 0x42 && bytes[1] == 0x4D) {
+        return 'image/bmp';
+      }
+    }
+    // 기본값
+    return 'image/jpeg';
   }
 }
