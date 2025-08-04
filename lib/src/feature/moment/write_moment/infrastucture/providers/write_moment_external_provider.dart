@@ -28,18 +28,17 @@ class WriteMomentExternalProvider implements IWriteMomentExternalProvider {
 
   @override
   Future<Either<LLMFailure, List<EmotionalIntensityDto>>> analyze(
-      MomentDto text) async {
+      MomentDto moment) async {
     final resultOrFailure = await Gemini.query(
       query: LLMQuery(
-          direction: "아래 일기를 쓴 사람에 드러난 감정을 감정의 세기와 함께 알려줘",
+          direction: "아래 일기를 쓴 사람에 드러난 감정을 감정의 세기와 함께 알려줘. 첨부된 이미지가 있다면 일기를 쓸 때 참고해줘",
           outputDirection:
               "출력 형식은 리스트에 문자열로 담아줘, 코드가 아닌 문자열 형식으로 출력해줘. intensity는 0~1 사이의 값으로 출력해줘. intensity의 합은 1이 되도록 출력해줘.",
           context:
               "감정의 종류는 다음과 같아\n${Emotion.values.map((e) => e.name).toList().join(',')}",
-          data: "[일기]\n${text.reflection}",
-          medias: text.medias,
-          outputExample: """,
-,
+          data: "[일기]\n${moment.reflection}",
+          medias: moment.medias,
+          outputExample: """
       CASE1:
       {
         "emotions": [

@@ -69,7 +69,7 @@ class Moment extends Equatable {
 
   @override
   List<Object?> get props =>
-      [id, reflection, date, modifiedAt, emotionalIntensities];
+      [id, reflection, date, modifiedAt, emotionalIntensities, medias];
 
   Moment copyWith({
     String? id,

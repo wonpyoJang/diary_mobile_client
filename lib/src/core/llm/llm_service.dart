@@ -54,7 +54,10 @@ class Gemini {
 
     GenerateContentResponse result;
 
-    logger.d("[prompt]\n$prompt");
+    logger.d("[prompt]\n${prompt.text}");
+    for (var i = 0; i < imageParts.length; i++) {
+      logger.d("[image $i] path: ${query.medias[i].path}");
+    }
 
     try {
       result = await model.generateContent(content);
