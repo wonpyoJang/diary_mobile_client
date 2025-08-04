@@ -111,10 +111,6 @@ class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
 
           emit(state.copyWith(
             isLoading: false,
-            medias: [
-              ...state.medias,
-              ...medias,
-            ],
             moment: newMoment,
             isSaved: needToSave,
           ));
@@ -135,7 +131,6 @@ class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
 
       emit(state.copyWith(
         isLoading: false,
-        medias: newMomentMedias,
         moment: newMoment,
       ));
     }, transformer: debounce(const Duration(milliseconds: 500)));
