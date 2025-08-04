@@ -8,4 +8,6 @@ abstract class IWriteMomentRepository {
   Future<Either<WriteMomentFailure, List<File>>> selectMedias();
 
   Future<Either<WriteMomentFailure, Moment>> analyze(Moment text);
+
+  Future<Either<WriteMomentFailure, String>> describeImage(Moment moment);
 }

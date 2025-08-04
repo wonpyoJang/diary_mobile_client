@@ -138,5 +138,23 @@ class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
     on<ChangeToEdit>((event, emit) {
       emit(state.copyWith(mode: WriteMode.edit));
     });
+
+    on<WriteByImage>((event, emit) async {
+      emit(state.copyWith(isLoading: true));
+
+      final response = await writeMomentRepository.describeImage(state.moment);
+
+      emit(response.fold((failure) => state.copyWith(failure: failure),
+          (reflection) {
+        return state.copyWith(
+            isLoading: false,
+            moment: state.moment.copyWith(reflection: reflection),
+            isTextGenerated: true);
+      }));
+    });
+
+    on<ResetIsTextGenerated>((event, emit) {
+      emit(state.copyWith(isTextGenerated: false));
+    });
   }
 }

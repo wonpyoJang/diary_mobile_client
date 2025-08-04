@@ -24,3 +24,13 @@ class SelectMediasFailed extends WriteMomentFailure {
   @override
   List<Object?> get props => [message];
 }
+
+class MomentDescribeImageFailed extends WriteMomentFailure {
+  final String message;
+
+  const MomentDescribeImageFailed({required this.message})
+      : super(message: message);
+
+  @override
+  List<Object?> get props => [message];
+}

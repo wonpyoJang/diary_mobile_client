@@ -31,7 +31,8 @@ class WriteMomentExternalProvider implements IWriteMomentExternalProvider {
       MomentDto moment) async {
     final resultOrFailure = await Gemini.query(
       query: LLMQuery(
-          direction: "아래 일기를 쓴 사람에 드러난 감정을 감정의 세기와 함께 알려줘. 첨부된 이미지가 있다면 일기를 쓸 때 참고해줘",
+          direction:
+              "아래 일기를 쓴 사람에 드러난 감정을 감정의 세기와 함께 알려줘. 첨부된 이미지가 있다면 일기를 쓸 때 참고해줘",
           outputDirection:
               "출력 형식은 리스트에 문자열로 담아줘, 코드가 아닌 문자열 형식으로 출력해줘. intensity는 0~1 사이의 값으로 출력해줘. intensity의 합은 1이 되도록 출력해줘.",
           context:
@@ -64,6 +65,34 @@ class WriteMomentExternalProvider implements IWriteMomentExternalProvider {
 
         return right(emotionalIntensities);
       },
+    );
+  }
+
+  @override
+  Future<Either<LLMFailure, String>> describeImage(MomentDto moment) async {
+    final result = await Gemini.query(
+      query: LLMQuery(
+          direction: "아래 이미지를 바탕으로 일기를 작성해줘. 인스타그래머블하게 작성해줘.",
+          outputDirection: "출력 형식은 문자열로 출력해줘",
+          data: "",
+          medias: moment.medias,
+          context: "",
+          outputExample: """
+      CASE1:
+      {
+        "reflection" : 
+          🌙\n오늘은 좀… 조용한 하루였다.\n사람 많은 카페에 앉아 혼자 창밖만 오래 바라봤다.\n음악은 잔잔했고, 커피는 미지근했다.\n\n요즘은\n누가 나한테 진심으로 말을 걸어줬으면 좋겠다는\n생각을 자주 한다.\n\n괜찮냐는 말보다\n진짜 괜찮아지고 싶다.\n\n누군가에게 너무 이해받고 싶은 날이었다.\n괜히 울컥한 감정,\n괜히 쓸쓸한 밤.\n\n근데 또 이상하게,\n이런 감정들도\n조금은 예쁘다고 느껴졌다.\n\n아무것도 안 해도 괜찮은 하루였으니까.\n\n🩶
+      }
+      CASE2:
+      {
+        "reflection": "오늘은 카페에 앉아 창밖을 바라봤다. 음악이 나왔고, 커피를 마셨다. 특별한 대화 없이 시간을 보냈다. 하루가 조용히 지나갔다."
+      }
+      """),
+    );
+
+    return result.match(
+      (failure) => left(failure),
+      (result) => right(result.response['reflection']),
     );
   }
 }

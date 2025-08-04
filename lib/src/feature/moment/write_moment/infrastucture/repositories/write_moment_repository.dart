@@ -73,4 +73,16 @@ class WriteMomentRepository implements IWriteMomentRepository {
       },
     );
   }
+
+  @override
+  Future<Either<WriteMomentFailure, String>> describeImage(
+      Moment moment) async {
+    final result = await writeMomentExternalProvider
+        .describeImage(MomentDto.fromDomain(moment));
+
+    return result.fold(
+      (failure) => left(MomentDescribeImageFailed(message: failure.message)),
+      (description) => right(description),
+    );
+  }
 }

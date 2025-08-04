@@ -64,259 +64,297 @@ class WriteMomentPageState extends State<WriteMomentPage> {
       create: (context) => getIt<WriteMomentBloc>(
           param1: widget.arguments.moment, param2: widget.arguments.date),
       child: Builder(builder: (context) {
-        return Material(
-          child: Stack(
-            children: [
-              // Image.asset(
-              //   "assets/images/common/background/background.png",
-              //   width: MediaQuery.of(context).size.width,
-              //   height: MediaQuery.of(context).size.height,
-              //   fit: BoxFit.cover,
-              // ),
-              Positioned.fill(child: Container(color: const Color(0xFFF6F6F6))),
-              Positioned.fill(
-                child: Opacity(
-                  opacity: 0.08,
-                  child: Image.asset(
-                    "assets/images/common/background/background.png", // 이미지 경로
-                    colorBlendMode: BlendMode.overlay,
-                    fit: BoxFit.cover, // 100% 100% 대응
-                    alignment:
-                        const Alignment(-0.03, 0.0), // -1.523px에 해당하는 정렬값 근사치
+        return MultiBlocListener(
+          listeners: [
+            BlocListener<WriteMomentBloc, WriteMomentState>(
+              listenWhen: (prev, next) {
+                return prev.moment.medias != next.moment.medias;
+              },
+              listener: (context, state) {
+                if (state.mode == WriteMode.create ||
+                    state.mode == WriteMode.edit) {
+                  showYesOrNoDialog(
+                    context,
+                    title: '추가한 사진으로 글을 작성하시겠습니까?',
+                    onConfirm: (value) {
+                      context.read<WriteMomentBloc>().add(const WriteByImage());
+                    },
+                  );
+                }
+              },
+            ),
+            BlocListener<WriteMomentBloc, WriteMomentState>(
+              listenWhen: (prev, next) {
+                return prev.isTextGenerated == false &&
+                    next.isTextGenerated == true;
+              },
+              listener: (context, state) {
+                _controller.value = TextEditingValue(
+                    text: state.moment.reflection,
+                    selection: TextSelection.fromPosition(
+                        TextPosition(offset: state.moment.reflection.length)));
+                context
+                    .read<WriteMomentBloc>()
+                    .add(const ResetIsTextGenerated());
+              },
+            ),
+          ],
+          child: Material(
+            child: Stack(
+              children: [
+                // Image.asset(
+                //   "assets/images/common/background/background.png",
+                //   width: MediaQuery.of(context).size.width,
+                //   height: MediaQuery.of(context).size.height,
+                //   fit: BoxFit.cover,
+                // ),
+                Positioned.fill(
+                    child: Container(color: const Color(0xFFF6F6F6))),
+                Positioned.fill(
+                  child: Opacity(
+                    opacity: 0.08,
+                    child: Image.asset(
+                      "assets/images/common/background/background.png", // 이미지 경로
+                      colorBlendMode: BlendMode.overlay,
+                      fit: BoxFit.cover, // 100% 100% 대응
+                      alignment:
+                          const Alignment(-0.03, 0.0), // -1.523px에 해당하는 정렬값 근사치
+                    ),
                   ),
                 ),
-              ),
-              // 오버레이용 blend 효과 레이어
+                // 오버레이용 blend 효과 레이어
 
-              // const Align(
-              //     alignment: Alignment.topCenter, child: PaperTextureOverlay()),
-              SafeArea(
-                child: MultiBlocListener(
-                  listeners: [
-                    BlocListener<WriteMomentBloc, WriteMomentState>(
-                      listenWhen: (prev, next) {
-                        return (prev.errorMessage != next.errorMessage) &&
-                            (next.errorMessage.isNotEmpty);
-                      },
-                      listener: (context, state) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(state.errorMessage),
-                          ),
-                        );
-                      },
-                    ),
-                    if (widget.arguments.isBlendMode)
+                // const Align(
+                //     alignment: Alignment.topCenter, child: PaperTextureOverlay()),
+                SafeArea(
+                  child: MultiBlocListener(
+                    listeners: [
                       BlocListener<WriteMomentBloc, WriteMomentState>(
                         listenWhen: (prev, next) {
-                          return prev.moment.emotionalIntensities !=
-                                  next.moment.emotionalIntensities &&
-                              next.moment.emotionalIntensities.length > 1;
+                          return (prev.errorMessage != next.errorMessage) &&
+                              (next.errorMessage.isNotEmpty);
                         },
-                        listener: (context, state) async {
-                          await verificationDialog(context);
-
-                          if (context.mounted) {
-                            await showEmotionBlending(context, state.moment);
-                          }
+                        listener: (context, state) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(state.errorMessage),
+                            ),
+                          );
                         },
                       ),
-                    BlocListener<WriteMomentBloc, WriteMomentState>(
-                      listenWhen: (prev, next) {
-                        return prev.isLoading == true &&
-                            next.moment.emotionalIntensities.isEmpty;
-                      },
-                      listener: (context, state) async {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("드러난 감정이 없습니다."),
-                          ),
-                        );
-                      },
-                    ),
-                    BlocListener<WriteMomentBloc, WriteMomentState>(
-                      listenWhen: (prev, next) {
-                        return prev.mode != next.mode &&
-                            next.mode == WriteMode.edit;
-                      },
-                      listener: (context, state) {
-                        Future.delayed(const Duration(microseconds: 400), () {
-                          _focusNode.requestFocus();
-                        });
-                      },
-                    )
-                  ],
-                  child: Screenshot(
-                    controller: _screenshotController,
-                    child: Scaffold(
-                      backgroundColor: Colors.transparent,
-                      body: Stack(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              FocusManager.instance.primaryFocus?.unfocus();
-                            },
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(height: 8),
-                                HeaderArea(
-                                  date: widget.arguments.date,
-                                  screenshotController: _screenshotController,
-                                ),
-                                const SizedBox(height: 17),
-                                Expanded(
-                                  child: BlocBuilder<WriteMomentBloc,
+                      if (widget.arguments.isBlendMode)
+                        BlocListener<WriteMomentBloc, WriteMomentState>(
+                          listenWhen: (prev, next) {
+                            return prev.moment.emotionalIntensities !=
+                                    next.moment.emotionalIntensities &&
+                                next.moment.emotionalIntensities.length > 1;
+                          },
+                          listener: (context, state) async {
+                            await verificationDialog(context);
+
+                            if (context.mounted) {
+                              await showEmotionBlending(context, state.moment);
+                            }
+                          },
+                        ),
+                      BlocListener<WriteMomentBloc, WriteMomentState>(
+                        listenWhen: (prev, next) {
+                          return prev.isLoading == true &&
+                              next.moment.emotionalIntensities.isEmpty;
+                        },
+                        listener: (context, state) async {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("드러난 감정이 없습니다."),
+                            ),
+                          );
+                        },
+                      ),
+                      BlocListener<WriteMomentBloc, WriteMomentState>(
+                        listenWhen: (prev, next) {
+                          return prev.mode != next.mode &&
+                              next.mode == WriteMode.edit;
+                        },
+                        listener: (context, state) {
+                          Future.delayed(const Duration(microseconds: 400), () {
+                            _focusNode.requestFocus();
+                          });
+                        },
+                      )
+                    ],
+                    child: Screenshot(
+                      controller: _screenshotController,
+                      child: Scaffold(
+                        backgroundColor: Colors.transparent,
+                        body: Stack(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                FocusManager.instance.primaryFocus?.unfocus();
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 8),
+                                  HeaderArea(
+                                    date: widget.arguments.date,
+                                    screenshotController: _screenshotController,
+                                  ),
+                                  const SizedBox(height: 17),
+                                  Expanded(
+                                    child: BlocBuilder<WriteMomentBloc,
+                                        WriteMomentState>(
+                                      builder: (context, state) {
+                                        return MomentWritingArea(
+                                            focusNode: _focusNode,
+                                            controller: _controller,
+                                            mode: state.mode);
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  BlocBuilder<WriteMomentBloc,
                                       WriteMomentState>(
                                     builder: (context, state) {
-                                      return MomentWritingArea(
-                                          focusNode: _focusNode,
-                                          controller: _controller,
-                                          mode: state.mode);
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                                BlocBuilder<WriteMomentBloc, WriteMomentState>(
-                                  builder: (context, state) {
-                                    final medias = state.moment.medias;
-                                    if (medias.isEmpty) {
-                                      return const SizedBox.shrink();
-                                    }
-                                    return SizedBox(
-                                      height: 120,
-                                      child: ListView.separated(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: medias.length,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16),
-                                        separatorBuilder: (context, index) =>
-                                            const SizedBox(width: 12),
-                                        itemBuilder: (context, index) {
-                                          final media = medias[index];
-                                          return Stack(
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                child: Image.file(
-                                                  File(media.path),
-                                                  width: 100,
-                                                  height: 100,
-                                                  fit: BoxFit.cover,
+                                      final medias = state.moment.medias;
+                                      if (medias.isEmpty) {
+                                        return const SizedBox.shrink();
+                                      }
+                                      return SizedBox(
+                                        height: 120,
+                                        child: ListView.separated(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: medias.length,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16),
+                                          separatorBuilder: (context, index) =>
+                                              const SizedBox(width: 12),
+                                          itemBuilder: (context, index) {
+                                            final media = medias[index];
+                                            return Stack(
+                                              children: [
+                                                ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: Image.file(
+                                                    File(media.path),
+                                                    width: 100,
+                                                    height: 100,
+                                                    fit: BoxFit.cover,
+                                                  ),
                                                 ),
-                                              ),
-                                              // x 버튼(삭제 버튼) 추가
-                                              Positioned(
-                                                top: 4,
-                                                right: 4,
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    showYesOrNoDialog(context,
-                                                        title: "삭제하시겠습니까?",
-                                                        onConfirm: (value) {
-                                                      context
-                                                          .read<
-                                                              WriteMomentBloc>()
-                                                          .add(DeleteMedia(
-                                                              index));
-                                                    });
-                                                  },
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.black
-                                                          .withOpacity(0.5),
-                                                      shape: BoxShape.circle,
-                                                    ),
-                                                    child: const Icon(
-                                                      Icons.close,
-                                                      color: Colors.white,
-                                                      size: 20,
+                                                // x 버튼(삭제 버튼) 추가
+                                                Positioned(
+                                                  top: 4,
+                                                  right: 4,
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      showYesOrNoDialog(context,
+                                                          title: "삭제하시겠습니까?",
+                                                          onConfirm: (value) {
+                                                        context
+                                                            .read<
+                                                                WriteMomentBloc>()
+                                                            .add(DeleteMedia(
+                                                                index));
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.black
+                                                            .withOpacity(0.5),
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: const Icon(
+                                                        Icons.close,
+                                                        color: Colors.white,
+                                                        size: 20,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  },
-                                ),
-                                const SizedBox(height: 104),
-                                // BlocBuilder<WriteMomentBloc, WriteMomentState>(
-                                //   builder: (context, state) {
-                                //     if (state
-                                //         .moment.emotionalIntensities.isEmpty) {
-                                //       return const SizedBox(height: 23);
-                                //     } else {
-                                //       return Padding(
-                                //         padding: const EdgeInsets.only(
-                                //             top: 15.0, bottom: 29),
-                                //         child: Screenshot(
-                                //           controller: _screenshotController,
-                                //           child: EmotionPalette(
-                                //               emotionalIntensities: state
-                                //                   .moment.emotionalIntensities),
-                                //         ),
-                                //       );
-                                //     }
-                                //   },
-                                // ),
-                              ],
-                            ),
-                          ),
-                          BlocBuilder<WriteMomentBloc, WriteMomentState>(
-                            builder: (context, state) {
-                              if (state.mode == WriteMode.view) {
-                                return Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        bottom: 30, right: 27),
-                                    child: InkWell(
-                                      onTap: () async {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Container(
-                                        height: 44,
-                                        width: 44,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xFFFF956C),
-                                          borderRadius:
-                                              BorderRadius.circular(22.0),
+                                              ],
+                                            );
+                                          },
                                         ),
-                                        child: Center(
-                                            child: SvgPicture.asset(
-                                                "assets/images/feature/moment/write_moment/next.svg")),
+                                      );
+                                    },
+                                  ),
+                                  const SizedBox(height: 104),
+                                  // BlocBuilder<WriteMomentBloc, WriteMomentState>(
+                                  //   builder: (context, state) {
+                                  //     if (state
+                                  //         .moment.emotionalIntensities.isEmpty) {
+                                  //       return const SizedBox(height: 23);
+                                  //     } else {
+                                  //       return Padding(
+                                  //         padding: const EdgeInsets.only(
+                                  //             top: 15.0, bottom: 29),
+                                  //         child: Screenshot(
+                                  //           controller: _screenshotController,
+                                  //           child: EmotionPalette(
+                                  //               emotionalIntensities: state
+                                  //                   .moment.emotionalIntensities),
+                                  //         ),
+                                  //       );
+                                  //     }
+                                  //   },
+                                  // ),
+                                ],
+                              ),
+                            ),
+                            BlocBuilder<WriteMomentBloc, WriteMomentState>(
+                              builder: (context, state) {
+                                if (state.mode == WriteMode.view) {
+                                  return Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          bottom: 30, right: 27),
+                                      child: InkWell(
+                                        onTap: () async {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Container(
+                                          height: 44,
+                                          width: 44,
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFFFF956C),
+                                            borderRadius:
+                                                BorderRadius.circular(22.0),
+                                          ),
+                                          child: Center(
+                                              child: SvgPicture.asset(
+                                                  "assets/images/feature/moment/write_moment/next.svg")),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              } else {
-                                return const Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: ExtractEmotionButon(),
-                                );
-                              }
-                            },
-                          ),
-                        ],
+                                  );
+                                } else {
+                                  return const Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: ExtractEmotionButon(),
+                                  );
+                                }
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              BlocBuilder<WriteMomentBloc, WriteMomentState>(
-                builder: (context, state) {
-                  if (state.isLoading) {
-                    return const Center(child: CommonLoadingIndicator());
-                  } else {
-                    return const SizedBox();
-                  }
-                },
-              )
-            ],
+                BlocBuilder<WriteMomentBloc, WriteMomentState>(
+                  builder: (context, state) {
+                    if (state.isLoading) {
+                      return const Center(child: CommonLoadingIndicator());
+                    } else {
+                      return const SizedBox();
+                    }
+                  },
+                )
+              ],
+            ),
           ),
         );
       }),

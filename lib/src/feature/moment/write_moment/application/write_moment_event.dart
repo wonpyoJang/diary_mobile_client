@@ -47,3 +47,17 @@ class DeleteMedia extends WriteMomentEvent {
   @override
   List<Object?> get props => [index];
 }
+
+class WriteByImage extends WriteMomentEvent {
+  const WriteByImage();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class ResetIsTextGenerated extends WriteMomentEvent {
+  const ResetIsTextGenerated();
+
+  @override
+  List<Object?> get props => [];
+}
