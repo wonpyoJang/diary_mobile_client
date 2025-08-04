@@ -197,15 +197,49 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                                             const SizedBox(width: 12),
                                         itemBuilder: (context, index) {
                                           final media = medias[index];
-                                          return ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            child: Image.file(
-                                              File(media.path),
-                                              width: 100,
-                                              height: 100,
-                                              fit: BoxFit.cover,
-                                            ),
+                                          return Stack(
+                                            children: [
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                child: Image.file(
+                                                  File(media.path),
+                                                  width: 100,
+                                                  height: 100,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                              // x 버튼(삭제 버튼) 추가
+                                              Positioned(
+                                                top: 4,
+                                                right: 4,
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    showYesOrNoDialog(context,
+                                                        title: "삭제하시겠습니까?",
+                                                        onConfirm: (value) {
+                                                      context
+                                                          .read<
+                                                              WriteMomentBloc>()
+                                                          .add(DeleteMedia(
+                                                              index));
+                                                    });
+                                                  },
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.black
+                                                          .withOpacity(0.5),
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: const Icon(
+                                                      Icons.close,
+                                                      color: Colors.white,
+                                                      size: 20,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           );
                                         },
                                       ),
