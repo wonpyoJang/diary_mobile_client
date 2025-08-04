@@ -97,7 +97,7 @@ class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
               state.isSaved == false;
 
           if (state.mode == WriteMode.create &&
-              medias.isEmpty &&
+              medias.isNotEmpty &&
               state.isSaved == false) {
             bus.publish(MomentCreatedMessage(moment: state.moment, date: date));
           }
@@ -124,29 +124,20 @@ class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
 
     on<DeleteMedia>((event, emit) async {
       emit(state.copyWith(isLoading: true));
-      final response = await writeMomentRepository.selectMedias();
 
-      response.fold(
-        (failure) => emit(state.copyWith(
-          isLoading: false,
-          failure: failure,
-        )),
-        (medias) {
-          final newMomentMedias = List<File>.from(state.moment.medias);
-          if (event.index >= 0 && event.index < newMomentMedias.length) {
-            newMomentMedias.removeAt(event.index);
-          }
-          final newMoment = state.moment.copyWith(
-            medias: newMomentMedias,
-          );
-
-          emit(state.copyWith(
-            isLoading: false,
-            medias: newMomentMedias,
-            moment: newMoment,
-          ));
-        },
+      final newMomentMedias = List<File>.from(state.moment.medias);
+      if (event.index >= 0 && event.index < newMomentMedias.length) {
+        newMomentMedias.removeAt(event.index);
+      }
+      final newMoment = state.moment.copyWith(
+        medias: newMomentMedias,
       );
+
+      emit(state.copyWith(
+        isLoading: false,
+        medias: newMomentMedias,
+        moment: newMoment,
+      ));
     }, transformer: debounce(const Duration(milliseconds: 500)));
 
     on<ChangeToEdit>((event, emit) {
