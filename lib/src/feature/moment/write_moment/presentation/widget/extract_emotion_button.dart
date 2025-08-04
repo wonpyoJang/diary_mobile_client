@@ -16,15 +16,25 @@ class ExtractEmotionButon extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<WriteMomentBloc, WriteMomentState>(
       builder: (context, state) {
-        final isActive = state.moment.reflection.length < 20 || state.isLoading;
+        final isFilled = state.moment.reflection.length >= 20 ||
+            state.moment.medias.isNotEmpty;
+        final isActive = isFilled && state.isLoading;
         return InkWell(
           onTap: () {
             AnalyticsManager.logEvent('write_extract_emotion',
                 parameters: {'length': state.moment.reflection.length});
-            if (state.moment.reflection.length < 20) {
+            if (state.moment.reflection.length < 20 &&
+                state.moment.medias.isEmpty) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('일기를 20자 이상 작성해주세요'),
+                ),
+              );
+              return;
+            } else if (state.isLoading) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('조금만 기다려주세요. 분석중입니다.'),
                 ),
               );
               return;
@@ -46,8 +56,8 @@ class ExtractEmotionButon extends StatelessWidget {
                 child: SvgPicture.asset(
               "assets/images/feature/moment/write_moment/next.svg",
               colorFilter: isActive
-                  ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)
-                  : null,
+                  ? null
+                  : const ColorFilter.mode(Colors.white, BlendMode.srcIn),
             )),
           ),
         );
