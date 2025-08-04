@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:diary_mobile_client/src/core/analytics/analytics_manager.dart';
 import 'package:diary_mobile_client/src/feature/common/loading_indicator.dart';
 import 'package:diary_mobile_client/src/feature/common/yes_or_no_dialog.dart';
@@ -15,7 +13,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pull_down_button/pull_down_button.dart';
 import 'package:screenshot/screenshot.dart';
