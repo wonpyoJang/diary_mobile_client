@@ -27,6 +27,8 @@ var loggerNoStack = Logger(
 );
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   await SentryFlutter.init(
     (options) {
       options.dsn =
@@ -39,7 +41,6 @@ void main() async {
       options.profilesSampleRate = 1.0;
     },
     appRunner: () async {
-      WidgetsFlutterBinding.ensureInitialized();
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );

@@ -9,4 +9,6 @@ abstract class IWriteMomentExternalProvider {
 
   Future<Either<LLMFailure, List<EmotionalIntensityDto>>> analyze(
       MomentDto text);
+
+  Future<Either<LLMFailure, String>> describeImage(MomentDto text);
 }

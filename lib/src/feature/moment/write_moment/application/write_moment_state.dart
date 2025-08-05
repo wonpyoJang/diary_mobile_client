@@ -11,6 +11,7 @@ class WriteMomentState extends Equatable {
   final bool isSaved;
   final String errorMessage;
   final WriteMomentFailure? failure;
+  final bool isTextGenerated;
 
   const WriteMomentState({
     required this.mode,
@@ -19,6 +20,7 @@ class WriteMomentState extends Equatable {
     this.isSaved = false,
     this.errorMessage = '',
     this.failure,
+    this.isTextGenerated = false,
   });
 
   WriteMomentState copyWith({
@@ -28,6 +30,7 @@ class WriteMomentState extends Equatable {
     String? errorMessage,
     WriteMomentFailure? failure,
     WriteMode? mode, // mode 추가
+    bool? isTextGenerated,
   }) {
     return WriteMomentState(
       moment: moment ?? this.moment,
@@ -36,10 +39,18 @@ class WriteMomentState extends Equatable {
       errorMessage: errorMessage ?? this.errorMessage,
       failure: failure ?? this.failure,
       mode: mode ?? this.mode, // mode 추가
+      isTextGenerated: isTextGenerated ?? this.isTextGenerated,
     );
   }
 
   @override
-  List<Object?> get props =>
-      [mode, moment, isLoading, isSaved, errorMessage, failure];
+  List<Object?> get props => [
+        mode,
+        moment,
+        isLoading,
+        isSaved,
+        errorMessage,
+        failure,
+        isTextGenerated
+      ];
 }

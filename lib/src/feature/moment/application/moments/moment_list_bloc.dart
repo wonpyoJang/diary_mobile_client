@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:io';
 
 import 'package:diary_mobile_client/src/feature/moment/application/moment_messages.dart';
 import 'package:diary_mobile_client/src/feature/moment/domain/entity/emotional_intensity.dart';
 import 'package:diary_mobile_client/src/feature/moment/domain/enums/emotion.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -120,6 +122,9 @@ class MomentListBloc extends HydratedBloc<MomentListEvent, MomentListState> {
                         intensity: e['intensity'] as double,
                       ))
                   .toList(),
+          medias: (momentJson['medias'] as List<dynamic>)
+              .map((e) => File(e['path'] as String))
+              .toList(),
         );
       }).toList();
 
@@ -151,6 +156,11 @@ class MomentListBloc extends HydratedBloc<MomentListEvent, MomentListState> {
                         .map((e) => {
                               'emotion': e.emotion.name,
                               'intensity': e.intensity,
+                            })
+                        .toList(),
+                    'medias': moment.medias
+                        .map((media) => {
+                              'path': media.path,
                             })
                         .toList(),
                   })

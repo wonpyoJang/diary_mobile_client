@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 
 abstract class WriteMomentEvent extends Equatable {
@@ -25,6 +27,36 @@ class Analyzed extends WriteMomentEvent {
 
 class ChangeToEdit extends WriteMomentEvent {
   const ChangeToEdit();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class AddMedias extends WriteMomentEvent {
+  const AddMedias();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class DeleteMedia extends WriteMomentEvent {
+  final int index;
+
+  const DeleteMedia(this.index);
+
+  @override
+  List<Object?> get props => [index];
+}
+
+class WriteByImage extends WriteMomentEvent {
+  const WriteByImage();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class ResetIsTextGenerated extends WriteMomentEvent {
+  const ResetIsTextGenerated();
 
   @override
   List<Object?> get props => [];

@@ -1,9 +1,12 @@
+import 'dart:io';
+
 class LLMQuery {
   final String direction;
   final String context;
   final String data;
   final String outputDirection;
   final String outputExample;
+  final List<File> medias;
 
   LLMQuery({
     required this.direction,
@@ -11,6 +14,7 @@ class LLMQuery {
     required this.data,
     required this.outputDirection,
     required this.outputExample,
+    required this.medias,
   });
 
   String toPrompt() {

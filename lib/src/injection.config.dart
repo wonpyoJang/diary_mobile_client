@@ -23,6 +23,10 @@ import 'core/firebase/firebase_client.dart' as _i248;
 import 'core/http_client/dio_module.dart' as _i871;
 import 'core/http_client/http_client.dart' as _i356;
 import 'core/llm/llm_service.dart' as _i681;
+import 'core/media/infrastructure/interfaces/i_media_info_local_provider.dart'
+    as _i130;
+import 'core/media/infrastructure/providers/media_info_local_provider.dart'
+    as _i1061;
 import 'feature/moment/application/moments/moment_list_bloc.dart' as _i269;
 import 'feature/moment/domain/entity/moment.dart' as _i900;
 import 'feature/moment/moment_calendar/application/moment_calendar_bloc.dart'
@@ -68,6 +72,8 @@ _i174.GetIt $initGetIt(
             gh<_i248.FirebaseClient>(),
           ));
   gh.singleton<_i356.HttpClient>(() => _i356.HttpClient(gh<_i361.Dio>()));
+  gh.lazySingleton<_i130.IMeidaInfoLocalProvider>(
+      () => _i1061.MediaInfoLocalProvider());
   gh.lazySingleton<_i23.IDeviceInfoLocalProvider>(
       () => _i505.DeviceInfoLocalProvider());
   gh.lazySingleton<_i772.IWriteMomentInternalProvider>(
@@ -78,6 +84,7 @@ _i174.GetIt $initGetIt(
         writeMomentExternalProvider: gh<_i1039.IWriteMomentExternalProvider>(),
         writeMomentInternalProvider: gh<_i772.IWriteMomentInternalProvider>(),
         deviceInfoLocalProvider: gh<_i23.IDeviceInfoLocalProvider>(),
+        mediaInfoLocalProvider: gh<_i130.IMeidaInfoLocalProvider>(),
       ));
   gh.factoryParam<_i812.WriteMomentBloc, _i900.Moment?, DateTime>((
     moment,

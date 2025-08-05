@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:diary_mobile_client/src/core/device/infrastructure/interfaces/i_device_info_local_provider.dart';
+import 'package:diary_mobile_client/src/core/media/infrastructure/interfaces/i_media_info_local_provider.dart';
 import 'package:diary_mobile_client/src/feature/moment/domain/entity/moment.dart';
 import 'package:diary_mobile_client/src/feature/moment/infrastructure/dtos/moment_dto.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/domain/failures/write_moment_failures.dart';
@@ -14,11 +17,34 @@ class WriteMomentRepository implements IWriteMomentRepository {
   final IWriteMomentExternalProvider writeMomentExternalProvider;
   final IWriteMomentInternalProvider writeMomentInternalProvider;
   final IDeviceInfoLocalProvider deviceInfoLocalProvider;
+  final IMeidaInfoLocalProvider mediaInfoLocalProvider;
   WriteMomentRepository({
     required this.writeMomentExternalProvider,
     required this.writeMomentInternalProvider,
     required this.deviceInfoLocalProvider,
+    required this.mediaInfoLocalProvider,
   });
+
+  @override
+  Future<Either<WriteMomentFailure, List<File>>> selectMedias() async {
+    final result = await mediaInfoLocalProvider.selectMedias();
+
+    return result.fold(
+      (failure) => left(SelectMediasFailed(message: failure.message)),
+      (medias) async {
+        List<File> files = medias.map((e) => File(e.path)).toList();
+        final saveResultOrFailure = await mediaInfoLocalProvider.saveMedias(
+          files.map((e) => e.readAsBytesSync()).toList(),
+          files.map((e) => e.path).toList(),
+        );
+
+        return saveResultOrFailure.fold(
+          (failure) => left(SelectMediasFailed(message: failure.message)),
+          (_) => right(files),
+        );
+      },
+    );
+  }
 
   @override
   Future<Either<WriteMomentFailure, Moment>> analyze(Moment moment) async {
@@ -45,6 +71,18 @@ class WriteMomentRepository implements IWriteMomentRepository {
               moment.copyWith(emotionalIntensities: emotionalIntensities)),
         );
       },
+    );
+  }
+
+  @override
+  Future<Either<WriteMomentFailure, String>> describeImage(
+      Moment moment) async {
+    final result = await writeMomentExternalProvider
+        .describeImage(MomentDto.fromDomain(moment));
+
+    return result.fold(
+      (failure) => left(MomentDescribeImageFailed(message: failure.message)),
+      (description) => right(description),
     );
   }
 }
