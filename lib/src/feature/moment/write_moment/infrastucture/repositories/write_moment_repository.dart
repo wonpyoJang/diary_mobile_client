@@ -40,7 +40,7 @@ class WriteMomentRepository implements IWriteMomentRepository {
 
         return saveResultOrFailure.fold(
           (failure) => left(SelectMediasFailed(message: failure.message)),
-          (_) => right(files),
+          (savedFiles) => right(savedFiles),
         );
       },
     );

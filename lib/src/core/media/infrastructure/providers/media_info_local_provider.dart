@@ -21,7 +21,7 @@ class MediaInfoLocalProvider implements IMeidaInfoLocalProvider {
   }
 
   @override
-  Future<Either<LocalFailure, Unit>> saveMedias(
+  Future<Either<LocalFailure, List<File>>> saveMedias(
       List<Uint8List> images, List<String> path) async {
     // 파일 저장 로직이 필요하다면 _fileManager를 활용하여 구현
     // 현재는 단순히 성공 반환

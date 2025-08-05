@@ -14,23 +14,23 @@ class FileManager {
   /// [imageBytes] : 저장할 파일의 바이트 데이터
   /// [tempPath] : 저장할 파일명
   /// 성공 시 저장된 파일의 경로 반환, 실패 시 LocalFailure 반환
-  Future<Either<LocalFailure, String>> saveImage(
+  Future<Either<LocalFailure, File>> saveImage(
       Uint8List imageBytes, String tempPath) async {
     try {
       _logger.d('이미지 저장 시작: $tempPath');
 
-      // 앱 전용 디렉토리 가져오기
+      // 앱의 영구 저장소(사용자 문서 디렉토리)에 저장
       final directory = await getApplicationDocumentsDirectory();
       final path = directory.path;
 
-      // 저장할 파일의 전체 경로 지정
-      final file = File(tempPath);
+      // 파일의 전체 경로를 앱 문서 디렉토리 하위로 지정
+      final file = File('$path/$tempPath');
 
       // 파일 저장
       await file.writeAsBytes(imageBytes);
 
       _logger.d('이미지 저장 완료: ${file.path}');
-      return right(file.path);
+      return right(file);
     } on FileSystemException catch (e) {
       _logger.e('FileSystemException 발생: ${e.message}');
       return left(LocalFailure(message: "파일 시스템 오류가 발생했습니다. (${e.message})"));
@@ -53,20 +53,30 @@ class FileManager {
   /// [images] : 저장할 이미지 바이트 리스트
   /// [fileNames] : 각 이미지에 대응하는 파일명 리스트
   /// 성공 시 Unit 반환, 실패 시 LocalFailure 반환
-  Future<Either<LocalFailure, Unit>> saveMultipleImages(
+  Future<Either<LocalFailure, List<File>>> saveMultipleImages(
       List<Uint8List> images, List<String> fileNames) async {
     if (images.length != fileNames.length) {
       return left(const LocalFailure(message: "이미지와 파일명 개수가 일치하지 않습니다."));
     }
 
-    for (int i = 0; i < images.length; i++) {
-      final result = await saveImage(images[i], fileNames[i]);
-      if (result.isLeft()) {
-        // 하나라도 실패하면 즉시 실패 반환
-        return left(result.getLeft().toNullable()!);
-      }
+    List<Either<LocalFailure, File>> savedImageFiles =
+        await Future.wait(images.map((e) async {
+      final i = images.indexOf(e);
+      final result = await saveImage(e, fileNames[i]);
+
+      return result;
+    }));
+
+    if (savedImageFiles.any((e) => e.isLeft())) {
+      return left(savedImageFiles
+          .firstWhere((e) => e.isLeft())
+          .getLeft()
+          .getOrElse(
+              () => const LocalFailure(message: "이미지 저장 중 오류가 발생했습니다.")));
     }
-    return right(unit);
+
+    return right(
+        savedImageFiles.map((e) => e.fold((l) => File(""), (r) => r)).toList());
   }
 
   /// 파일 삭제
