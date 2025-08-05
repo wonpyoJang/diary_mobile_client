@@ -11,6 +11,5 @@ abstract class IMeidaInfoLocalProvider {
   /// 미디어 파일을 저장하는 메소드
   /// [medias] : 저장할 XFile 리스트
   /// 반환값: 저장 성공 시 Unit, 실패 시 LocalFailure
-  Future<Either<LocalFailure, Unit>> saveMedias(
-      List<Uint8List> images, List<String> path);
+  Future<Either<LocalFailure, List<File>>> saveMedias(List<XFile> tmpFiles);
 }

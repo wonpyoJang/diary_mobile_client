@@ -5,68 +5,106 @@ import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 @singleton
 class FileManager {
   final Logger _logger = Logger();
 
-  /// 이미지(또는 파일) 바이트를 앱 전용 디렉토리에 저장
-  /// [imageBytes] : 저장할 파일의 바이트 데이터
-  /// [tempPath] : 저장할 파일명
+  /// 이미지(또는 파일) 바이트를 지정된 파일에 저장
+  /// [tmpFile] : 저장할 임시 파일
   /// 성공 시 저장된 파일의 경로 반환, 실패 시 LocalFailure 반환
-  Future<Either<LocalFailure, String>> saveImage(
-      Uint8List imageBytes, String tempPath) async {
+  Future<Either<LocalFailure, File>> saveImage(XFile tmpFile) async {
+    final directoryResult = await _getApplicationDirectory();
+    return directoryResult.fold(
+      (failure) => left(failure),
+      (directory) async {
+        final fileResult = await _createTargetFile(tmpFile, directory);
+        return fileResult.fold(
+          (failure) => left(failure),
+          (file) async {
+            return await _writeFileContent(tmpFile, file);
+          },
+        );
+      },
+    );
+  }
+
+  /// 앱 문서 디렉토리 가져오기
+  Future<Either<LocalFailure, Directory>> _getApplicationDirectory() async {
     try {
-      _logger.d('이미지 저장 시작: $tempPath');
-
-      // 앱 전용 디렉토리 가져오기
       final directory = await getApplicationDocumentsDirectory();
-      final path = directory.path;
+      return right(directory);
+    } catch (e) {
+      _logger.e('앱 문서 디렉토리 가져오기 실패: ${e.toString()}');
+      return left(LocalFailure(message: "앱 문서 디렉토리를 가져올 수 없습니다."));
+    }
+  }
 
-      // 저장할 파일의 전체 경로 지정
-      final file = File(tempPath);
+  /// 대상 파일 생성
+  Future<Either<LocalFailure, File>> _createTargetFile(
+      XFile tmpFile, Directory directory) async {
+    try {
+      final fileName = tmpFile.name;
+      final file = File('${directory.path}/$fileName');
+      return right(file);
+    } catch (e) {
+      _logger.e('대상 파일 생성 실패: ${e.toString()}');
+      return left(LocalFailure(message: "대상 파일을 생성할 수 없습니다."));
+    }
+  }
 
-      // 파일 저장
-      await file.writeAsBytes(imageBytes);
+  /// 파일 내용 쓰기
+  Future<Either<LocalFailure, File>> _writeFileContent(
+      XFile tmpFile, File targetFile) async {
+    try {
+      _logger.d('이미지 저장 시작: ${tmpFile.path}');
 
-      _logger.d('이미지 저장 완료: ${file.path}');
-      return right(file.path);
+      final imageBytes = await tmpFile.readAsBytes();
+      await targetFile.writeAsBytes(imageBytes);
+
+      _logger.d('이미지 저장 완료: ${targetFile.path}');
+      return right(targetFile);
     } on FileSystemException catch (e) {
       _logger.e('FileSystemException 발생: ${e.message}');
       return left(LocalFailure(message: "파일 시스템 오류가 발생했습니다. (${e.message})"));
-    } on ArgumentError catch (e) {
-      _logger.e('ArgumentError 발생: ${e.message}');
-      return left(LocalFailure(message: "잘못된 인수가 전달되었습니다. (${e.message})"));
     } on Exception catch (e) {
       _logger.e('Exception 발생: ${e.toString()}');
       return left(
           LocalFailure(message: "이미지 저장 중 오류가 발생했습니다. (${e.toString()})"));
-    } catch (e) {
-      _logger.e('알 수 없는 예외 발생: ${e.toString()}');
-      return left(const LocalFailure(message: "이미지 저장 중 알 수 없는 오류가 발생했습니다."));
     }
   }
 
   /// 여러 파일 저장
-  /// [files] : 저장할 파일 객체 리스트
   /// 여러 이미지를 saveImage를 활용하여 저장하는 메소드
-  /// [images] : 저장할 이미지 바이트 리스트
-  /// [fileNames] : 각 이미지에 대응하는 파일명 리스트
-  /// 성공 시 Unit 반환, 실패 시 LocalFailure 반환
-  Future<Either<LocalFailure, Unit>> saveMultipleImages(
-      List<Uint8List> images, List<String> fileNames) async {
-    if (images.length != fileNames.length) {
-      return left(const LocalFailure(message: "이미지와 파일명 개수가 일치하지 않습니다."));
+  /// [tmpFiles] : 저장할 임시 파일 리스트
+  /// 성공 시 저장된 파일 리스트 반환, 실패 시 LocalFailure 반환
+  Future<Either<LocalFailure, List<File>>> saveMultipleImages(
+      List<XFile> tmpFiles) async {
+    if (tmpFiles.isEmpty) {
+      return right([]);
     }
 
-    for (int i = 0; i < images.length; i++) {
-      final result = await saveImage(images[i], fileNames[i]);
-      if (result.isLeft()) {
-        // 하나라도 실패하면 즉시 실패 반환
-        return left(result.getLeft().toNullable()!);
-      }
+    final results =
+        await Future.wait(tmpFiles.map((tmpFile) => saveImage(tmpFile)));
+
+    // 성공과 실패 결과를 분리
+    final successes = <File>[];
+    final failures = <LocalFailure>[];
+
+    for (final result in results) {
+      result.fold(
+        (failure) => failures.add(failure),
+        (file) => successes.add(file),
+      );
     }
-    return right(unit);
+
+    // 실패가 있으면 첫 번째 실패 반환
+    if (failures.isNotEmpty) {
+      return left(failures.first);
+    }
+
+    return right(successes);
   }
 
   /// 파일 삭제
