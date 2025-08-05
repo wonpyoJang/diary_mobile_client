@@ -11,6 +11,7 @@ import 'package:diary_mobile_client/src/feature/moment/write_moment/infrastuctur
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
 
 @LazySingleton(as: IWriteMomentRepository)
 class WriteMomentRepository implements IWriteMomentRepository {
@@ -32,10 +33,8 @@ class WriteMomentRepository implements IWriteMomentRepository {
     return result.fold(
       (failure) => left(SelectMediasFailed(message: failure.message)),
       (medias) async {
-        List<File> files = medias.map((e) => File(e.path)).toList();
         final saveResultOrFailure = await mediaInfoLocalProvider.saveMedias(
-          files.map((e) => e.readAsBytesSync()).toList(),
-          files.map((e) => e.path).toList(),
+          medias,
         );
 
         return saveResultOrFailure.fold(
