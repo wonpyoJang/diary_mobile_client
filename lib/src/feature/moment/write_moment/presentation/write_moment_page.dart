@@ -1,4 +1,5 @@
 import 'package:diary_mobile_client/src/core/analytics/analytics_manager.dart';
+import 'package:diary_mobile_client/src/feature/common/image_viewer.dart';
 import 'package:diary_mobile_client/src/feature/common/loading_indicator.dart';
 import 'package:diary_mobile_client/src/feature/common/yes_or_no_dialog.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_bloc.dart';
@@ -233,14 +234,34 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                                             final media = medias[index];
                                             return Stack(
                                               children: [
-                                                ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  child: Image.file(
-                                                    File(media.path),
-                                                    width: 100,
-                                                    height: 100,
-                                                    fit: BoxFit.cover,
+                                                InkWell(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ImageViewerPage(
+                                                          imageUrls: medias
+                                                              .map(
+                                                                  (e) => e.path)
+                                                              .toList(),
+                                                          initialIndex: index,
+                                                          title:
+                                                              "${widget.arguments.date.month}월 ${widget.arguments.date.day}일",
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    child: Image.file(
+                                                      File(media.path),
+                                                      width: 100,
+                                                      height: 100,
+                                                      fit: BoxFit.cover,
+                                                    ),
                                                   ),
                                                 ),
                                                 // x 버튼(삭제 버튼) 추가
