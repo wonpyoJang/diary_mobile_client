@@ -78,7 +78,7 @@ class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
       final newMoment = state.moment.copyWith(reflection: event.newText);
 
       if (needToSave) {
-        final result = await writeMomentRepository.saveMoment(state.moment);
+        final result = await writeMomentRepository.saveMoment(newMoment);
         emit(result.fold(
           (failure) => state.copyWith(failure: failure),
           (unit) {
@@ -88,7 +88,7 @@ class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
           },
         ));
       } else {
-        final result = await writeMomentRepository.updateMoment(state.moment);
+        final result = await writeMomentRepository.updateMoment(newMoment);
 
         emit(result.fold((failure) => state.copyWith(failure: failure),
             (unit) => state.copyWith(moment: newMoment, isSaved: needToSave)));

@@ -61,14 +61,7 @@ class MomentListBloc extends Bloc<MomentListEvent, MomentListState> {
         },
         (moments) {
           // 첫 번째 날짜를 찾습니다
-          DateTime? firstDay;
-          for (final momentList in moments.values) {
-            for (final moment in momentList) {
-              if (firstDay == null || moment.modifiedAt.isBefore(firstDay)) {
-                firstDay = moment.modifiedAt;
-              }
-            }
-          }
+          final firstDay = _calculateFirstDay(moments);
 
           // 상태를 업데이트합니다
           return MomentListState(moments: moments, firstDay: firstDay);
@@ -88,13 +81,10 @@ class MomentListBloc extends Bloc<MomentListEvent, MomentListState> {
         newMoments[event.moment.date] = [event.moment];
       }
 
-      DateTime? firstDay;
-      if (state.firstDay == null) {
-        firstDay = event.moment.modifiedAt;
-      }
-
-      if (event.moment.modifiedAt.isBefore(firstDay!)) {
-        firstDay = event.moment.modifiedAt;
+      // 새로운 moment의 date가 기존 firstDay보다 이른 경우에만 업데이트
+      DateTime? firstDay = state.firstDay;
+      if (firstDay == null || event.moment.date.isBefore(firstDay)) {
+        firstDay = event.moment.date;
       }
 
       emit(MomentListState(moments: newMoments, firstDay: firstDay));
@@ -109,7 +99,13 @@ class MomentListBloc extends Bloc<MomentListEvent, MomentListState> {
                 moment.id == event.moment.id ? event.moment : moment)
             .toList();
 
-        emit(MomentListState(moments: updatedMoments));
+        // moment가 업데이트된 경우, 새로운 date가 firstDay보다 이른지 확인
+        DateTime? firstDay = state.firstDay;
+        if (firstDay == null || event.moment.date.isBefore(firstDay)) {
+          firstDay = event.moment.date;
+        }
+
+        emit(MomentListState(moments: updatedMoments, firstDay: firstDay));
       },
       transformer: (events, mapper) => events
           .debounceTime(const Duration(milliseconds: 500))
@@ -123,8 +119,35 @@ class MomentListBloc extends Bloc<MomentListEvent, MomentListState> {
           .where((moment) => moment.id != event.moment.id)
           .toList();
 
-      emit(MomentListState(moments: updatedMoments));
+      // moment가 삭제된 경우, 삭제된 moment가 firstDay였다면 재계산 필요
+      DateTime? firstDay = state.firstDay;
+      if (firstDay != null && isSameDay(event.moment.date, firstDay)) {
+        firstDay = _calculateFirstDay(updatedMoments);
+      }
+
+      emit(MomentListState(moments: updatedMoments, firstDay: firstDay));
     });
+  }
+
+  /// 캘린더의 가장 첫번째 날을 계산하는 헬퍼 메서드
+  DateTime? _calculateFirstDay(LinkedHashMap<DateTime, List<Moment>> moments) {
+    if (moments.isEmpty) return null;
+
+    DateTime? firstDay;
+
+    // 모든 moment의 date 중 가장 이른 날짜를 찾습니다
+    for (final entry in moments.entries) {
+      final date = entry.key;
+      final momentList = entry.value;
+
+      for (final moment in momentList) {
+        if (firstDay == null || moment.date.isBefore(firstDay)) {
+          firstDay = moment.date;
+        }
+      }
+    }
+
+    return firstDay;
   }
 
   // @override
