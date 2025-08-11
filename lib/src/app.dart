@@ -1,4 +1,5 @@
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_bloc.dart';
+import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_event.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/write_moment_page.dart';
 import 'package:diary_mobile_client/src/feature/settings/application/settings_bloc.dart';
 import 'package:diary_mobile_client/src/feature/splash/splash_page.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
           create: (context) => getIt<SettingsBloc>(),
         ),
         BlocProvider(
-          create: (context) => getIt<MomentListBloc>(),
+          create: (context) => getIt<MomentListBloc>()..add(LoadMoments()),
         ),
       ],
       child: ListenableBuilder(

@@ -46,44 +46,34 @@ class MomentListBloc extends Bloc<MomentListEvent, MomentListState> {
     });
 
     on<LoadMoments>((event, emit) async {
-      try {
-        // repository를 통해 모든 일기를 가져옵니다
-        final result = await momentListRepository.getAllMoments();
+      // repository를 통해 모든 일기를 가져옵니다
+      final result = await momentListRepository.getAllMoments();
 
-        result.fold(
-          (failure) {
-            // 실패 시 빈 상태로 초기화
-            emit(MomentListState(
-              moments: LinkedHashMap(
-                equals: isSameDay,
-                hashCode: getHashCode,
-              ),
-            ));
-          },
-          (moments) {
-            // 첫 번째 날짜를 찾습니다
-            DateTime? firstDay;
-            for (final momentList in moments.values) {
-              for (final moment in momentList) {
-                if (firstDay == null || moment.modifiedAt.isBefore(firstDay)) {
-                  firstDay = moment.modifiedAt;
-                }
+      emit(result.fold(
+        (failure) {
+          // 실패 시 빈 상태로 초기화
+          return MomentListState(
+            moments: LinkedHashMap(
+              equals: isSameDay,
+              hashCode: getHashCode,
+            ),
+          );
+        },
+        (moments) {
+          // 첫 번째 날짜를 찾습니다
+          DateTime? firstDay;
+          for (final momentList in moments.values) {
+            for (final moment in momentList) {
+              if (firstDay == null || moment.modifiedAt.isBefore(firstDay)) {
+                firstDay = moment.modifiedAt;
               }
             }
+          }
 
-            // 상태를 업데이트합니다
-            emit(MomentListState(moments: moments, firstDay: firstDay));
-          },
-        );
-      } catch (e) {
-        // 에러 발생 시 빈 상태로 초기화
-        emit(MomentListState(
-          moments: LinkedHashMap(
-            equals: isSameDay,
-            hashCode: getHashCode,
-          ),
-        ));
-      }
+          // 상태를 업데이트합니다
+          return MomentListState(moments: moments, firstDay: firstDay);
+        },
+      ));
     });
 
     on<AddMoment>((event, emit) {

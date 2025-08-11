@@ -8,10 +8,12 @@ import 'package:path/path.dart' as p;
 import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
+import 'package:injectable/injectable.dart';
 
 part 'app_database.g.dart';
 
 @DriftDatabase(tables: [MomentTable, EmotionalIntensityTable, MediaTable])
+@injectable
 class Database extends _$Database {
   Database() : super(_openConnection());
 

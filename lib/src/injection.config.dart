@@ -34,6 +34,14 @@ import 'feature/moment/application/moments/moment_list_bloc.dart' as _i269;
 import 'feature/moment/domain/entity/moment.dart' as _i900;
 import 'feature/moment/moment_calendar/application/moment_calendar_bloc.dart'
     as _i307;
+import 'feature/moment/moment_list/domain/interface/i_moment_list_repository.dart'
+    as _i1053;
+import 'feature/moment/moment_list/infrastructure/interfaces/i_moment_list_local_provider.dart'
+    as _i63;
+import 'feature/moment/moment_list/infrastructure/providers/moment_list_local_provider.dart'
+    as _i801;
+import 'feature/moment/moment_list/infrastructure/repositories/moment_list_repository.dart'
+    as _i203;
 import 'feature/moment/write_moment/application/write_moment_bloc.dart'
     as _i812;
 import 'feature/moment/write_moment/domain/interface/i_write_moment_repository.dart'
@@ -66,6 +74,7 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final dioModule = _$DioModule();
+    gh.factory<_i587.Database>(() => _i587.Database());
     gh.factory<_i584.SettingsBloc>(() => _i584.SettingsBloc());
     gh.factory<_i307.MomentCalendarBloc>(() => _i307.MomentCalendarBloc());
     gh.singleton<_i681.Gemini>(() => _i681.Gemini());
@@ -108,8 +117,14 @@ extension GetItInjectableX on _i174.GetIt {
           date,
           gh<_i79.IWriteMomentRepository>(),
         ));
-    gh.factory<_i269.MomentListBloc>(
-        () => _i269.MomentListBloc(gh<_i461.Bus>()));
+    gh.factory<_i63.IMomentListLocalProvider>(
+        () => _i801.MomentListLocalProvider(gh<_i587.Database>()));
+    gh.factory<_i1053.IMomentListRepository>(
+        () => _i203.MomentListRepository(gh<_i63.IMomentListLocalProvider>()));
+    gh.factory<_i269.MomentListBloc>(() => _i269.MomentListBloc(
+          gh<_i461.Bus>(),
+          gh<_i1053.IMomentListRepository>(),
+        ));
     return this;
   }
 }

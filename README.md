@@ -50,6 +50,54 @@ flutter test
 
 (Only a smoke test is currently included.)
 
+## Build Management with Makefile
+
+This project includes a comprehensive Makefile for managing generated files and build artifacts across all platforms.
+
+### Available Commands
+
+#### **Basic Cleanup Commands**
+- `make clean` - Remove Flutter generated files only
+- `make clean-all` - Remove all generated files and build caches
+
+#### **Full Regeneration**
+- `make regenerate` - Regenerate all generated files for all platforms
+
+#### **Platform-Specific Regeneration**
+- `make regenerate-ios` - iOS only regeneration
+- `make regenerate-android` - Android only regeneration  
+- `make regenerate-macos` - macOS only regeneration
+- `make regenerate-linux` - Linux only regeneration
+- `make regenerate-windows` - Windows only regeneration
+- `make regenerate-web` - Web only regeneration
+
+#### **Help**
+- `make help` - Display available commands
+
+### Usage Examples
+
+```bash
+# Regenerate all generated files for all platforms
+make regenerate
+
+# Regenerate only for specific platform (e.g., iOS)
+make regenerate-ios
+
+# Clean generated files only
+make clean
+
+# Show help
+make help
+```
+
+### What Gets Cleaned/Regenerated
+
+The Makefile manages:
+- **Flutter Generated Files**: `*.g.dart` files, plugin registrants
+- **Build Caches**: `build/`, `.dart_tool/`, `.flutter-plugins*`
+- **Platform Dependencies**: `ios/Pods/`, `macos/Pods/`, `android/.gradle/`
+- **Platform Builds**: All platform-specific build outputs
+
 ## Assets
 
 Custom fonts and images are located under `assets/`. Application icons and splash screens are configured via `flutter_launcher_icons` and `flutter_native_splash`.

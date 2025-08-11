@@ -15,6 +15,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'src/injection.dart';
 import 'src/feature/settings/settings_controller.dart';
 import 'src/feature/settings/settings_service.dart';
+import 'src/database/app_database.dart';
 
 import 'src/app.dart';
 
@@ -65,7 +66,22 @@ void main() async {
         encryptionCipher: HydratedAesCipher(byteskey),
       );
 
+      // 의존성 주입 설정
       await configureDependencies();
+
+      // 데이터베이스 인스턴스 가져오기
+      final database = getIt<Database>();
+      logger.i('데이터베이스가 초기화되었습니다.');
+
+      // 앱이 종료될 때 데이터베이스를 닫도록 설정
+      WidgetsBinding.instance.addObserver(
+        LifecycleEventHandler(
+          detachedCallBack: () async {
+            await database.close();
+            logger.i('데이터베이스가 종료되었습니다.');
+          },
+        ),
+      );
 
       // Set up the SettingsController, which will glue user settings to multiple
       // Flutter Widgets.
@@ -81,4 +97,26 @@ void main() async {
       runApp(MyApp(settingsController: settingsController));
     },
   );
+}
+
+// 앱 생명주기 이벤트를 처리하는 클래스
+class LifecycleEventHandler extends WidgetsBindingObserver {
+  final Future<void> Function()? detachedCallBack;
+
+  LifecycleEventHandler({
+    this.detachedCallBack,
+  });
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    switch (state) {
+      case AppLifecycleState.detached:
+        if (detachedCallBack != null) {
+          await detachedCallBack!();
+        }
+        break;
+      default:
+        break;
+    }
+  }
 }
