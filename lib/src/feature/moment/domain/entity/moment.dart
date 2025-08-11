@@ -79,9 +79,10 @@ class Moment extends Equatable {
                 intensity: e['intensity'] as double,
               ))
           .toList(),
-      medias: (json['medias'] as List<dynamic>)
-          .map((e) => File(e['path'] as String))
-          .toList(),
+      medias: (json['medias'] as List<dynamic>?)
+              ?.map((e) => File(e['path'] as String))
+              .toList() ??
+          [],
     );
   }
 

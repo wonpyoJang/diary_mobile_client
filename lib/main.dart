@@ -69,7 +69,7 @@ void main() async {
       // 의존성 주입 설정
       await configureDependencies();
 
-      // 데이터베이스 인스턴스 가져오기
+      // 데이터베이스 인스턴스 가져오기 (의존성 주입 후)
       final database = getIt<Database>();
       logger.i('데이터베이스가 초기화되었습니다.');
 
@@ -77,8 +77,12 @@ void main() async {
       WidgetsBinding.instance.addObserver(
         LifecycleEventHandler(
           detachedCallBack: () async {
-            await database.close();
-            logger.i('데이터베이스가 종료되었습니다.');
+            try {
+              await database.close();
+              logger.i('데이터베이스가 종료되었습니다.');
+            } catch (e) {
+              logger.e('데이터베이스 종료 중 오류 발생: $e');
+            }
           },
         ),
       );

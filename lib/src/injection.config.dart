@@ -74,9 +74,9 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final dioModule = _$DioModule();
-    gh.factory<_i587.Database>(() => _i587.Database());
     gh.factory<_i584.SettingsBloc>(() => _i584.SettingsBloc());
     gh.factory<_i307.MomentCalendarBloc>(() => _i307.MomentCalendarBloc());
+    gh.singleton<_i587.Database>(() => _i587.Database());
     gh.singleton<_i681.Gemini>(() => _i681.Gemini());
     gh.singleton<_i891.FileManager>(() => _i891.FileManager());
     gh.singleton<_i917.ImagePickerClient>(() => _i917.ImagePickerClient());
