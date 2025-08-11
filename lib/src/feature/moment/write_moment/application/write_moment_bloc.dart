@@ -32,7 +32,7 @@ class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
 
   @override
   void onChange(Change<WriteMomentState> change) {
-    if (change.currentState != change.nextState) {
+    if (change.currentState.moment != change.nextState.moment) {
       bus.publish(MomentModifiedMessage(
           moment: change.nextState.moment,
           modeifiedAt: change.nextState.moment.modifiedAt));
