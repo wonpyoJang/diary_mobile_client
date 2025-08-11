@@ -68,18 +68,31 @@ class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
       ));
     }, transformer: throttle(const Duration(milliseconds: 500)));
 
-    on<TextChangedEvent>((event, emit) {
+    on<TextChangedEvent>((event, emit) async {
       final needToSave = state.mode == WriteMode.create &&
           event.newText.isNotEmpty &&
           state.isSaved == false;
 
-      if (needToSave) {
-        bus.publish(MomentCreatedMessage(moment: state.moment, date: date));
-      }
+      // 모먼트를 로컬 저장소에 저장
 
       final newMoment = state.moment.copyWith(reflection: event.newText);
 
-      emit(state.copyWith(moment: newMoment, isSaved: needToSave));
+      if (needToSave) {
+        final result = await writeMomentRepository.saveMoment(state.moment);
+        emit(result.fold(
+          (failure) => state.copyWith(failure: failure),
+          (unit) {
+            bus.publish(MomentCreatedMessage(moment: state.moment, date: date));
+
+            return state.copyWith(isSaved: true, moment: newMoment);
+          },
+        ));
+      } else {
+        final result = await writeMomentRepository.updateMoment(state.moment);
+
+        emit(result.fold((failure) => state.copyWith(failure: failure),
+            (unit) => state.copyWith(moment: newMoment, isSaved: needToSave)));
+      }
     }, transformer: debounce(const Duration(milliseconds: 500)));
 
     on<AddMedias>((event, emit) async {
@@ -91,16 +104,31 @@ class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
           isLoading: false,
           failure: failure,
         )),
-        (medias) {
+        (medias) async {
           final needToSave = state.mode == WriteMode.create &&
               medias.isNotEmpty &&
               state.isSaved == false;
 
-          if (state.mode == WriteMode.create &&
-              medias.isNotEmpty &&
-              state.isSaved == false) {
+          if (needToSave) {
             bus.publish(MomentCreatedMessage(moment: state.moment, date: date));
+            final saveResult =
+                await writeMomentRepository.saveMoment(state.moment);
+            saveResult.fold(
+              (failure) =>
+                  emit(state.copyWith(isLoading: false, failure: failure)),
+              (unit) => null,
+            );
+          } else {
+            final result = await writeMomentRepository.updateMedias(
+                state.moment.id, medias);
+            emit(result.fold((failure) => state.copyWith(failure: failure),
+                (unit) => state.copyWith(isSaved: true)));
           }
+
+          final result =
+              await writeMomentRepository.saveMedias(state.moment.id, medias);
+          emit(result.fold((failure) => state.copyWith(failure: failure),
+              (unit) => state.copyWith(isSaved: true)));
 
           final newMoment = state.moment.copyWith(
             medias: [

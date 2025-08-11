@@ -10,4 +10,17 @@ abstract class IWriteMomentRepository {
   Future<Either<WriteMomentFailure, Moment>> analyze(Moment text);
 
   Future<Either<WriteMomentFailure, String>> describeImage(Moment moment);
+
+  Future<Either<WriteMomentFailure, Unit>> saveMoment(Moment moment);
+
+  Future<Either<WriteMomentFailure, Unit>> saveMedias(
+      String momentId, List<File> medias);
+
+  Future<Either<WriteMomentFailure, Unit>> updateMoment(Moment moment);
+
+  Future<Either<WriteMomentFailure, Unit>> updateMedias(
+      String momentId, List<File> medias);
+
+  Future<Either<WriteMomentFailure, Unit>> deleteMedias(
+      String momentId, List<String> mediaIds);
 }

@@ -4,7 +4,9 @@ import 'dart:io';
 
 import 'package:diary_mobile_client/src/feature/moment/application/moment_messages.dart';
 import 'package:diary_mobile_client/src/feature/moment/domain/entity/emotional_intensity.dart';
+import 'package:diary_mobile_client/src/feature/moment/domain/entity/moment.dart';
 import 'package:diary_mobile_client/src/feature/moment/domain/enums/emotion.dart';
+import 'package:diary_mobile_client/src/feature/moment/moment_list/domain/interface/i_moment_list_repository.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
@@ -12,13 +14,13 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../bus/bus.dart';
 import '../../../../bus/bus_message.dart';
-import '../../domain/entity/moment.dart';
 import 'moment_list_event.dart';
 import 'moment_list_state.dart';
 
 @injectable
-class MomentListBloc extends HydratedBloc<MomentListEvent, MomentListState> {
+class MomentListBloc extends Bloc<MomentListEvent, MomentListState> {
   final Bus bus;
+  final IMomentListRepository momentListRepository;
   late StreamSubscription<BusMessage> busSubscription;
 
   @override
@@ -27,7 +29,7 @@ class MomentListBloc extends HydratedBloc<MomentListEvent, MomentListState> {
     return super.close();
   }
 
-  MomentListBloc(this.bus)
+  MomentListBloc(this.bus, this.momentListRepository)
       : super(MomentListState(
             moments: LinkedHashMap(
           equals: isSameDay,
@@ -43,7 +45,46 @@ class MomentListBloc extends HydratedBloc<MomentListEvent, MomentListState> {
       }
     });
 
-    on<LoadMoments>((event, meit) {});
+    on<LoadMoments>((event, emit) async {
+      try {
+        // repository를 통해 모든 일기를 가져옵니다
+        final result = await momentListRepository.getAllMoments();
+
+        result.fold(
+          (failure) {
+            // 실패 시 빈 상태로 초기화
+            emit(MomentListState(
+              moments: LinkedHashMap(
+                equals: isSameDay,
+                hashCode: getHashCode,
+              ),
+            ));
+          },
+          (moments) {
+            // 첫 번째 날짜를 찾습니다
+            DateTime? firstDay;
+            for (final momentList in moments.values) {
+              for (final moment in momentList) {
+                if (firstDay == null || moment.modifiedAt.isBefore(firstDay)) {
+                  firstDay = moment.modifiedAt;
+                }
+              }
+            }
+
+            // 상태를 업데이트합니다
+            emit(MomentListState(moments: moments, firstDay: firstDay));
+          },
+        );
+      } catch (e) {
+        // 에러 발생 시 빈 상태로 초기화
+        emit(MomentListState(
+          moments: LinkedHashMap(
+            equals: isSameDay,
+            hashCode: getHashCode,
+          ),
+        ));
+      }
+    });
 
     on<AddMoment>((event, emit) {
       final newMoments = state.moments;
@@ -96,79 +137,79 @@ class MomentListBloc extends HydratedBloc<MomentListEvent, MomentListState> {
     });
   }
 
-  @override
-  MomentListState? fromJson(Map<String, dynamic> json) {
-    if (json['moments'] == null) return null;
+  // @override
+  // MomentListState? fromJson(Map<String, dynamic> json) {
+  //   if (json['moments'] == null) return null;
 
-    final momentsJson = json['moments'] as List<dynamic>;
-    final moments = LinkedHashMap<DateTime, List<Moment>>(
-      equals: isSameDay,
-      hashCode: getHashCode,
-    );
+  //   final momentsJson = json['moments'] as List<dynamic>;
+  //   final moments = LinkedHashMap<DateTime, List<Moment>>(
+  //     equals: isSameDay,
+  //     hashCode: getHashCode,
+  //   );
 
-    for (final entry in momentsJson) {
-      final date = DateTime.parse(entry['date'] as String);
-      final momentsList = (entry['moments'] as List<dynamic>).map((momentJson) {
-        return Moment(
-          id: momentJson['id'] as String,
-          reflection: momentJson['reflection'] as String,
-          date: DateTime.parse(momentJson['date'] as String),
-          modifiedAt: DateTime.parse(momentJson['modifiedAt'] as String),
-          emotionalIntensities:
-              (momentJson['emotionalIntensities'] as List<dynamic>)
-                  .map((e) => EmotionalIntensity(
-                        emotion: Emotion.findByName(e['emotion'] as String),
-                        intensity: e['intensity'] as double,
-                      ))
-                  .toList(),
-          medias: (momentJson['medias'] as List<dynamic>)
-              .map((e) => File(e['path'] as String))
-              .toList(),
-        );
-      }).toList();
+  //   for (final entry in momentsJson) {
+  //     final date = DateTime.parse(entry['date'] as String);
+  //     final momentsList = (entry['moments'] as List<dynamic>).map((momentJson) {
+  //       return Moment(
+  //         id: momentJson['id'] as String,
+  //         reflection: momentJson['reflection'] as String,
+  //         date: DateTime.parse(momentJson['date'] as String),
+  //         modifiedAt: DateTime.parse(momentJson['modifiedAt'] as String),
+  //         emotionalIntensities:
+  //             (momentJson['emotionalIntensities'] as List<dynamic>)
+  //                 .map((e) => EmotionalIntensity(
+  //                       emotion: Emotion.findByName(e['emotion'] as String),
+  //                       intensity: e['intensity'] as double,
+  //                     ))
+  //                 .toList(),
+  //         medias: (momentJson['medias'] as List<dynamic>)
+  //             .map((e) => File(e['path'] as String))
+  //             .toList(),
+  //       );
+  //     }).toList();
 
-      moments[date] = momentsList;
-    }
+  //     moments[date] = momentsList;
+  //   }
 
-    final firstDay = json['firstDay'] != null
-        ? DateTime.parse(json['firstDay'] as String)
-        : null;
+  //   final firstDay = json['firstDay'] != null
+  //       ? DateTime.parse(json['firstDay'] as String)
+  //       : null;
 
-    return MomentListState(moments: moments, firstDay: firstDay);
-  }
+  //   return MomentListState(moments: moments, firstDay: firstDay);
+  // }
 
-  @override
-  Map<String, dynamic>? toJson(MomentListState state) {
-    return {
-      'moments': state.moments.entries.map((entry) {
-        final date = entry.key;
-        final moments = entry.value;
-        return {
-          'date': date.toIso8601String(),
-          'moments': moments
-              .map((moment) => {
-                    'id': moment.id,
-                    'reflection': moment.reflection,
-                    'date': moment.date.toIso8601String(),
-                    'modifiedAt': moment.modifiedAt.toIso8601String(),
-                    'emotionalIntensities': moment.emotionalIntensities
-                        .map((e) => {
-                              'emotion': e.emotion.name,
-                              'intensity': e.intensity,
-                            })
-                        .toList(),
-                    'medias': moment.medias
-                        .map((media) => {
-                              'path': media.path,
-                            })
-                        .toList(),
-                  })
-              .toList(),
-        };
-      }).toList(),
-      'firstDay': state.firstDay?.toIso8601String(),
-    };
-  }
+  // @override
+  // Map<String, dynamic>? toJson(MomentListState state) {
+  //   return {
+  //     'moments': state.moments.entries.map((entry) {
+  //       final date = entry.key;
+  //       final moments = entry.value;
+  //       return {
+  //         'date': date.toIso8601String(),
+  //         'moments': moments
+  //             .map((moment) => {
+  //                   'id': moment.id,
+  //                   'reflection': moment.reflection,
+  //                   'date': moment.date.toIso8601String(),
+  //                   'modifiedAt': moment.modifiedAt.toIso8601String(),
+  //                   'emotionalIntensities': moment.emotionalIntensities
+  //                       .map((e) => {
+  //                             'emotion': e.emotion.name,
+  //                             'intensity': e.intensity,
+  //                           })
+  //                       .toList(),
+  //                   'medias': moment.medias
+  //                       .map((media) => {
+  //                             'path': media.path,
+  //                           })
+  //                       .toList(),
+  //                 })
+  //             .toList(),
+  //       };
+  //     }).toList(),
+  //     'firstDay': state.firstDay?.toIso8601String(),
+  //   };
+  // }
 }
 
 int getHashCode(DateTime key) {

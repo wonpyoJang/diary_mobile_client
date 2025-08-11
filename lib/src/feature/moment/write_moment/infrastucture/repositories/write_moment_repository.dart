@@ -8,6 +8,7 @@ import 'package:diary_mobile_client/src/feature/moment/write_moment/domain/failu
 import 'package:diary_mobile_client/src/feature/moment/write_moment/domain/interface/i_write_moment_repository.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/infrastucture/interfaces/i_write_moment_internal_provider.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/infrastucture/interfaces/i_write_moment_external_provider.dart';
+import 'package:diary_mobile_client/src/feature/moment/write_moment/infrastucture/interfaces/i_write_moment_local_provider.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
@@ -17,11 +18,14 @@ import 'package:share_plus/share_plus.dart';
 class WriteMomentRepository implements IWriteMomentRepository {
   final IWriteMomentExternalProvider writeMomentExternalProvider;
   final IWriteMomentInternalProvider writeMomentInternalProvider;
+  final IWriteMomentLocalProvider writeMomentLocalProvider;
   final IDeviceInfoLocalProvider deviceInfoLocalProvider;
   final IMeidaInfoLocalProvider mediaInfoLocalProvider;
+
   WriteMomentRepository({
     required this.writeMomentExternalProvider,
     required this.writeMomentInternalProvider,
+    required this.writeMomentLocalProvider,
     required this.deviceInfoLocalProvider,
     required this.mediaInfoLocalProvider,
   });
@@ -82,6 +86,74 @@ class WriteMomentRepository implements IWriteMomentRepository {
     return result.fold(
       (failure) => left(MomentDescribeImageFailed(message: failure.message)),
       (description) => right(description),
+    );
+  }
+
+  @override
+  Future<Either<WriteMomentFailure, Unit>> saveMoment(Moment moment) async {
+    final result = await writeMomentLocalProvider.saveMoment(
+      MomentDto.fromDomain(moment),
+    );
+
+    return result.fold(
+      (failure) => left(SaveMomentFailed(message: failure.message)),
+      (_) => right(unit),
+    );
+  }
+
+  @override
+  Future<Either<WriteMomentFailure, Unit>> saveMedias(
+    String momentId,
+    List<File> medias,
+  ) async {
+    final mediaPaths = medias.map((file) => file.path).toList();
+    final result =
+        await writeMomentLocalProvider.saveMedia(momentId, mediaPaths);
+
+    return result.fold(
+      (failure) => left(SaveMediaFailed(message: failure.message)),
+      (_) => right(unit),
+    );
+  }
+
+  @override
+  Future<Either<WriteMomentFailure, Unit>> updateMoment(Moment moment) async {
+    final result = await writeMomentLocalProvider.updateMoment(
+      MomentDto.fromDomain(moment),
+    );
+
+    return result.fold(
+      (failure) => left(SaveMomentFailed(message: failure.message)),
+      (_) => right(unit),
+    );
+  }
+
+  @override
+  Future<Either<WriteMomentFailure, Unit>> updateMedias(
+    String momentId,
+    List<File> medias,
+  ) async {
+    final mediaPaths = medias.map((file) => file.path).toList();
+    final result =
+        await writeMomentLocalProvider.updateMedia(momentId, mediaPaths);
+
+    return result.fold(
+      (failure) => left(SaveMediaFailed(message: failure.message)),
+      (_) => right(unit),
+    );
+  }
+
+  @override
+  Future<Either<WriteMomentFailure, Unit>> deleteMedias(
+    String momentId,
+    List<String> mediaIds,
+  ) async {
+    final result =
+        await writeMomentLocalProvider.deleteMedias(momentId, mediaIds);
+
+    return result.fold(
+      (failure) => left(SaveMediaFailed(message: failure.message)),
+      (_) => right(unit),
     );
   }
 }

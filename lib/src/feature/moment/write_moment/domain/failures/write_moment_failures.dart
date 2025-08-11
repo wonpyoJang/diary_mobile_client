@@ -34,3 +34,21 @@ class MomentDescribeImageFailed extends WriteMomentFailure {
   @override
   List<Object?> get props => [message];
 }
+
+class SaveMomentFailed extends WriteMomentFailure {
+  final String message;
+
+  const SaveMomentFailed({required this.message}) : super(message: message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class SaveMediaFailed extends WriteMomentFailure {
+  final String message;
+
+  const SaveMediaFailed({required this.message}) : super(message: message);
+
+  @override
+  List<Object?> get props => [message];
+}

@@ -22,12 +22,11 @@ dependencies:
 
   # Utility libraries
   equatable: ^2.0.0
-  get_it: ^8.0.3
-  injectable: ^2.5.0
+  get_it: ^8.2.0
+  injectable: ^2.5.1
   rxdart: ^0.28.0
-  path_provider: ^2.1.5
   flutter_slidable: ^4.0.0
-  uuid: ^4.5.1
+  uuid: ^4.3.3  # ID 생성을 위한 패키지
   crypto: ^3.0.6
   firebase_ai: ^2.2.1
   google_fonts: ^6.2.1
@@ -59,16 +58,21 @@ dependencies:
   image_picker: ^1.1.2
   image: ^4.5.4
   photo_view: ^0.14.0
+  drift: ^2.28.1
+  drift_flutter: ^0.2.5
+  path_provider: ^2.1.5
+  path: ^1.9.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^4.0.0
-  build_runner: ^2.4.7
-  injectable_generator:
+  injectable_generator: ^2.5.1
   flutter_launcher_icons: ^0.14.3
   flutter_native_splash: ^2.4.6
+  drift_dev: ^2.28.1
+  build_runner: ^2.6.0
 
 flutter:
   uses-material-design: true

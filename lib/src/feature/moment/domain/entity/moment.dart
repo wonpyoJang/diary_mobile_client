@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
+import 'package:diary_mobile_client/src/core/utils/id_generator.dart';
 import 'package:diary_mobile_client/src/feature/moment/domain/entity/emotional_intensity.dart';
 import 'package:diary_mobile_client/src/feature/moment/domain/enums/emotion.dart';
 import 'package:equatable/equatable.dart';
@@ -22,6 +23,23 @@ class Moment extends Equatable {
   final DateTime modifiedAt;
   final List<EmotionalIntensity> emotionalIntensities;
   final List<File> medias;
+
+  /// 새로운 Moment를 생성합니다.
+  factory Moment.create({
+    required String reflection,
+    required DateTime date,
+    List<File> medias = const [],
+  }) {
+    final now = DateTime.now();
+    return Moment(
+      id: IdGenerator.generate(prefix: 'moment'),
+      reflection: reflection,
+      date: date,
+      modifiedAt: now,
+      emotionalIntensities: const [],
+      medias: medias,
+    );
+  }
 
   String getFormattedDateTime() {
     final DateFormat formatter =
