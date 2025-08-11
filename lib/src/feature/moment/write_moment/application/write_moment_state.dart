@@ -9,6 +9,7 @@ class WriteMomentState extends Equatable {
   final Moment moment;
   final bool isLoading;
   final bool isSaved;
+  final bool hasAnalyzed;
   final String errorMessage;
   final WriteMomentFailure? failure;
   final bool isTextGenerated;
@@ -18,6 +19,7 @@ class WriteMomentState extends Equatable {
     required this.moment,
     this.isLoading = false,
     this.isSaved = false,
+    this.hasAnalyzed = false,
     this.errorMessage = '',
     this.failure,
     this.isTextGenerated = false,
@@ -27,6 +29,7 @@ class WriteMomentState extends Equatable {
     Moment? moment,
     bool? isLoading,
     bool? isSaved,
+    bool? hasAnalyzed,
     String? errorMessage,
     WriteMomentFailure? failure,
     WriteMode? mode, // mode 추가
@@ -36,6 +39,7 @@ class WriteMomentState extends Equatable {
       moment: moment ?? this.moment,
       isLoading: isLoading ?? this.isLoading,
       isSaved: isSaved ?? this.isSaved,
+      hasAnalyzed: hasAnalyzed ?? this.hasAnalyzed,
       errorMessage: errorMessage ?? this.errorMessage,
       failure: failure ?? this.failure,
       mode: mode ?? this.mode, // mode 추가
@@ -49,6 +53,7 @@ class WriteMomentState extends Equatable {
         moment,
         isLoading,
         isSaved,
+        hasAnalyzed,
         errorMessage,
         failure,
         isTextGenerated

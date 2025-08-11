@@ -160,7 +160,9 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                         ),
                       BlocListener<WriteMomentBloc, WriteMomentState>(
                         listenWhen: (prev, next) {
-                          return prev.isLoading == true &&
+                          // 분석이 완료된 후(isLoading이 false가 된 후)에 감정이 없을 때만 트리거
+                          return prev.hasAnalyzed == false &&
+                              next.hasAnalyzed == true &&
                               next.moment.emotionalIntensities.isEmpty;
                         },
                         listener: (context, state) async {
