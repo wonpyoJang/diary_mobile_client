@@ -1,12 +1,13 @@
-.PHONY: clean clean-all regenerate help
+.PHONY: clean clean-all regenerate regenerate-build-runner help
 
 # 기본 타겟
 help:
 	@echo "사용 가능한 명령어:"
-	@echo "  clean      - Flutter generated 파일들만 삭제"
-	@echo "  clean-all  - 모든 generated 파일과 빌드 캐시 삭제"
-	@echo "  regenerate - 모든 generated 파일 재생성"
-	@echo "  help       - 이 도움말 표시"
+	@echo "  clean                 - Flutter generated 파일들만 삭제"
+	@echo "  clean-all            - 모든 generated 파일과 빌드 캐시 삭제"
+	@echo "  regenerate           - 모든 generated 파일 재생성"
+	@echo "  regenerate-build-runner - build_runner로 생성된 파일만 재생성"
+	@echo "  help                 - 이 도움말 표시"
 
 # Flutter generated 파일들만 삭제
 clean:
@@ -47,12 +48,13 @@ regenerate: clean-all
 	@flutter clean
 	@flutter pub get
 	@flutter packages pub run build_runner build --delete-conflicting-outputs
-	@flutter build ios --no-codesign
-	@flutter build macos --no-codesign
-	@flutter build linux --debug
-	@flutter build windows --debug
-	@flutter build web --debug
 	@echo "✅ 모든 generated 파일 재생성 완료"
+
+# build_runner로 생성된 파일만 재생성
+regenerate-build-runner:
+	@echo "🔄 build_runner로 생성된 파일만 재생성 중..."
+	@flutter packages pub run build_runner build --delete-conflicting-outputs
+	@echo "✅ build_runner로 생성된 파일 재생성 완료"
 
 # iOS 전용 재생성
 regenerate-ios: clean
