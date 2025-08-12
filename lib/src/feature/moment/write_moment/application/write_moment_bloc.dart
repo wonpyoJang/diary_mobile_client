@@ -37,23 +37,18 @@ class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
     @factoryParam this.moment,
     @factoryParam this.date,
     this.writeMomentRepository,
-  ) : super(_createInitialState()) {
+  ) : super(WriteMomentState(
+          mode: WriteMode.create,
+          moment: Moment(
+            id: const Uuid().v1(),
+            reflection: "",
+            date: date,
+            modifiedAt: DateTime.now(),
+            emotionalIntensities: const [],
+            medias: const [],
+          ),
+        )) {
     _registerEventHandlers();
-  }
-
-  // 초기 상태 생성
-  static WriteMomentState _createInitialState() {
-    return WriteMomentState(
-      mode: WriteMode.create,
-      moment: Moment(
-        id: const Uuid().v1(),
-        reflection: "",
-        date: DateTime.now(),
-        modifiedAt: DateTime.now(),
-        emotionalIntensities: const [],
-        medias: const [],
-      ),
-    );
   }
 
   // 이벤트 핸들러 등록
