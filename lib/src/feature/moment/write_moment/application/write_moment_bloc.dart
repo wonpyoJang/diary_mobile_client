@@ -240,8 +240,12 @@ class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
         await writeMomentRepository.updateMedias(state.moment.id, medias);
 
     return result.fold(
-      (failure) => state.copyWith(failure: failure),
-      (unit) => state.copyWith(isSaved: true, moment: newMoment),
+      (failure) => state.copyWith(failure: failure, isLoading: false),
+      (unit) => state.copyWith(
+        isSaved: true,
+        moment: newMoment,
+        isLoading: false,
+      ),
     );
   }
 }
