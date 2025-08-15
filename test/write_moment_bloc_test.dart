@@ -1,14 +1,9 @@
-import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/application/write_moment_bloc.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/application/write_moment_event.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/application/write_moment_state.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/domain/failures/write_moment_failures.dart';
 import 'package:diary_mobile_client/src/feature/moment/domain/entity/moment.dart';
-import 'package:diary_mobile_client/src/feature/moment/domain/entity/emotional_intensity.dart';
-import 'package:diary_mobile_client/src/feature/moment/domain/enums/emotion.dart';
-import 'package:diary_mobile_client/src/core/failure/failure.dart';
-import 'package:fpdart/fpdart.dart';
 
 void main() {
   group('WriteMomentBloc 테스트', () {

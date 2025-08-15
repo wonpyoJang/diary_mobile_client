@@ -285,7 +285,8 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                                                     },
                                                     child: Container(
                                                       decoration: BoxDecoration(
-                                                        color: Colors.black.withAlpha(20),
+                                                        color: Colors.black
+                                                            .withAlpha(20),
                                                         shape: BoxShape.circle,
                                                       ),
                                                       child: const Icon(
