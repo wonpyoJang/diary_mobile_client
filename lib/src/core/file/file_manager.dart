@@ -36,7 +36,7 @@ class FileManager {
       return right(directory);
     } catch (e) {
       _logger.e('앱 문서 디렉토리 가져오기 실패: ${e.toString()}');
-      return left(LocalFailure(message: "앱 문서 디렉토리를 가져올 수 없습니다."));
+      return left(const LocalFailure(message: "앱 문서 디렉토리를 가져올 수 없습니다."));
     }
   }
 
@@ -49,7 +49,7 @@ class FileManager {
       return right(file);
     } catch (e) {
       _logger.e('대상 파일 생성 실패: ${e.toString()}');
-      return left(LocalFailure(message: "대상 파일을 생성할 수 없습니다."));
+      return left(const LocalFailure(message: "대상 파일을 생성할 수 없습니다."));
     }
   }
 

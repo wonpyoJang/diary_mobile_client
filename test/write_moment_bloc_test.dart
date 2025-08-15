@@ -36,7 +36,7 @@ void main() {
 
       test('WriteMode 열거형 값들이 고유해야 함', () {
         // Given & When
-        final modes = WriteMode.values;
+        const modes = WriteMode.values;
         final modeNames = modes.map((m) => m.name).toSet();
 
         // Then
@@ -153,17 +153,20 @@ void main() {
     group('이벤트 동등성 테스트', () {
       test('동일한 값을 가진 이벤트가 동등해야 함', () {
         // Given & When & Then
-        expect(const TextChangedEvent('test'), equals(const TextChangedEvent('test')));
+        expect(const TextChangedEvent('test'),
+            equals(const TextChangedEvent('test')));
         expect(const DeleteMedia(1), equals(const DeleteMedia(1)));
         expect(const ChangeToEdit(), equals(const ChangeToEdit()));
         expect(const AddMedias(), equals(const AddMedias()));
         expect(const WriteByImage(), equals(const WriteByImage()));
-        expect(const ResetIsTextGenerated(), equals(const ResetIsTextGenerated()));
+        expect(
+            const ResetIsTextGenerated(), equals(const ResetIsTextGenerated()));
       });
 
       test('다른 값을 가진 이벤트가 다르게 처리되어야 함', () {
         // Given & When & Then
-        expect(const TextChangedEvent('test1'), isNot(equals(const TextChangedEvent('test2'))));
+        expect(const TextChangedEvent('test1'),
+            isNot(equals(const TextChangedEvent('test2'))));
         expect(const DeleteMedia(1), isNot(equals(const DeleteMedia(2))));
       });
 
@@ -291,7 +294,7 @@ void main() {
     group('WriteMomentFailure 테스트', () {
       test('구체적인 WriteMomentFailure 구현체가 올바른 구조를 가져야 함', () {
         // Given
-        final failure = SaveMomentFailed(message: '테스트 오류');
+        const failure = SaveMomentFailed(message: '테스트 오류');
 
         // Then
         expect(failure.message, equals('테스트 오류'));
@@ -300,9 +303,9 @@ void main() {
 
       test('WriteMomentFailure 구현체들이 Equatable을 올바르게 구현해야 함', () {
         // Given
-        final failure1 = SaveMomentFailed(message: '오류1');
-        final failure2 = SaveMomentFailed(message: '오류1');
-        final failure3 = SaveMomentFailed(message: '오류2');
+        const failure1 = SaveMomentFailed(message: '오류1');
+        const failure2 = SaveMomentFailed(message: '오류1');
+        const failure3 = SaveMomentFailed(message: '오류2');
 
         // Then
         expect(failure1, equals(failure2));
@@ -311,11 +314,11 @@ void main() {
 
       test('다양한 WriteMomentFailure 타입들이 올바르게 작동해야 함', () {
         // Given
-        final analyzeFailure = MomentAnalyzeFailed(message: '분석 실패');
-        final selectMediaFailure = SelectMediasFailed(message: '미디어 선택 실패');
-        final describeImageFailure =
+        const analyzeFailure = MomentAnalyzeFailed(message: '분석 실패');
+        const selectMediaFailure = SelectMediasFailed(message: '미디어 선택 실패');
+        const describeImageFailure =
             MomentDescribeImageFailed(message: '이미지 설명 실패');
-        final saveMediaFailure = SaveMediaFailed(message: '미디어 저장 실패');
+        const saveMediaFailure = SaveMediaFailed(message: '미디어 저장 실패');
 
         // Then
         expect(analyzeFailure, isA<WriteMomentFailure>());

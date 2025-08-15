@@ -228,10 +228,10 @@ class SimpleImageViewer extends StatelessWidget {
   }
 
   Widget _buildErrorWidget() {
-    return Center(
+    return const Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
+        children: [
           Icon(
             Icons.error_outline,
             color: Colors.white,

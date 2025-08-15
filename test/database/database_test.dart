@@ -25,7 +25,7 @@ void main() {
       const dbName = 'test_db_main_1755240809684730.sqlite';
       final database = Database(dbName);
       await database.customStatement('PRAGMA foreign_keys = ON;');
-      final tables = await database.allTables;
+      final tables = database.allTables;
       expect(tables, contains(isA<MomentTable>()));
       expect(tables, contains(isA<EmotionalIntensityTable>()));
       expect(tables, contains(isA<MediaTable>()));
@@ -38,9 +38,9 @@ void main() {
       const dbName = 'test_db_main_1755240809684730.sqlite';
       final database = Database(dbName);
       await database.customStatement('PRAGMA foreign_keys = ON;');
-      final momentId = 'test_moment_1';
+      const momentId = 'test_moment_1';
       final testDate = DateTime(2024, 1, 1);
-      final testReflection = '테스트 일기 내용입니다.';
+      const testReflection = '테스트 일기 내용입니다.';
       await database.into(database.momentTable).insert(
             MomentTableCompanion.insert(
               id: momentId,
@@ -54,11 +54,11 @@ void main() {
       expect(insertedMoment.id, equals(momentId));
       expect(insertedMoment.reflection, equals(testReflection));
       expect(insertedMoment.date, equals(testDate));
-      final updatedReflection = '수정된 일기 내용입니다.';
+      const updatedReflection = '수정된 일기 내용입니다.';
       await (database.update(database.momentTable)
             ..where((tbl) => tbl.id.equals(momentId)))
           .write(MomentTableCompanion(
-        reflection: Value(updatedReflection),
+        reflection: const Value(updatedReflection),
         modifiedAt: Value(DateTime.now()),
       ));
       final updatedMoment =
@@ -79,7 +79,7 @@ void main() {
       const dbName = 'test_db_main_1755240809684730.sqlite';
       final database = Database(dbName);
       await database.customStatement('PRAGMA foreign_keys = ON;');
-      final momentId = 'test_moment_2';
+      const momentId = 'test_moment_2';
       await database.into(database.momentTable).insert(
             MomentTableCompanion.insert(
               id: momentId,
@@ -88,9 +88,9 @@ void main() {
               modifiedAt: DateTime.now(),
             ),
           );
-      final emotionId = 'test_emotion_1';
-      final testEmotion = Emotion.joy;
-      final testIntensity = 0.8;
+      const emotionId = 'test_emotion_1';
+      const testEmotion = Emotion.joy;
+      const testIntensity = 0.8;
       await database.into(database.emotionalIntensityTable).insert(
             EmotionalIntensityTableCompanion.insert(
               id: emotionId,
@@ -105,10 +105,10 @@ void main() {
       expect(insertedEmotion.emotion, equals(testEmotion));
       expect(insertedEmotion.intensity, equals(testIntensity));
       expect(insertedEmotion.momentId, equals(momentId));
-      final updatedIntensity = 0.9;
+      const updatedIntensity = 0.9;
       await (database.update(database.emotionalIntensityTable)
             ..where((tbl) => tbl.id.equals(emotionId)))
-          .write(EmotionalIntensityTableCompanion(
+          .write(const EmotionalIntensityTableCompanion(
         intensity: Value(updatedIntensity),
       ));
       final updatedEmotion =
@@ -133,7 +133,7 @@ void main() {
       const dbName = 'test_db_main_1755240809684730.sqlite';
       final database = Database(dbName);
       await database.customStatement('PRAGMA foreign_keys = ON;');
-      final momentId = 'test_moment_3';
+      const momentId = 'test_moment_3';
       await database.into(database.momentTable).insert(
             MomentTableCompanion.insert(
               id: momentId,
@@ -142,9 +142,9 @@ void main() {
               modifiedAt: DateTime.now(),
             ),
           );
-      final mediaId = 'test_media_1';
+      const mediaId = 'test_media_1';
       final testData = Uint8List.fromList([1, 2, 3, 4, 5]);
-      final testMimeType = 'image/jpeg';
+      const testMimeType = 'image/jpeg';
       final testCreatedAt = DateTime.now();
       await database.into(database.mediaTable).insert(
             MediaTableCompanion.insert(
@@ -161,10 +161,10 @@ void main() {
       expect(insertedMedia.data, equals(testData));
       expect(insertedMedia.mimeType, equals(testMimeType));
       expect(insertedMedia.momentId, equals(momentId));
-      final updatedMimeType = 'image/png';
+      const updatedMimeType = 'image/png';
       await (database.update(database.mediaTable)
             ..where((tbl) => tbl.id.equals(mediaId)))
-          .write(MediaTableCompanion(
+          .write(const MediaTableCompanion(
         mimeType: Value(updatedMimeType),
       ));
       final updatedMedia =
@@ -188,7 +188,7 @@ void main() {
       const dbName = 'test_db_main_1755240809684730.sqlite';
       final database = Database(dbName);
       await database.customStatement('PRAGMA foreign_keys = ON;');
-      final nonExistentMomentId = 'non_existent_moment';
+      const nonExistentMomentId = 'non_existent_moment';
       await expectLater(
         () async {
           await database.into(database.emotionalIntensityTable).insert(
@@ -212,7 +212,7 @@ void main() {
       final database = Database(dbName);
       await database.customStatement('PRAGMA foreign_keys = ON;');
       // 테스트 데이터 생성
-      final momentId = 'test_moment_4';
+      const momentId = 'test_moment_4';
       await database.into(database.momentTable).insert(
             MomentTableCompanion.insert(
               id: momentId,

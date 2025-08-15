@@ -220,7 +220,7 @@ void main() {
 
       test('이벤트의 상속 관계가 올바르게 설정되어야 함', () {
         // Given & When & Then
-        expect(ToggleCalendarMode(), isA<SettingsEvent>());
+        expect(const ToggleCalendarMode(), isA<SettingsEvent>());
       });
     });
 

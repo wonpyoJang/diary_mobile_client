@@ -1,3 +1,4 @@
+import 'package:diary_mobile_client/l10n/app_localizations.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_bloc.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_event.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/write_moment_page.dart';
@@ -8,7 +9,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
 import 'feature/moment/moment_list/presentation/moment_list_page.dart';
 import 'feature/settings/settings_controller.dart';
 import 'feature/settings/settings_view.dart';
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         listenable: settingsController,
         builder: (BuildContext context, Widget? child) {
           return MaterialApp(
-            title: '크레파스 감정일기',
+            title: AppLocalizations.of(context)!.appTitle,
             // Providing a restorationScopeId allows the Navigator built by the
             // MaterialApp to restore the navigation stack when a user leaves and
             // returns to the app after it has been killed while running in the
@@ -52,6 +52,7 @@ class MyApp extends StatelessWidget {
             // allows descendant Widgets to display the correct translations
             // depending on the user's locale.
             localizationsDelegates: const [
+              AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
@@ -66,9 +67,9 @@ class MyApp extends StatelessWidget {
             // SettingsController to display the correct theme.
             theme: ThemeData.light().copyWith(
               appBarTheme: const AppBarTheme(
-                color: Colors.white, // 스크롤을 내렸을 때 앱바의 색상 설정
+                backgroundColor: Colors.white, // 스크롤을 내렸을 때 앱바의 색상 설정
               ),
-              cardTheme: const CardTheme(
+              cardTheme: const CardThemeData(
                 color: Color(0xFFF5F5F5), // 카드 배경색 설정
                 shadowColor: Colors.black54, // 그림자 색상 추가
                 elevation: 4, // 그림자 높이 조정
@@ -107,7 +108,7 @@ class MyApp extends StatelessWidget {
             ),
             darkTheme: ThemeData.dark().copyWith(
               appBarTheme: const AppBarTheme(
-                color: Colors.black, // 스크롤을 내렸을 때 앱바의 색상 설정
+                backgroundColor: Colors.black, // 스크롤을 내렸을 때 앱바의 색상 설정
               ),
               colorScheme: ColorScheme.fromSeed(
                 seedColor: const Color(0xFF5361f1),
@@ -126,7 +127,7 @@ class MyApp extends StatelessWidget {
                   color: Colors.grey[300],
                 ),
               ),
-              cardTheme: const CardTheme(
+              cardTheme: const CardThemeData(
                 color: Color(0xFF303030), // 카드 배경색 설정
                 shadowColor: Colors.black54, // 그림자 색상 추가
                 elevation: 4, // 그림자 높이 조정

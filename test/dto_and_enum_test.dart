@@ -60,7 +60,7 @@ void main() {
 
       test('EmotionalIntensityDto의 fromDomain 팩토리가 올바르게 작동해야 함', () {
         // Given
-        final domain = EmotionalIntensity(emotion: Emotion.joy, intensity: 0.8);
+        const domain = EmotionalIntensity(emotion: Emotion.joy, intensity: 0.8);
 
         // When
         final dto = EmotionalIntensityDto.fromDomain(domain);
@@ -103,7 +103,7 @@ void main() {
 
       test('감정 열거형 값들이 고유해야 함', () {
         // Given & When
-        final emotions = Emotion.values;
+        const emotions = Emotion.values;
         final emotionNames = emotions.map((e) => e.name).toSet();
 
         // Then

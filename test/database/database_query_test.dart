@@ -88,8 +88,8 @@ void main() {
 
     test('감정별 moment 검색 테스트', () async {
       // 테스트 데이터 생성
-      final momentId1 = 'emotion_moment_1';
-      final momentId2 = 'emotion_moment_2';
+      const momentId1 = 'emotion_moment_1';
+      const momentId2 = 'emotion_moment_2';
 
       await database.batch((batch) {
         batch.insertAll(database.momentTable, [
@@ -148,7 +148,7 @@ void main() {
 
     test('감정 강도별 정렬 테스트', () async {
       // 테스트 데이터 생성
-      final momentId = 'intensity_moment';
+      const momentId = 'intensity_moment';
 
       await database.into(database.momentTable).insert(
             MomentTableCompanion.insert(
@@ -205,7 +205,7 @@ void main() {
 
     test('JOIN을 사용한 복합 쿼리 테스트', () async {
       // 테스트 데이터 생성
-      final momentId = 'join_test_moment';
+      const momentId = 'join_test_moment';
 
       await database.into(database.momentTable).insert(
             MomentTableCompanion.insert(
@@ -285,7 +285,7 @@ void main() {
 
     test('집계 함수를 사용한 쿼리 테스트', () async {
       // 테스트 데이터 생성
-      final momentId = 'aggregate_test_moment';
+      const momentId = 'aggregate_test_moment';
 
       await database.into(database.momentTable).insert(
             MomentTableCompanion.insert(

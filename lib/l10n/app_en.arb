@@ -1,0 +1,98 @@
+{
+  "appTitle": "Crepas Emotion Diary",
+  "@appTitle": {
+    "description": "Write a diary and check your emotions."
+  },
+  "myMemories": "My Memories",
+  "@myMemories": {
+    "description": "Main screen top title"
+  },
+  "registerNewDiary": "Register a new diary!",
+  "@registerNewDiary": {
+    "description": "Guide message when there is no diary"
+  },
+  "imageLoadError": "Cannot load image",
+  "@imageLoadError": {
+    "description": "Message when image fails to load"
+  },
+  "shareFeaturePreparing": "Share feature is preparing",
+  "@shareFeaturePreparing": {
+    "description": "Notice for share feature preparing"
+  },
+  "tryAgain": "Try Again",
+  "@tryAgain": {
+    "description": "Try again button text"
+  },
+  "notification": "Notification",
+  "@notification": {
+    "description": "Notification dialog title"
+  },
+  "confirm": "Confirm",
+  "@confirm": {
+    "description": "Confirm button text"
+  },
+  "download": "Download",
+  "@download": {
+    "description": "Download button text"
+  },
+  "noEmotion": "No emotion detected.",
+  "@noEmotion": {
+    "description": "No emotion analysis result guide"
+  },
+  "writeAtLeast20": "Please write at least 20 characters in your diary.",
+  "@writeAtLeast20": {
+    "description": "Guide when less than 20 characters are written"
+  },
+  "pleaseWait": "Please wait a moment. Analyzing...",
+  "@pleaseWait": {
+    "description": "Analyzing guide"
+  },
+  "todayEmotion": "Today's Emotion",
+  "@todayEmotion": {
+    "description": "Today's emotion dialog title"
+  },
+  "isThisAnalysisCorrect": "Is this analysis correct?",
+  "@isThisAnalysisCorrect": {
+    "description": "Analysis result confirmation question"
+  },
+  "notMatch": "No 👎",
+  "@notMatch": {
+    "description": "Analysis result not match option"
+  },
+  "match": "Yes 👍",
+  "@match": {
+    "description": "Analysis result match option"
+  },
+  "extractingEmotion": "Extracting emotion",
+  "@extractingEmotion": {
+    "description": "Loading indicator text"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings title"
+  },
+  "systemTheme": "System Theme",
+  "@systemTheme": {
+    "description": "System theme option"
+  },
+  "lightTheme": "Light Theme",
+  "@lightTheme": {
+    "description": "Light theme option"
+  },
+  "darkTheme": "Dark Theme",
+  "@darkTheme": {
+    "description": "Dark theme option"
+  },
+  "lab": "Lab",
+  "@lab": {
+    "description": "Lab section title"
+  },
+  "calendarMode": "Calendar Mode",
+  "@calendarMode": {
+    "description": "Calendar mode switch label"
+  },
+  "addDiary": "Add Diary",
+  "@addDiary": {
+    "description": "Add diary button text"
+  }
+}

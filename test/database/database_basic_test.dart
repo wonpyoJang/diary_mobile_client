@@ -23,9 +23,9 @@ void main() {
       final dbPath =
           'test_db_basic_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
-      final momentId = 'test_moment_1';
+      const momentId = 'test_moment_1';
       final testDate = DateTime(2024, 1, 1);
-      final testReflection = '테스트 일기 내용입니다.';
+      const testReflection = '테스트 일기 내용입니다.';
 
       // Create
       await database.into(database.momentTable).insert(
@@ -46,11 +46,11 @@ void main() {
       expect(insertedMoment.date, equals(testDate));
 
       // Update
-      final updatedReflection = '수정된 일기 내용입니다.';
+      const updatedReflection = '수정된 일기 내용입니다.';
       await (database.update(database.momentTable)
             ..where((tbl) => tbl.id.equals(momentId)))
           .write(MomentTableCompanion(
-        reflection: Value(updatedReflection),
+        reflection: const Value(updatedReflection),
         modifiedAt: Value(DateTime.now()),
       ));
 
@@ -78,7 +78,7 @@ void main() {
           'test_db_basic_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       // 먼저 moment 생성
-      final momentId = 'test_moment_2_crud';
+      const momentId = 'test_moment_2_crud';
       await database.into(database.momentTable).insert(
             MomentTableCompanion.insert(
               id: momentId,
@@ -88,9 +88,9 @@ void main() {
             ),
           );
 
-      final emotionId = 'test_emotion_1_crud';
-      final testEmotion = Emotion.joy;
-      final testIntensity = 0.8;
+      const emotionId = 'test_emotion_1_crud';
+      const testEmotion = Emotion.joy;
+      const testIntensity = 0.8;
 
       // Create
       await database.into(database.emotionalIntensityTable).insert(
@@ -112,10 +112,10 @@ void main() {
       expect(insertedEmotion.momentId, equals(momentId));
 
       // Update
-      final updatedIntensity = 0.9;
+      const updatedIntensity = 0.9;
       await (database.update(database.emotionalIntensityTable)
             ..where((tbl) => tbl.id.equals(emotionId)))
-          .write(EmotionalIntensityTableCompanion(
+          .write(const EmotionalIntensityTableCompanion(
         intensity: Value(updatedIntensity),
       ));
 
@@ -208,8 +208,8 @@ void main() {
           'test_db_basic_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       // 테스트 데이터 생성
-      final momentId1 = 'emotion_moment_1_search';
-      final momentId2 = 'emotion_moment_2_search';
+      const momentId1 = 'emotion_moment_1_search';
+      const momentId2 = 'emotion_moment_2_search';
 
       await database.into(database.momentTable).insert(
             MomentTableCompanion.insert(
@@ -309,7 +309,7 @@ void main() {
       final dbPath =
           'test_db_basic_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
-      final momentId = 'integrity_test_moment_unique';
+      const momentId = 'integrity_test_moment_unique';
 
       // moment 생성
       await database.into(database.momentTable).insert(

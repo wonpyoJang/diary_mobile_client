@@ -40,14 +40,21 @@ class Moment extends Equatable {
     );
   }
 
-  String getFormattedDateTime() {
-    final DateFormat formatter =
-        DateFormat('yyyy년 MM월 dd일 EEEE a hh시 mm분 ss초', 'ko_KR');
+  String getFormattedDateTime({String locale = 'ko_KR'}) {
+    final isKorean = locale.startsWith('ko');
+    final formatStr = isKorean
+        ? 'yyyy년 MM월 dd일 EEEE a hh시 mm분 ss초'
+        : 'yyyy-MM-dd EEEE hh:mm:ss a';
+    final DateFormat formatter = DateFormat(formatStr, locale);
     return formatter.format(date);
   }
 
-  String getFormattedDay() {
-    final DateFormat formatter = DateFormat('yyyy년 MM월 dd일 EEEE', 'ko_KR');
+  String getFormattedDay({String locale = 'ko_KR'}) {
+    final isKorean = locale.startsWith('ko');
+    final formatStr = isKorean
+        ? 'yyyy년 MM월 dd일 EEEE'
+        : 'yyyy-MM-dd EEEE';
+    final DateFormat formatter = DateFormat(formatStr, locale);
     return formatter.format(date);
   }
 

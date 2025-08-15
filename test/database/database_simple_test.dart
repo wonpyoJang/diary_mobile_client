@@ -23,7 +23,7 @@ void main() {
     test('MomentTable 기본 테스트', () async {
       const momentId = 'simple_test_moment';
       final testDate = DateTime(2024, 1, 1);
-      final testReflection = '간단한 테스트 일기';
+      const testReflection = '간단한 테스트 일기';
 
       // 데이터 삽입
       await database.into(database.momentTable).insert(

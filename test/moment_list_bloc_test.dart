@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_collection_literals
+// 사유: LinkedHashMap은 컬렉션 리터럴({})로 생성할 수 없으므로, 생성자 사용이 불가피합니다.
 import 'dart:collection';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_event.dart';
@@ -99,7 +101,7 @@ void main() {
       test('MomentListState의 copyWith가 올바르게 작동해야 함', () {
         // Given
         final originalState = MomentListState(
-          moments: LinkedHashMap(),
+          moments: LinkedHashMap<DateTime, List<Moment>>(),
           firstDay: testDate1,
         );
 
@@ -144,7 +146,8 @@ void main() {
 
       test('MomentListState의 기본 생성자가 올바르게 작동해야 함', () {
         // Given & When
-        final state = MomentListState(moments: LinkedHashMap());
+        final state =
+            MomentListState(moments: LinkedHashMap<DateTime, List<Moment>>());
 
         // Then
         expect(state.moments, isEmpty);
@@ -416,7 +419,8 @@ void main() {
     group('데이터 유효성 테스트', () {
       test('MomentListState의 moments가 LinkedHashMap 타입이어야 함', () {
         // Given
-        final state = MomentListState(moments: LinkedHashMap());
+        final state =
+            MomentListState(moments: LinkedHashMap<DateTime, List<Moment>>());
 
         // Then
         expect(state.moments, isA<LinkedHashMap>());
@@ -424,9 +428,10 @@ void main() {
 
       test('MomentListState의 firstDay가 nullable이어야 함', () {
         // Given
-        final state1 = MomentListState(moments: LinkedHashMap());
+        final state1 =
+            MomentListState(moments: LinkedHashMap<DateTime, List<Moment>>());
         final state2 = MomentListState(
-          moments: LinkedHashMap(),
+          moments: LinkedHashMap<DateTime, List<Moment>>(),
           firstDay: testDate1,
         );
 

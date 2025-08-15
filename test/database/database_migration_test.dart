@@ -44,7 +44,7 @@ void main() {
       final database = Database(dbPath);
       try {
         // 모든 테이블 조회
-        final tables = await database.allTables;
+        final tables = database.allTables;
 
         // MomentTable 스키마 확인
         final momentTable =
@@ -83,7 +83,7 @@ void main() {
           'test_db_migration_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       try {
-        final tables = await database.allTables;
+        final tables = database.allTables;
 
         // EmotionalIntensityTable과 MediaTable이 존재하는지 확인
         expect(tables.any((t) => t is EmotionalIntensityTable), isTrue);

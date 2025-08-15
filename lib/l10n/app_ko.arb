@@ -1,0 +1,98 @@
+{
+  "appTitle": "크레파스 감정일기",
+  "@appTitle": {
+    "description": "일기를 쓰고 나의 감정을 확인해보세요."
+  },
+  "myMemories": "나의 기억들",
+  "@myMemories": {
+    "description": "메인화면 상단 타이틀"
+  },
+  "registerNewDiary": "새로운 일기를 등록해보세요!",
+  "@registerNewDiary": {
+    "description": "일기 없을 때 안내 문구"
+  },
+  "imageLoadError": "이미지를 불러올 수 없습니다",
+  "@imageLoadError": {
+    "description": "이미지 로드 실패 시 메시지"
+  },
+  "shareFeaturePreparing": "공유 기능은 준비 중입니다",
+  "@shareFeaturePreparing": {
+    "description": "공유 기능 준비중 안내"
+  },
+  "tryAgain": "다시 시도",
+  "@tryAgain": {
+    "description": "다시 시도 버튼 텍스트"
+  },
+  "notification": "알림",
+  "@notification": {
+    "description": "알림 다이얼로그 타이틀"
+  },
+  "confirm": "확인",
+  "@confirm": {
+    "description": "확인 버튼 텍스트"
+  },
+  "download": "다운로드",
+  "@download": {
+    "description": "다운로드 버튼 텍스트"
+  },
+  "noEmotion": "드러난 감정이 없습니다.",
+  "@noEmotion": {
+    "description": "감정 분석 결과 없음 안내"
+  },
+  "writeAtLeast20": "일기를 20자 이상 작성해주세요",
+  "@writeAtLeast20": {
+    "description": "20자 미만 작성시 안내"
+  },
+  "pleaseWait": "조금만 기다려주세요. 분석중입니다.",
+  "@pleaseWait": {
+    "description": "분석중 안내"
+  },
+  "todayEmotion": "오늘의 감정",
+  "@todayEmotion": {
+    "description": "오늘의 감정 다이얼로그 타이틀"
+  },
+  "isThisAnalysisCorrect": "이 분석이 맞나요?",
+  "@isThisAnalysisCorrect": {
+    "description": "분석 결과 확인 질문"
+  },
+  "notMatch": "달라요 👎",
+  "@notMatch": {
+    "description": "분석 결과 다름 선택지"
+  },
+  "match": "맞아요 👍",
+  "@match": {
+    "description": "분석 결과 맞음 선택지"
+  },
+  "extractingEmotion": "감정 추출 중",
+  "@extractingEmotion": {
+    "description": "로딩 인디케이터 텍스트"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "설정 타이틀"
+  },
+  "systemTheme": "System Theme",
+  "@systemTheme": {
+    "description": "시스템 테마 옵션"
+  },
+  "lightTheme": "Light Theme",
+  "@lightTheme": {
+    "description": "라이트 테마 옵션"
+  },
+  "darkTheme": "Dark Theme",
+  "@darkTheme": {
+    "description": "다크 테마 옵션"
+  },
+  "lab": "실험실",
+  "@lab": {
+    "description": "실험실 섹션 타이틀"
+  },
+  "calendarMode": "캘린더 모드",
+  "@calendarMode": {
+    "description": "캘린더 모드 스위치 라벨"
+  },
+  "addDiary": "일기 추가하기",
+  "@addDiary": {
+    "description": "일기 추가 버튼 텍스트"
+  }
+}

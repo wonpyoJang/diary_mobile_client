@@ -44,15 +44,24 @@ void main() {
       );
 
       // When
-      final formattedDateTime = moment.getFormattedDateTime();
-      final formattedDay = moment.getFormattedDay();
+      final formattedDateTimeKo = moment.getFormattedDateTime(locale: 'ko_KR');
+      final formattedDayKo = moment.getFormattedDay(locale: 'ko_KR');
+      final formattedDateTimeEn = moment.getFormattedDateTime(locale: 'en_US');
+      final formattedDayEn = moment.getFormattedDay(locale: 'en_US');
 
       // Then
-      expect(formattedDateTime, contains('2024년 01월 15일'));
-      expect(formattedDateTime, contains('02시 30분')); // PM 2시 30분
-      expect(formattedDateTime, contains('PM'));
-      expect(formattedDay, contains('2024년 01월 15일'));
-      expect(formattedDay, contains('월요일')); // 2024년 1월 15일은 월요일
+      // 한국어
+      expect(formattedDateTimeKo, contains('2024년 01월 15일'));
+      expect(formattedDateTimeKo, contains('02시 30분'));
+      expect(formattedDateTimeKo, contains('오후'));
+      expect(formattedDayKo, contains('2024년 01월 15일'));
+      expect(formattedDayKo, contains('월요일'));
+      // 영어
+      expect(formattedDateTimeEn, contains('2024'));
+      expect(formattedDateTimeEn, contains('02:30:00 PM'));
+      expect(formattedDateTimeEn, contains('PM'));
+      expect(formattedDayEn, contains('2024'));
+      expect(formattedDayEn.toLowerCase(), contains('monday'));
     });
 
     test('Moment의 감정 강도 추가 및 수정', () {
@@ -190,17 +199,17 @@ void main() {
 
     test('감정 강도 유효성 검증', () {
       // Given & When
-      final validIntensity = EmotionalIntensity(
+      const validIntensity = EmotionalIntensity(
         emotion: Emotion.joy,
         intensity: 0.5,
       );
 
-      final maxIntensity = EmotionalIntensity(
+      const maxIntensity = EmotionalIntensity(
         emotion: Emotion.joy,
         intensity: 1.0,
       );
 
-      final minIntensity = EmotionalIntensity(
+      const minIntensity = EmotionalIntensity(
         emotion: Emotion.joy,
         intensity: 0.0,
       );
@@ -214,9 +223,9 @@ void main() {
 
     test('감정 열거형 값 검증', () {
       // Given & When
-      final joyEmotion = Emotion.joy;
-      final sadnessEmotion = Emotion.sadness;
-      final angerEmotion = Emotion.anger;
+      const joyEmotion = Emotion.joy;
+      const sadnessEmotion = Emotion.sadness;
+      const angerEmotion = Emotion.anger;
 
       // Then
       expect(joyEmotion.name, equals('joy'));
