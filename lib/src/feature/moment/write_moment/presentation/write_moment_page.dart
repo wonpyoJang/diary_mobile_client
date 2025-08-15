@@ -69,7 +69,7 @@ class WriteMomentPageState extends State<WriteMomentPage> {
           listeners: [
             BlocListener<WriteMomentBloc, WriteMomentState>(
               listenWhen: (prev, next) {
-                return (prev.isLoading == true && next.isLoading == false) ||
+                return (prev.isLoading == true && next.isLoading == false) &&
                     (prev.moment.medias.length < next.moment.medias.length);
               },
               listener: (context, state) {

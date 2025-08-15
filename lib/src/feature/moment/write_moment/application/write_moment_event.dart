@@ -9,6 +9,13 @@ abstract class WriteMomentEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class FetchMedias extends WriteMomentEvent {
+  const FetchMedias();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class TextChangedEvent extends WriteMomentEvent {
   final String newText;
 

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:diary_mobile_client/src/core/device/infrastructure/interfaces/i_device_info_local_provider.dart';
+import 'package:diary_mobile_client/src/core/media/domain/entity/media_info.dart';
 import 'package:diary_mobile_client/src/core/media/infrastructure/interfaces/i_media_info_local_provider.dart';
 import 'package:diary_mobile_client/src/feature/moment/domain/entity/moment.dart';
 import 'package:diary_mobile_client/src/feature/moment/infrastructure/dtos/moment_dto.dart';
@@ -154,6 +155,19 @@ class WriteMomentRepository implements IWriteMomentRepository {
     return result.fold(
       (failure) => left(SaveMediaFailed(message: failure.message)),
       (_) => right(unit),
+    );
+  }
+
+  @override
+  Future<Either<WriteMomentFailure, List<MediaInfo>>> fetchMediasByMomentId(
+    String momentId,
+  ) async {
+    final result =
+        await writeMomentLocalProvider.fetchMediaByMomentId(momentId);
+
+    return result.fold(
+      (failure) => left(FetchMediaByMomentIdFailed(message: failure.message)),
+      (medias) => right(medias.map((e) => e.toDomain()).toList()),
     );
   }
 }

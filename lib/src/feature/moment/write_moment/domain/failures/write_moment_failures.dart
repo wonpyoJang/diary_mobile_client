@@ -52,3 +52,13 @@ class SaveMediaFailed extends WriteMomentFailure {
   @override
   List<Object?> get props => [message];
 }
+
+class FetchMediaByMomentIdFailed extends WriteMomentFailure {
+  final String message;
+
+  const FetchMediaByMomentIdFailed({required this.message})
+      : super(message: message);
+
+  @override
+  List<Object?> get props => [message];
+}

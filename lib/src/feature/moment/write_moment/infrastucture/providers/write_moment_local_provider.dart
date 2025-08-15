@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:diary_mobile_client/src/core/failure/local_failure.dart';
+import 'package:diary_mobile_client/src/core/media/domain/entity/media_info.dart';
+import 'package:diary_mobile_client/src/core/media/infrastructure/dtos/media_info_dto.dart';
 import 'package:diary_mobile_client/src/database/app_database.dart';
 import 'package:diary_mobile_client/src/feature/moment/domain/enums/emotion.dart';
 import 'package:diary_mobile_client/src/feature/moment/infrastructure/dtos/moment_dto.dart';
@@ -208,18 +210,28 @@ class WriteMomentLocalProvider implements IWriteMomentLocalProvider {
     }
   }
 
-  String _getMimeType(String path) {
-    final extension = path.split('.').last.toLowerCase();
-    switch (extension) {
-      case 'jpg':
-      case 'jpeg':
-        return 'image/jpeg';
-      case 'png':
-        return 'image/png';
-      case 'gif':
-        return 'image/gif';
-      default:
-        return 'application/octet-stream';
+  @override
+  Future<Either<LocalFailure, List<MediaInfoDto>>> fetchMediaByMomentId(
+    String momentId,
+  ) async {
+    try {
+      final mediaList = await (_database.select(_database.mediaTable)
+            ..where((tbl) => tbl.momentId.equals(momentId))
+            ..orderBy([(tbl) => OrderingTerm.asc(tbl.createdAt)]))
+          .get();
+
+      return right(
+          mediaList.map((e) => MediaInfoDto.fromTableData(e)).toList());
+    } catch (e) {
+      return left(LocalFailure(
+        message: '미디어 조회 중 오류가 발생했습니다.',
+        code: 'DB_ERROR',
+        details: e.toString(),
+      ));
     }
+  }
+
+  String _getMimeType(String path) {
+    return MimeType.getMimeTypeFromPath(path);
   }
 }

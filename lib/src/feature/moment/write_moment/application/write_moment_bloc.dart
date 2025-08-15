@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:diary_mobile_client/src/feature/moment/application/moment_messages.dart';
@@ -37,22 +38,29 @@ class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
     @factoryParam this.moment,
     @factoryParam this.date,
     this.writeMomentRepository,
-  ) : super(WriteMomentState(
-          mode: WriteMode.create,
-          moment: Moment(
-            id: const Uuid().v1(),
-            reflection: "",
-            date: date,
-            modifiedAt: DateTime.now(),
-            emotionalIntensities: const [],
-            medias: const [],
-          ),
-        )) {
+  ) : super(moment == null
+            ? WriteMomentState(
+                mode: WriteMode.create,
+                moment: Moment(
+                  id: const Uuid().v1(),
+                  reflection: "",
+                  date: date,
+                  modifiedAt: DateTime.now(),
+                  emotionalIntensities: const [],
+                  medias: const [],
+                ),
+              )
+            : WriteMomentState(
+                mode: WriteMode.view,
+                moment: moment,
+              )) {
     _registerEventHandlers();
+    add(const FetchMedias());
   }
 
   // 이벤트 핸들러 등록
   void _registerEventHandlers() {
+    on<FetchMedias>(_onFetchMedias);
     on<Analyzed>(_onAnalyzed,
         transformer: throttle(const Duration(milliseconds: 500)));
     on<TextChangedEvent>(_onTextChanged,
@@ -247,5 +255,22 @@ class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
         isLoading: false,
       ),
     );
+  }
+
+  FutureOr<void> _onFetchMedias(
+      FetchMedias event, Emitter<WriteMomentState> emit) async {
+    final result =
+        await writeMomentRepository.fetchMediasByMomentId(state.moment.id);
+
+    emit(result.fold(
+      (failure) => state.copyWith(failure: failure),
+      (medias) => state.copyWith(
+        moment: state.moment.copyWith(
+            medias: medias
+                .where((e) => e.file != null)
+                .map((e) => e.file!)
+                .toList()),
+      ),
+    ));
   }
 }
