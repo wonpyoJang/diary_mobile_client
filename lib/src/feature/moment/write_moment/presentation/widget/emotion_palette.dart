@@ -73,8 +73,8 @@ class EmotionItem extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         showSimpleDialog(context,
-            title: emotionalIntensity.emotion.koName,
-            message: emotionalIntensity.emotion.explanation,
+            title: emotionalIntensity.emotion.localizedName(context),
+            message: emotionalIntensity.emotion.localizedExplanation(context),
             confirmText: "닫기",
             onConfirm: (value) {});
       },
@@ -83,7 +83,7 @@ class EmotionItem extends StatelessWidget {
           SizedBox(
             height: size.fontHeight,
             child: Text(
-              emotionalIntensity.emotion.koName,
+              emotionalIntensity.emotion.localizedName(context),
               style: TextStyle(
                 fontFamily: "SpoqaHanSansNeo",
                 fontSize: size.fontSize,

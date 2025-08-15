@@ -78,7 +78,7 @@ class MomentCard extends StatelessWidget {
                 spacing: 6.0, // 감정 아이콘 간격
                 children: item.emotionalIntensities.map((emotionalIntensity) {
                   return Chip(
-                    label: Text(emotionalIntensity.emotion.koName),
+                    label: Text(emotionalIntensity.emotion.localizedName(context)),
                     backgroundColor:
                         Theme.of(context).brightness == Brightness.dark
                             ? emotionalIntensity.emotion.color.withAlpha(128)

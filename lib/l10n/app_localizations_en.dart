@@ -163,4 +163,244 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get writeDiaryHint11 => 'Leave today\'s feelings in writing';
+
+  @override
+  String get emotion_warmth_name => 'Warmth';
+
+  @override
+  String get emotion_warmth_explanation => 'A warm and cozy feeling, like being wrapped in a blanket on a winter day. Often experienced through closeness and love.';
+
+  @override
+  String get emotion_happiness_name => 'Happiness';
+
+  @override
+  String get emotion_happiness_explanation => 'A state of joy and satisfaction, felt in small moments and achievements. Brings positive energy and improves quality of life.';
+
+  @override
+  String get emotion_calmness_name => 'Calmness';
+
+  @override
+  String get emotion_calmness_explanation => 'A peaceful and stable state, free from noise and stress. Often found in meditation or nature.';
+
+  @override
+  String get emotion_hope_name => 'Hope';
+
+  @override
+  String get emotion_hope_explanation => 'A positive expectation for the future, giving strength to move forward even in difficult times. The driving force of life.';
+
+  @override
+  String get emotion_mystery_name => 'Mystery';
+
+  @override
+  String get emotion_mystery_explanation => 'A sense of wonder and curiosity about the unknown. Stimulates imagination and creativity.';
+
+  @override
+  String get emotion_stability_name => 'Stability';
+
+  @override
+  String get emotion_stability_explanation => 'A stable and unchanging state, felt when life is predictable and secure. Provides psychological safety and reduces stress.';
+
+  @override
+  String get emotion_gentleness_name => 'Gentleness';
+
+  @override
+  String get emotion_gentleness_explanation => 'A soft and kind feeling, experienced when being considerate and caring. Smooths relationships and increases understanding.';
+
+  @override
+  String get emotion_freshness_name => 'Freshness';
+
+  @override
+  String get emotion_freshness_explanation => 'A new and refreshing feeling, often felt at the start of something new or during change. Brings vitality to daily life.';
+
+  @override
+  String get emotion_boredom_name => 'Boredom';
+
+  @override
+  String get emotion_boredom_explanation => 'A state of disinterest and monotony, often felt in repetitive situations. Can motivate the search for new stimulation.';
+
+  @override
+  String get emotion_anger_name => 'Anger';
+
+  @override
+  String get emotion_anger_explanation => 'A state of rage, often felt in unfair situations. Sometimes a strong motivator for change.';
+
+  @override
+  String get emotion_excitement_name => 'Excitement';
+
+  @override
+  String get emotion_excitement_explanation => 'A lively and energetic state, felt before special events or achievements. Boosts energy and positive actions.';
+
+  @override
+  String get emotion_sadness_name => 'Sadness';
+
+  @override
+  String get emotion_sadness_explanation => 'A state of pain and depression, felt after loss or disappointment. Helps deepen empathy and understanding.';
+
+  @override
+  String get emotion_fear_name => 'Fear';
+
+  @override
+  String get emotion_fear_explanation => 'A feeling of anxiety and threat, experienced when sensing danger. Helps survival and avoiding risks.';
+
+  @override
+  String get emotion_surprise_name => 'Surprise';
+
+  @override
+  String get emotion_surprise_explanation => 'A reaction to the unexpected, felt instantly in both positive and negative events. Increases focus and learning.';
+
+  @override
+  String get emotion_disgust_name => 'Disgust';
+
+  @override
+  String get emotion_disgust_explanation => 'A feeling of dislike and discomfort, a reaction to unpleasant situations or substances. Instinctive for health and safety.';
+
+  @override
+  String get emotion_love_name => 'Love';
+
+  @override
+  String get emotion_love_explanation => 'A deep feeling of affection and attachment, experienced in close relationships. Strengthens bonds and gives meaning to life.';
+
+  @override
+  String get emotion_pride_name => 'Pride';
+
+  @override
+  String get emotion_pride_explanation => 'A positive sense of self, felt through achievement or ability. Increases confidence and encourages challenge.';
+
+  @override
+  String get emotion_shame_name => 'Shame';
+
+  @override
+  String get emotion_shame_explanation => 'A feeling of embarrassment, experienced when violating social norms. Promotes reflection and improvement.';
+
+  @override
+  String get emotion_guilt_name => 'Guilt';
+
+  @override
+  String get emotion_guilt_explanation => 'A feeling of regret and responsibility for wrongdoing. Encourages moral reflection and relationship recovery.';
+
+  @override
+  String get emotion_envy_name => 'Envy';
+
+  @override
+  String get emotion_envy_explanation => 'A desire for what others have, felt when admiring others\' success or possessions. Can be a source of motivation.';
+
+  @override
+  String get emotion_jealousy_name => 'Jealousy';
+
+  @override
+  String get emotion_jealousy_explanation => 'A fear of losing something precious to others\' success or happiness. Instinctive for protecting relationships.';
+
+  @override
+  String get emotion_contentment_name => 'Contentment';
+
+  @override
+  String get emotion_contentment_explanation => 'A sense of satisfaction with the present, felt when life is balanced and harmonious. Provides psychological stability and reduces stress.';
+
+  @override
+  String get emotion_gratitude_name => 'Gratitude';
+
+  @override
+  String get emotion_gratitude_explanation => 'A feeling of thankfulness, experienced for others\' help or kindness. Builds positive relationships and increases happiness.';
+
+  @override
+  String get emotion_nostalgia_name => 'Nostalgia';
+
+  @override
+  String get emotion_nostalgia_explanation => 'A longing for the past, felt when recalling childhood or special moments. Cherishes past experiences and enriches the present.';
+
+  @override
+  String get emotion_loneliness_name => 'Loneliness';
+
+  @override
+  String get emotion_loneliness_explanation => 'A feeling of being alone and isolated, experienced when lacking social connection. Reminds the importance of relationships and motivates new connections.';
+
+  @override
+  String get emotion_frustration_name => 'Frustration';
+
+  @override
+  String get emotion_frustration_explanation => 'A feeling of disappointment from not reaching a goal. Motivates new strategies and growth.';
+
+  @override
+  String get emotion_awe_name => 'Awe';
+
+  @override
+  String get emotion_awe_explanation => 'A sense of wonder at greatness, felt in nature or human achievements. Inspires humility and creativity.';
+
+  @override
+  String get emotion_amusement_name => 'Amusement';
+
+  @override
+  String get emotion_amusement_explanation => 'A state of fun and enjoyment, felt through humor or entertainment. Relieves stress and provides positive energy.';
+
+  @override
+  String get emotion_relief_name => 'Relief';
+
+  @override
+  String get emotion_relief_explanation => 'A state of comfort after worry disappears, felt when tension is resolved. Brings psychological stability and positive change.';
+
+  @override
+  String get emotion_curiosity_name => 'Curiosity';
+
+  @override
+  String get emotion_curiosity_explanation => 'An interest in new things, a desire to explore the unknown. Drives learning and discovery.';
+
+  @override
+  String get emotion_desire_name => 'Desire';
+
+  @override
+  String get emotion_desire_explanation => 'A strong wish for something, motivating progress toward goals. Promotes achievement and growth.';
+
+  @override
+  String get emotion_confusion_name => 'Confusion';
+
+  @override
+  String get emotion_confusion_explanation => 'A state of uncertainty, felt when information is unclear or contradictory. Motivates new approaches to problem-solving.';
+
+  @override
+  String get emotion_doubt_name => 'Doubt';
+
+  @override
+  String get emotion_doubt_explanation => 'A feeling of uncertainty, experienced when facing unreliable situations. Increases focus and logical thinking.';
+
+  @override
+  String get emotion_comfort_name => 'Comfort';
+
+  @override
+  String get emotion_comfort_explanation => 'A state of comfort and stability, felt when free from stress and worry. Provides psychological stability and improves quality of life.';
+
+  @override
+  String get emotion_joy_name => 'Joy';
+
+  @override
+  String get emotion_joy_explanation => 'A state of happiness and delight, felt through good events or achievements. Brings positive energy and vitality.';
+
+  @override
+  String get emotion_affection_name => 'Affection';
+
+  @override
+  String get emotion_affection_explanation => 'A deep feeling of fondness and attachment, experienced in close relationships. Strengthens bonds and gives meaning to life.';
+
+  @override
+  String get emotion_excitementNew_name => 'Thrill';
+
+  @override
+  String get emotion_excitementNew_explanation => 'A lively and energetic state, felt before special events or achievements. Boosts energy and positive actions.';
+
+  @override
+  String get emotion_anxiety_name => 'Anxiety';
+
+  @override
+  String get emotion_anxiety_explanation => 'A feeling of fear and unease, experienced when sensing danger or threat. Helps survival and avoiding risks.';
+
+  @override
+  String get emotion_tension_name => 'Tension';
+
+  @override
+  String get emotion_tension_explanation => 'A state of nervousness and anxiety, felt when facing important tasks or challenges. Increases focus and problem-solving.';
+
+  @override
+  String get emotion_depression_name => 'Depression';
+
+  @override
+  String get emotion_depression_explanation => 'A state of pain and depression, felt after loss or disappointment. Helps deepen empathy and understanding.';
 }
