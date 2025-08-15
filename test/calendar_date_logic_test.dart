@@ -352,7 +352,6 @@ DateTime? _calculateFirstDay(Map<DateTime, List<Moment>> moments) {
 
   // 모든 moment의 date 중 가장 이른 날짜를 찾습니다
   for (final entry in moments.entries) {
-    final date = entry.key;
     final momentList = entry.value;
 
     for (final moment in momentList) {

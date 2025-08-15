@@ -12,7 +12,6 @@ import 'package:fpdart/fpdart.dart';
 
 void main() {
   group('WriteMomentBloc 테스트', () {
-    late WriteMomentBloc bloc;
     late DateTime testDate;
     late Moment testMoment;
 
