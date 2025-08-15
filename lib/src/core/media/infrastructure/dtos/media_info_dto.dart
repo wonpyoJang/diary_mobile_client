@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:io' show Platform;
 
-import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import 'package:diary_mobile_client/src/core/media/domain/entity/media_info.dart';
 import 'package:diary_mobile_client/src/database/app_database.dart';

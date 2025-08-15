@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:io';
 
 import 'package:diary_mobile_client/src/core/failure/local_failure.dart';
 import 'package:diary_mobile_client/src/feature/moment/domain/entity/moment.dart';

@@ -1,11 +1,8 @@
 import 'dart:async';
 import 'dart:collection';
-import 'dart:io';
 
 import 'package:diary_mobile_client/src/feature/moment/application/moment_messages.dart';
-import 'package:diary_mobile_client/src/feature/moment/domain/entity/emotional_intensity.dart';
 import 'package:diary_mobile_client/src/feature/moment/domain/entity/moment.dart';
-import 'package:diary_mobile_client/src/feature/moment/domain/enums/emotion.dart';
 import 'package:diary_mobile_client/src/feature/moment/moment_list/domain/interface/i_moment_list_repository.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';

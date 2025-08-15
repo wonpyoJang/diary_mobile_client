@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:diary_mobile_client/src/feature/moment/domain/entity/moment.dart';
 import 'package:diary_mobile_client/src/feature/moment/infrastructure/dtos/emotional_intensity_dto.dart';
-import 'package:image_picker/image_picker.dart';
 
 class MomentDto {
   final String id;

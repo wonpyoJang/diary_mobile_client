@@ -13,7 +13,6 @@ import 'package:diary_mobile_client/src/feature/moment/write_moment/infrastuctur
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
-import 'package:share_plus/share_plus.dart';
 
 @LazySingleton(as: IWriteMomentRepository)
 class WriteMomentRepository implements IWriteMomentRepository {

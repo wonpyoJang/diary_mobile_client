@@ -4,10 +4,8 @@ import 'package:drift/drift.dart';
 import 'package:diary_mobile_client/src/database/tables/emotional_intensity_table.dart';
 import 'package:diary_mobile_client/src/database/tables/moment_table.dart';
 import 'package:drift/native.dart';
-import 'package:path/path.dart' as p;
 import 'dart:io';
 
-import 'package:path_provider/path_provider.dart';
 import 'package:injectable/injectable.dart';
 
 part 'app_database.g.dart';

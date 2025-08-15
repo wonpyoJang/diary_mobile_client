@@ -1,5 +1,4 @@
 import 'package:diary_mobile_client/src/core/analytics/analytics_manager.dart';
-import 'package:diary_mobile_client/src/feature/moment/domain/entity/moment.dart';
 import 'package:diary_mobile_client/src/feature/moment/moment_calendar/application/moment_calendar_bloc.dart';
 import 'package:diary_mobile_client/src/feature/moment/moment_calendar/application/moment_calendar_event.dart';
 import 'package:diary_mobile_client/src/feature/moment/moment_calendar/application/moment_calendar_state.dart';
@@ -14,7 +13,6 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../../../injection.dart';
 import '../../application/moments/moment_list_bloc.dart' as bloc;
 import '../../application/moments/moment_list_state.dart';
-import '../../presentation/widgets/write_moment_button.dart';
 
 /// Displays a list of SampleItems.
 class MomentCalendarPage extends StatefulWidget {

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:diary_mobile_client/src/core/failure/local_failure.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:flutter/services.dart';
