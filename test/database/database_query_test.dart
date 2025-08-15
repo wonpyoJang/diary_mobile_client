@@ -3,9 +3,6 @@ import 'package:drift/drift.dart' hide isNull;
 import 'package:path/path.dart' as p;
 import 'dart:io';
 import 'package:diary_mobile_client/src/database/app_database.dart';
-import 'package:diary_mobile_client/src/database/tables/moment_table.dart';
-import 'package:diary_mobile_client/src/database/tables/emotional_intensity_table.dart';
-import 'package:diary_mobile_client/src/database/tables/media_table.dart';
 import 'package:diary_mobile_client/src/feature/moment/domain/enums/emotion.dart';
 
 void main() {
