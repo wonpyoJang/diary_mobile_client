@@ -37,8 +37,6 @@ class MomentCalendarPageState extends State<MomentCalendarPage> {
 
   @override
   Widget build(BuildContext context) {
-    final deviceWidth = MediaQuery.of(context).size.width;
-
     return MultiBlocProvider(
       providers: [
         BlocProvider(

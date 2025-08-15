@@ -46,12 +46,6 @@ class MomentListLocalProvider implements IMomentListLocalProvider {
             .toList();
 
         // 미디어 데이터를 가져옵니다
-        final mediaDataList = await (_database.select(_database.mediaTable)
-              ..where((tbl) => tbl.momentId.equals(momentData.id)))
-            .get();
-
-        // 미디어 파일로 변환합니다 (현재는 빈 리스트로 처리)
-        // TODO: Blob 데이터를 실제 파일로 변환하는 로직 구현 필요
         final medias = <File>[];
 
         // Moment 엔티티를 생성합니다
@@ -105,11 +99,6 @@ class MomentListLocalProvider implements IMomentListLocalProvider {
             .toList();
 
         // 미디어 데이터를 가져옵니다
-        final mediaDataList = await (_database.select(_database.mediaTable)
-              ..where((tbl) => tbl.momentId.equals(momentData.id)))
-            .get();
-
-        // 미디어 파일로 변환합니다 (현재는 빈 리스트로 처리)
         final medias = <File>[];
 
         // Moment 엔티티를 생성합니다
