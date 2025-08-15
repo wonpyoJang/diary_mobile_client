@@ -1,6 +1,6 @@
 // import 'dart:io';
 import 'dart:typed_data';
-import 'dart:io' show Platform;
+import 'dart:io' show Directory, File, Platform;
 
 import 'package:path/path.dart' as path;
 import 'package:diary_mobile_client/src/core/media/domain/entity/media_info.dart';
@@ -61,8 +61,7 @@ class MediaInfoDto {
 
       return file;
     } catch (e) {
-      // 에러 발생 시 빈 리스트 반환
-      print('Error creating file: $e');
+      // TODO: Error creating file: $e
       return null;
     }
   }
