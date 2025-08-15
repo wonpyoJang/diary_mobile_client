@@ -42,7 +42,7 @@ class _ImageViewerPageState extends State<ImageViewerPage> {
       backgroundColor: Colors.black,
       appBar: widget.imageUrls.length > 1
           ? AppBar(
-              backgroundColor: Colors.black.withOpacity(0.5),
+              backgroundColor: Colors.black.withAlpha(127),
               elevation: 0,
               leading: IconButton(
                 icon: const Icon(Icons.close, color: Colors.white),
@@ -60,7 +60,7 @@ class _ImageViewerPageState extends State<ImageViewerPage> {
               ],
             )
           : AppBar(
-              backgroundColor: Colors.black.withOpacity(0.5),
+              backgroundColor: Colors.black.withAlpha(127),
               elevation: 0,
               leading: IconButton(
                 icon: const Icon(Icons.close, color: Colors.white),
@@ -123,26 +123,26 @@ class _ImageViewerPageState extends State<ImageViewerPage> {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          Icon(
+        children: [
+          const Icon(
             Icons.error_outline,
             color: Colors.white,
             size: 64,
           ),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             '이미지를 불러올 수 없습니다',
             style: TextStyle(
               color: Colors.white,
               fontSize: 16,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           TextButton(
             onPressed: () {
               setState(() {});
             },
-            child: Text(
+            child: const Text(
               '다시 시도',
               style: TextStyle(color: Colors.white),
             ),
@@ -179,7 +179,7 @@ class SimpleImageViewer extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.black.withOpacity(0.5),
+        backgroundColor: Colors.black.withAlpha(127),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.close, color: Colors.white),
