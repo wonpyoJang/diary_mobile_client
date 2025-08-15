@@ -4,6 +4,7 @@ import 'package:diary_mobile_client/src/feature/moment/moment_calendar/applicati
 import 'package:diary_mobile_client/src/feature/moment/moment_calendar/application/moment_calendar_state.dart';
 import 'package:diary_mobile_client/src/feature/moment/moment_calendar/presentation/widgets/day_detail_bottom_sheet.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/write_moment_page.dart';
+import 'package:diary_mobile_client/src/feature/settings/settings_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -363,36 +364,54 @@ class CalendarHeader extends StatelessWidget {
                   color: Color(0xFF959490),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Stack(
                 children: [
-                  InkWell(
-                    onTap: () => onTapLeft(),
-                    child: SvgPicture.asset(
-                      'assets/images/feature/moment/moment_calendar/left.svg',
-                      width: 26,
-                      height: 26,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () => onTapLeft(),
+                        child: SvgPicture.asset(
+                          'assets/images/feature/moment/moment_calendar/left.svg',
+                          width: 26,
+                          height: 26,
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Text(
+                        DateFormat('MMMM')
+                            .format(state.selectedPage ?? DateTime.now()),
+                        style: const TextStyle(
+                            fontSize: 32,
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w700,
+                            height: 1.25,
+                            letterSpacing: -0.8,
+                            color: Color(0xFF53545B)),
+                      ),
+                      const SizedBox(width: 20),
+                      InkWell(
+                        onTap: () => onTapRight(),
+                        child: SvgPicture.asset(
+                          'assets/images/feature/moment/moment_calendar/right.svg',
+                          width: 26,
+                          height: 26,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 20),
-                  Text(
-                    DateFormat('MMMM')
-                        .format(state.selectedPage ?? DateTime.now()),
-                    style: const TextStyle(
-                        fontSize: 32,
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.w700,
-                        height: 1.25,
-                        letterSpacing: -0.8,
-                        color: Color(0xFF53545B)),
-                  ),
-                  const SizedBox(width: 20),
-                  InkWell(
-                    onTap: () => onTapRight(),
-                    child: SvgPicture.asset(
-                      'assets/images/feature/moment/moment_calendar/right.svg',
-                      width: 26,
-                      height: 26,
+                  Positioned(
+                    right: 0,
+                    child: InkWell(
+                      onTap: () {
+                        // TODO: 설정 페이지로 이동
+                        Navigator.restorablePushNamed(
+                            context, SettingsView.routeName);
+                      },
+                      child: const Icon(
+                        Icons.settings,
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                 ],

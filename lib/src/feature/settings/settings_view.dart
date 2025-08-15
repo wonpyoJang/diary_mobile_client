@@ -6,6 +6,7 @@ import 'package:diary_mobile_client/src/feature/splash/splash_page.dart';
 import 'package:diary_mobile_client/src/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:diary_mobile_client/l10n/app_localizations.dart';
 
 import 'settings_controller.dart';
 
@@ -27,7 +28,7 @@ class SettingsView extends StatelessWidget {
       child: Builder(builder: (context) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Settings'),
+            title: Text(AppLocalizations.of(context)!.settings),
           ),
           body: Padding(
             padding: const EdgeInsets.all(16),
@@ -46,7 +47,7 @@ class SettingsView extends StatelessWidget {
                   items: [
                     DropdownMenuItem(
                         value: ThemeMode.system,
-                        child: Text('System Theme',
+                        child: Text(AppLocalizations.of(context)!.systemTheme,
                             style: TextStyle(
                                 color: Theme.of(context)
                                     .textTheme
@@ -54,7 +55,7 @@ class SettingsView extends StatelessWidget {
                                     ?.color))),
                     DropdownMenuItem(
                       value: ThemeMode.light,
-                      child: Text('Light Theme',
+                      child: Text(AppLocalizations.of(context)!.lightTheme,
                           style: TextStyle(
                               color: Theme.of(context)
                                   .textTheme
@@ -63,13 +64,41 @@ class SettingsView extends StatelessWidget {
                     ),
                     DropdownMenuItem(
                       value: ThemeMode.dark,
-                      child: Text('Dark Theme',
+                      child: Text(AppLocalizations.of(context)!.darkTheme,
                           style: TextStyle(
                               color: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
                                   ?.color)),
                     )
+                  ],
+                ),
+                const SizedBox(height: 24),
+                // 언어 선택 드롭다운
+                DropdownButton<Locale>(
+                  value: controller.locale ?? const Locale('ko'),
+                  onChanged: (Locale? newLocale) {
+                    controller.updateLocale(newLocale);
+                  },
+                  items: [
+                    DropdownMenuItem(
+                      value: const Locale('ko'),
+                      child: Text(
+                        '한국어',
+                        style: TextStyle(
+                          color: Theme.of(context).textTheme.bodyMedium?.color,
+                        ),
+                      ),
+                    ),
+                    DropdownMenuItem(
+                      value: const Locale('en'),
+                      child: Text(
+                        'English',
+                        style: TextStyle(
+                          color: Theme.of(context).textTheme.bodyMedium?.color,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 // 실험실 타일
@@ -85,7 +114,7 @@ class SettingsView extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('실험실',
+                      Text(AppLocalizations.of(context)!.lab,
                           style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -96,16 +125,17 @@ class SettingsView extends StatelessWidget {
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text('캘린더 모드',
-                                  style: TextStyle(fontSize: 16)),
+                              Text(AppLocalizations.of(context)!.calendarMode,
+                                  style: const TextStyle(fontSize: 16)),
                               Switch(
                                 value: state.isCalendarMode,
                                 onChanged: (bool value) {
                                   showYesOrNoDialog(context,
-                                      title: '캘린더 모드',
+                                      title: AppLocalizations.of(context)!
+                                          .calendarMode,
                                       message: state.isCalendarMode
-                                          ? '캘린더 모드를 해제하시겠습니까?\n캘린더 모드를 해제하면 앱을 재시작합니다.'
-                                          : '캘린더 모드로 변경하시겠습니까?\n캘린더 모드로 변경하면 앱을 재시작합니다.',
+                                          ? "${AppLocalizations.of(context)!.calendarMode}를 해제하시겠습니까?\n캘린더 모드를 해제하면 앱을 재시작합니다."
+                                          : "${AppLocalizations.of(context)!.calendarMode}로 변경하시겠습니까?\n캘린더 모드로 변경하면 앱을 재시작합니다.",
                                       onConfirm: (bool value) {
                                     context
                                         .read<SettingsBloc>()

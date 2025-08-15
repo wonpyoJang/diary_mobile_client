@@ -79,4 +79,88 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get addDiary => 'Add Diary';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get addPhoto => 'Add Photo';
+
+  @override
+  String get share => 'Share';
+
+  @override
+  String get deleteConfirm => 'Are you sure you want to delete?';
+
+  @override
+  String get addImageToWrite => 'Write with the added photo?';
+
+  @override
+  String get webNotSupported => 'This feature is not supported on web.';
+
+  @override
+  String get appDownloadLink => 'App download link: https://testflight.apple.com/join/9Z7cKQSj';
+
+  @override
+  String get shareEmotion => 'Sharing today\'s emotion.';
+
+  @override
+  String get diaryReflection => '[Diary]';
+
+  @override
+  String get imageSaved => 'Image saved successfully.';
+
+  @override
+  String get imageSaveError => 'An error occurred while saving the image.';
+
+  @override
+  String get galleryPermission => 'Gallery write permission is required.';
+
+  @override
+  String get date => 'Date';
+
+  @override
+  String get analysisCorrect => 'Is this analysis correct?';
+
+  @override
+  String get writeDiaryGuide => 'Write a diary and check today\'s emotion\nright now!';
+
+  @override
+  String get writeDiaryHint => 'How was your day?';
+
+  @override
+  String get writeDiaryHint1 => 'How was your day?';
+
+  @override
+  String get writeDiaryHint2 => 'Express your feelings honestly today';
+
+  @override
+  String get writeDiaryHint3 => 'Record the precious moments of your day';
+
+  @override
+  String get writeDiaryHint4 => 'Write down the stories in your heart';
+
+  @override
+  String get writeDiaryHint5 => 'Share your true feelings today';
+
+  @override
+  String get writeDiaryHint6 => 'At the end of the day, share your thoughts';
+
+  @override
+  String get writeDiaryHint7 => 'Organize your feelings through today\'s diary';
+
+  @override
+  String get writeDiaryHint8 => 'Leave your precious memories';
+
+  @override
+  String get writeDiaryHint9 => 'Make your day special';
+
+  @override
+  String get writeDiaryHint10 => 'Express your inner stories in writing';
+
+  @override
+  String get writeDiaryHint11 => 'Leave today\'s feelings in writing';
 }

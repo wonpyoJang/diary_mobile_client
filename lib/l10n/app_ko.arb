@@ -67,7 +67,7 @@
   "@extractingEmotion": {
     "description": "로딩 인디케이터 텍스트"
   },
-  "settings": "Settings",
+  "settings": "설정",
   "@settings": {
     "description": "설정 타이틀"
   },
@@ -94,5 +94,65 @@
   "addDiary": "일기 추가하기",
   "@addDiary": {
     "description": "일기 추가 버튼 텍스트"
-  }
+  },
+  "edit": "수정하기",
+  "@edit": {"description": "수정하기 메뉴"},
+  "delete": "삭제하기",
+  "@delete": {"description": "삭제하기 메뉴 및 버튼"},
+  "addPhoto": "사진 추가하기",
+  "@addPhoto": {"description": "사진 추가하기 메뉴"},
+  "share": "공유하기",
+  "@share": {"description": "공유하기 메뉴"},
+  "deleteConfirm": "삭제하시겠습니까?",
+  "@deleteConfirm": {"description": "삭제 확인 메시지"},
+  "addImageToWrite": "추가한 사진으로 글을 작성하시겠습니까?",
+  "@addImageToWrite": {"description": "사진으로 글 작성 확인 메시지"},
+  "webNotSupported": "웹에서는 지원하지 않는 기능입니다.",
+  "@webNotSupported": {"description": "웹 미지원 안내"},
+  "appDownloadLink": "앱 다운로드 링크: https://testflight.apple.com/join/9Z7cKQSj",
+  "@appDownloadLink": {"description": "앱 다운로드 링크 안내"},
+  "shareEmotion": "오늘의 기분을 공유합니다.",
+  "@shareEmotion": {"description": "감정 공유 텍스트"},
+  "diaryReflection": "[일기]",
+  "@diaryReflection": {"description": "일기 본문 라벨"},
+  "analysisCorrect": "이 분석이 맞나요?",
+  "@analysisCorrect": {"description": "분석 결과 확인 질문"},
+  "imageSaved": "이미지가 성공적으로 저장되었습니다.",
+  "@imageSaved": {"description": "이미지 저장 성공 안내"},
+  "imageSaveError": "이미지 저장 중 오류가 발생했습니다.",
+  "@imageSaveError": {"description": "이미지 저장 실패 안내"},
+  "galleryPermission": "갤러리 쓰기 권한이 필요합니다.",
+  "@galleryPermission": {"description": "갤러리 권한 안내"},
+  "date": "날짜",
+  "@date": {"description": "날짜 라벨"},
+  "writeDiaryGuide": "일기를 작성해 오늘의 감정을\n확인해보세요.",
+  "@writeDiaryGuide": {
+    "description": "일기 작성 안내 문구"
+  },
+  "writeDiaryHint": "오늘 하루는 어떠셨나요?",
+  "@writeDiaryHint": {
+    "description": "일기 작성 힌트 문구"
+  },
+  "writeDiaryHint1": "오늘 하루는 어떠셨나요?",
+  "@writeDiaryHint1": {"description": "일기 힌트 1"},
+  "writeDiaryHint2": "오늘의 감정을 솔직하게 표현해보세요",
+  "@writeDiaryHint2": {"description": "일기 힌트 2"},
+  "writeDiaryHint3": "오늘 하루의 소중한 순간을 기록해보세요",
+  "@writeDiaryHint3": {"description": "일기 힌트 3"},
+  "writeDiaryHint4": "당신의 마음속 이야기를 적어보세요",
+  "@writeDiaryHint4": {"description": "일기 힌트 4"},
+  "writeDiaryHint5": "오늘의 기분을 솔직하게 털어놓아보세요",
+  "@writeDiaryHint5": {"description": "일기 힌트 5"},
+  "writeDiaryHint6": "하루의 끝, 당신의 생각을 나눠보세요",
+  "@writeDiaryHint6": {"description": "일기 힌트 6"},
+  "writeDiaryHint7": "오늘의 일기를 통해 감정을 정리해보세요",
+  "@writeDiaryHint7": {"description": "일기 힌트 7"},
+  "writeDiaryHint8": "소중한 기억을 남겨보세요",
+  "@writeDiaryHint8": {"description": "일기 힌트 8"},
+  "writeDiaryHint9": "당신의 하루를 특별하게 만들어보세요",
+  "@writeDiaryHint9": {"description": "일기 힌트 9"},
+  "writeDiaryHint10": "마음속 이야기를 글로 표현해보세요",
+  "@writeDiaryHint10": {"description": "일기 힌트 10"},
+  "writeDiaryHint11": "오늘의 감정을 글로 남겨보세요",
+  "@writeDiaryHint11": {"description": "일기 힌트 11"}
 }

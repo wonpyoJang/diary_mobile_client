@@ -11,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:diary_mobile_client/l10n/app_localizations.dart';
 
 import '../../../domain/entity/moment.dart';
 
@@ -40,9 +41,9 @@ Future<dynamic> showEmotionBlending(BuildContext context, Moment moment) {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
-                const Text(
-                  "오늘의 감정",
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.todayEmotion,
+                  style: const TextStyle(
                       color: Color(0xFF808080),
                       fontFamily: "Pretendard",
                       fontSize: 16,
@@ -116,22 +117,24 @@ class ContentPanel extends StatelessWidget {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: const Text('알림'),
-                          content: const Text(
-                              '웹에서는 이미지를 저장할 수 없습니다.\n앱 다운로드 링크: https://testflight.apple.com/join/9Z7cKQSj'),
+                          title:
+                              Text(AppLocalizations.of(context)!.notification),
+                          content: Text('${AppLocalizations.of(context)!.webNotSupported}\n${AppLocalizations.of(context)!.appDownloadLink}'),
                           actions: <Widget>[
                             TextButton(
-                              child: const Text('확인'),
+                              child:
+                                  Text(AppLocalizations.of(context)!.confirm),
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
                             ),
                             TextButton(
-                              child: const Text('다운로드'),
+                              child:
+                                  Text(AppLocalizations.of(context)!.download),
                               onPressed: () {
                                 launchUrl(
-                                  Uri.parse(
-                                      'https://testflight.apple.com/join/9Z7cKQSj'),
+                                  Uri.parse(AppLocalizations.of(context)!
+                                      .appDownloadLink),
                                   mode: LaunchMode.externalApplication,
                                 );
                               },
@@ -165,8 +168,9 @@ class ContentPanel extends StatelessWidget {
                           AnalyticsManager.logEvent(
                               'emotion_blending_save_image_success');
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('이미지가 성공적으로 저장되었습니다.'),
+                            SnackBar(
+                              content: Text(
+                                  AppLocalizations.of(context)!.imageSaved),
                             ),
                           );
                         }
@@ -176,7 +180,8 @@ class ContentPanel extends StatelessWidget {
                               'emotion_blending_save_image_error');
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('이미지 저장 중 오류가 발생했습니다: $e'),
+                              content: Text(
+                                  "${AppLocalizations.of(context)!.imageSaveError}: $e"),
                             ),
                           );
                         }
@@ -191,7 +196,8 @@ class ContentPanel extends StatelessWidget {
                                 onTap: () {
                                   openAppSettings();
                                 },
-                                child: const Text('갤러리 쓰기 권한이 필요합니다.')),
+                                child: Text(AppLocalizations.of(context)!
+                                    .galleryPermission)),
                           ),
                         );
                       }

@@ -6,6 +6,7 @@ import 'package:diary_mobile_client/src/feature/moment/moment_list/presentation/
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/write_moment_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:diary_mobile_client/l10n/app_localizations.dart';
 
 class DiaryListBottomSheet extends StatelessWidget {
   const DiaryListBottomSheet({super.key});
@@ -50,7 +51,7 @@ class DiaryListBottomSheet extends StatelessWidget {
                                 ),
                               ));
                             },
-                            child: const Text('일기 추가하기'),
+                            child: Text(AppLocalizations.of(context)!.addDiary),
                           ),
                         );
                       }

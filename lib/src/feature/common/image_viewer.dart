@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:diary_mobile_client/l10n/app_localizations.dart';
 
 class ImageViewerPage extends StatefulWidget {
   final List<String> imageUrls;
@@ -130,9 +131,9 @@ class _ImageViewerPageState extends State<ImageViewerPage> {
             size: 64,
           ),
           const SizedBox(height: 16),
-          const Text(
-            '이미지를 불러올 수 없습니다',
-            style: TextStyle(
+          Text(
+            AppLocalizations.of(context)!.imageLoadError,
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 16,
             ),
@@ -142,9 +143,9 @@ class _ImageViewerPageState extends State<ImageViewerPage> {
             onPressed: () {
               setState(() {});
             },
-            child: const Text(
-              '다시 시도',
-              style: TextStyle(color: Colors.white),
+            child: Text(
+              AppLocalizations.of(context)!.tryAgain,
+              style: const TextStyle(color: Colors.white),
             ),
           ),
         ],
@@ -153,10 +154,9 @@ class _ImageViewerPageState extends State<ImageViewerPage> {
   }
 
   void _shareImage() {
-    // TODO: 이미지 공유 기능 구현
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('공유 기능은 준비 중입니다'),
+      SnackBar(
+        content: Text(AppLocalizations.of(context)!.shareFeaturePreparing),
         backgroundColor: Colors.grey,
       ),
     );

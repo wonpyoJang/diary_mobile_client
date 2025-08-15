@@ -5,6 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import '../../../application/moments/moment_list_bloc.dart';
 import '../../../application/moments/moment_list_event.dart';
 import '../../../domain/entity/moment.dart';
+import 'package:diary_mobile_client/l10n/app_localizations.dart';
 
 class MomentCard extends StatelessWidget {
   const MomentCard({
@@ -34,7 +35,7 @@ class MomentCard extends StatelessWidget {
             backgroundColor: theme.colorScheme.error,
             foregroundColor: theme.colorScheme.onError,
             icon: Icons.delete,
-            label: 'Delete',
+            label: AppLocalizations.of(context)!.delete,
           ),
         ],
       ),

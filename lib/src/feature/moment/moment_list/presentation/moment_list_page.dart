@@ -7,6 +7,7 @@ import '../../application/moments/moment_list_bloc.dart' as bloc;
 import '../../application/moments/moment_list_state.dart';
 import '../../presentation/widgets/write_moment_button.dart';
 import 'widgets/moment_card.dart';
+import 'package:diary_mobile_client/l10n/app_localizations.dart';
 
 /// Displays a list of SampleItems.
 class MomentListPage extends StatefulWidget {
@@ -25,7 +26,7 @@ class MomentListPageState extends State<MomentListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('나의 기억들'),
+        title: Text(AppLocalizations.of(context)!.myMemories),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -48,7 +49,8 @@ class MomentListPageState extends State<MomentListPage> {
       body: BlocBuilder<bloc.MomentListBloc, MomentListState>(
         builder: (context, state) {
           if (state.moments.isEmpty) {
-            return const Center(child: Text("새로운 일기를 등록해보세요!"));
+            return Center(
+                child: Text(AppLocalizations.of(context)!.registerNewDiary));
           }
 
           return ListView.builder(

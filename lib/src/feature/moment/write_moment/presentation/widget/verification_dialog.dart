@@ -4,6 +4,7 @@ import 'package:diary_mobile_client/src/feature/moment/write_moment/application/
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/emotion_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:diary_mobile_client/l10n/app_localizations.dart';
 
 Future<dynamic> verificationDialog(BuildContext context) {
   return showDialog(
@@ -26,19 +27,16 @@ Future<dynamic> verificationDialog(BuildContext context) {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(
-                    height: 29,
-                    child: Center(
-                      child: Text("오늘의 감정",
-                          style: TextStyle(
-                            color: Color(0xFF808080),
-                            fontFamily: "Pretendard",
-                            fontSize: 16,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: -0.32,
-                          )),
-                    ),
+                  Center(
+                    child: Text(AppLocalizations.of(context)!.todayEmotion,
+                        style: const TextStyle(
+                          color: Color(0xFF808080),
+                          fontFamily: "Pretendard",
+                          fontSize: 16,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: -0.32,
+                        )),
                   ),
                   const SizedBox(height: 2),
                   Container(
@@ -57,17 +55,14 @@ Future<dynamic> verificationDialog(BuildContext context) {
                     ),
                   ),
                   const SizedBox(height: 2),
-                  const SizedBox(
-                    height: 29,
-                    child: Center(
-                      child: Text("이 분석이 맞나요?",
-                          style: TextStyle(
-                              color: Color(0xFF808080),
-                              fontFamily: "SpoqaHanSansNeo",
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              letterSpacing: -0.32)),
-                    ),
+                  Center(
+                    child: Text(AppLocalizations.of(context)!.analysisCorrect,
+                        style: const TextStyle(
+                            color: Color(0xFF808080),
+                            fontFamily: "SpoqaHanSansNeo",
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: -0.32)),
                   ),
                   const SizedBox(height: 6),
                   Row(
@@ -87,7 +82,8 @@ Future<dynamic> verificationDialog(BuildContext context) {
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                             child: Center(
-                              child: Text('달라요 👎',
+                              child: Text(
+                                  AppLocalizations.of(context)!.notMatch,
                                   style: Theme.of(context)
                                       .textTheme
                                       .labelLarge
@@ -115,7 +111,7 @@ Future<dynamic> verificationDialog(BuildContext context) {
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                             child: Center(
-                              child: Text('맞아요 👍',
+                              child: Text(AppLocalizations.of(context)!.match,
                                   style: Theme.of(context)
                                       .textTheme
                                       .labelLarge

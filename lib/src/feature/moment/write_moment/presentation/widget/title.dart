@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:diary_mobile_client/l10n/app_localizations.dart';
 
 class MomentWritingPageTitle extends StatelessWidget {
   const MomentWritingPageTitle({
@@ -7,12 +8,12 @@ class MomentWritingPageTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
-        SizedBox(height: 4),
+        const SizedBox(height: 4),
         Text(
-          "일기를 작성해 오늘의 감정을\n확인해보세요.",
-          style: TextStyle(
+          AppLocalizations.of(context)!.writeDiaryGuide,
+          style: const TextStyle(
             fontFamily: "Pretendard",
             fontSize: 16,
             height: 1.0,

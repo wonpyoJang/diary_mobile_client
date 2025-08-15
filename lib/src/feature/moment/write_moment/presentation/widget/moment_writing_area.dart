@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../application/write_moment_bloc.dart';
 import '../../application/write_moment_event.dart';
+import 'package:diary_mobile_client/l10n/app_localizations.dart';
 
 class MomentWritingArea extends StatelessWidget {
   const MomentWritingArea({
@@ -37,20 +38,18 @@ class MomentWritingArea extends StatelessWidget {
         autofocus: mode != WriteMode.view,
         decoration: InputDecoration(
             hintText: ([
-              '오늘 하루는 어떠셨나요?'
-              // '오늘의 감정을 솔직하게 표현해보세요',
-              // '오늘 하루의 소중한 순간을 기록해보세요',
-              // '당신의 마음속 이야기를 적어보세요',
-              // '오늘의 기분을 솔직하게 털어놓아보세요',
-              // '하루의 끝, 당신의 생각을 나눠보세요',
-              // '오늘의 일기를 통해 감정을 정리해보세요',
-              // '소중한 기억을 남겨보세요',
-              // '당신의 하루를 특별하게 만들어보세요',
-              // '마음속 이야기를 글로 표현해보세요',
-              // '오늘의 감정을 글로 남겨보세요',
-            ]
-                  ..toList()
-                  ..shuffle())
+              AppLocalizations.of(context)!.writeDiaryHint1,
+              AppLocalizations.of(context)!.writeDiaryHint2,
+              AppLocalizations.of(context)!.writeDiaryHint3,
+              AppLocalizations.of(context)!.writeDiaryHint4,
+              AppLocalizations.of(context)!.writeDiaryHint5,
+              AppLocalizations.of(context)!.writeDiaryHint6,
+              AppLocalizations.of(context)!.writeDiaryHint7,
+              AppLocalizations.of(context)!.writeDiaryHint8,
+              AppLocalizations.of(context)!.writeDiaryHint9,
+              AppLocalizations.of(context)!.writeDiaryHint10,
+              AppLocalizations.of(context)!.writeDiaryHint11,
+            ]..shuffle())
                 .first,
             border: InputBorder.none,
             hintStyle: Theme.of(context).textTheme.bodyMedium,

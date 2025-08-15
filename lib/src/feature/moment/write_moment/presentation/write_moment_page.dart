@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, prefer_interpolation_to_compose_strings
+
 import 'package:diary_mobile_client/src/core/analytics/analytics_manager.dart';
 import 'package:diary_mobile_client/src/feature/common/image_viewer.dart';
 import 'package:diary_mobile_client/src/feature/common/loading_indicator.dart';
@@ -27,6 +29,7 @@ import '../application/write_moment_bloc.dart';
 import '../application/write_moment_state.dart';
 import 'widget/extract_emotion_button.dart';
 import 'widget/moment_writing_area.dart';
+import 'package:diary_mobile_client/l10n/app_localizations.dart';
 
 class WriteMomentPageArguments {
   final Moment? moment;
@@ -77,7 +80,7 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                     state.mode == WriteMode.edit) {
                   showYesOrNoDialog(
                     context,
-                    title: '추가한 사진으로 글을 작성하시겠습니까?',
+                    title: AppLocalizations.of(context)!.addImageToWrite,
                     onConfirm: (value) {
                       context.read<WriteMomentBloc>().add(const WriteByImage());
                     },
@@ -168,8 +171,9 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                         },
                         listener: (context, state) async {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("드러난 감정이 없습니다."),
+                            SnackBar(
+                              content:
+                                  Text(AppLocalizations.of(context)!.noEmotion),
                             ),
                           );
                         },
@@ -274,7 +278,9 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                                                   child: InkWell(
                                                     onTap: () {
                                                       showYesOrNoDialog(context,
-                                                          title: "삭제하시겠습니까?",
+                                                          title: AppLocalizations
+                                                                  .of(context)!
+                                                              .deleteConfirm,
                                                           onConfirm: (value) {
                                                         context
                                                             .read<
@@ -489,7 +495,7 @@ class Menus extends StatelessWidget {
               itemBuilder: (context) => [
                     if (state.mode == WriteMode.view)
                       PullDownMenuItem(
-                        title: '수정하기',
+                        title: AppLocalizations.of(context)!.edit,
                         onTap: () {
                           context
                               .read<WriteMomentBloc>()
@@ -497,15 +503,16 @@ class Menus extends StatelessWidget {
                         },
                       ),
                     PullDownMenuItem(
-                      title: '사진 추가하기',
+                      title: AppLocalizations.of(context)!.addPhoto,
                       onTap: () async {
                         context.read<WriteMomentBloc>().add(const AddMedias());
                       },
                     ),
                     PullDownMenuItem(
-                      title: '삭제하기',
+                      title: AppLocalizations.of(context)!.delete,
                       onTap: () {
-                        showYesOrNoDialog(context, title: "삭제하시겠습니까?",
+                        showYesOrNoDialog(context,
+                            title: AppLocalizations.of(context)!.deleteConfirm,
                             onConfirm: (value) {
                           context
                               .read<MomentListBloc>()
@@ -515,7 +522,7 @@ class Menus extends StatelessWidget {
                       },
                     ),
                     PullDownMenuItem(
-                      title: '공유하기',
+                      title: AppLocalizations.of(context)!.share,
                       onTap: () async {
                         AnalyticsManager.logEvent('editor_share_emotion');
                         if (kIsWeb) {
@@ -523,22 +530,25 @@ class Menus extends StatelessWidget {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: const Text('알림'),
-                                content: const Text(
-                                    '웹에서는 지원하지 않는 기능입니다.\n앱 다운로드 링크: https://testflight.apple.com/join/9Z7cKQSj'),
+                                title: Text(
+                                    AppLocalizations.of(context)!.notification),
+                                content: Text(
+                                    "${AppLocalizations.of(context)!.webNotSupported}\n${AppLocalizations.of(context)!.appDownloadLink}"),
                                 actions: <Widget>[
                                   TextButton(
-                                    child: const Text('확인'),
+                                    child: Text(
+                                        AppLocalizations.of(context)!.confirm),
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
                                   ),
                                   TextButton(
-                                    child: const Text('다운로드'),
+                                    child: Text(
+                                        AppLocalizations.of(context)!.download),
                                     onPressed: () {
                                       launchUrl(
-                                        Uri.parse(
-                                            'https://testflight.apple.com/join/9Z7cKQSj'),
+                                        Uri.parse(AppLocalizations.of(context)!
+                                            .appDownloadLink),
                                         mode: LaunchMode.externalApplication,
                                       );
                                     },
@@ -557,9 +567,12 @@ class Menus extends StatelessWidget {
                             final imagePath = File(
                                 '${directory.path}/emotion_palette_$timestamp.png');
                             await imagePath.writeAsBytes(image);
-                            await Share.shareXFiles([XFile(imagePath.path)],
-                                text:
-                                    '오늘의 기분을 공유합니다.\n\n[${DateTime.now().month}월 ${DateTime.now().day}일의 일기]\n${state.moment.reflection}');
+                            await Share.shareXFiles(
+                              [XFile(imagePath.path)],
+                              text: AppLocalizations.of(context)!.shareEmotion +
+                                  '\n\n' +
+                                  '${AppLocalizations.of(context)!.diaryReflection}${DateTime.now().month}월 ${DateTime.now().day}일\n${state.moment.reflection}',
+                            );
                           }
                         }
                       },

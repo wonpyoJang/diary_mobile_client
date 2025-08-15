@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../application/write_moment_bloc.dart';
 import '../../application/write_moment_event.dart';
 import '../../application/write_moment_state.dart';
+import 'package:diary_mobile_client/l10n/app_localizations.dart';
 
 class ExtractEmotionButon extends StatelessWidget {
   const ExtractEmotionButon({
@@ -26,15 +27,15 @@ class ExtractEmotionButon extends StatelessWidget {
             if (state.moment.reflection.length < 20 &&
                 state.moment.medias.isEmpty) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('일기를 20자 이상 작성해주세요'),
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.writeAtLeast20),
                 ),
               );
               return;
             } else if (state.isLoading) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('조금만 기다려주세요. 분석중입니다.'),
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.pleaseWait),
                 ),
               );
               return;

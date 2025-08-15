@@ -238,6 +238,174 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add Diary'**
   String get addDiary;
+
+  /// Edit menu
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// Delete menu and button
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// Add photo menu
+  ///
+  /// In en, this message translates to:
+  /// **'Add Photo'**
+  String get addPhoto;
+
+  /// Share menu
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
+
+  /// Delete confirm message
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete?'**
+  String get deleteConfirm;
+
+  /// Write with photo confirm message
+  ///
+  /// In en, this message translates to:
+  /// **'Write with the added photo?'**
+  String get addImageToWrite;
+
+  /// Web not supported notice
+  ///
+  /// In en, this message translates to:
+  /// **'This feature is not supported on web.'**
+  String get webNotSupported;
+
+  /// App download link notice
+  ///
+  /// In en, this message translates to:
+  /// **'App download link: https://testflight.apple.com/join/9Z7cKQSj'**
+  String get appDownloadLink;
+
+  /// Emotion share text
+  ///
+  /// In en, this message translates to:
+  /// **'Sharing today\'s emotion.'**
+  String get shareEmotion;
+
+  /// Diary reflection label
+  ///
+  /// In en, this message translates to:
+  /// **'[Diary]'**
+  String get diaryReflection;
+
+  /// Image save success notice
+  ///
+  /// In en, this message translates to:
+  /// **'Image saved successfully.'**
+  String get imageSaved;
+
+  /// Image save error notice
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred while saving the image.'**
+  String get imageSaveError;
+
+  /// Gallery permission notice
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery write permission is required.'**
+  String get galleryPermission;
+
+  /// Date label
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get date;
+
+  /// Analysis result confirmation question
+  ///
+  /// In en, this message translates to:
+  /// **'Is this analysis correct?'**
+  String get analysisCorrect;
+
+  /// Guide message for writing a diary and checking today's emotion
+  ///
+  /// In en, this message translates to:
+  /// **'Write a diary and check today\'s emotion\nright now!'**
+  String get writeDiaryGuide;
+
+  /// Hint message for writing a diary
+  ///
+  /// In en, this message translates to:
+  /// **'How was your day?'**
+  String get writeDiaryHint;
+
+  /// Diary hint 1
+  ///
+  /// In en, this message translates to:
+  /// **'How was your day?'**
+  String get writeDiaryHint1;
+
+  /// Diary hint 2
+  ///
+  /// In en, this message translates to:
+  /// **'Express your feelings honestly today'**
+  String get writeDiaryHint2;
+
+  /// Diary hint 3
+  ///
+  /// In en, this message translates to:
+  /// **'Record the precious moments of your day'**
+  String get writeDiaryHint3;
+
+  /// Diary hint 4
+  ///
+  /// In en, this message translates to:
+  /// **'Write down the stories in your heart'**
+  String get writeDiaryHint4;
+
+  /// Diary hint 5
+  ///
+  /// In en, this message translates to:
+  /// **'Share your true feelings today'**
+  String get writeDiaryHint5;
+
+  /// Diary hint 6
+  ///
+  /// In en, this message translates to:
+  /// **'At the end of the day, share your thoughts'**
+  String get writeDiaryHint6;
+
+  /// Diary hint 7
+  ///
+  /// In en, this message translates to:
+  /// **'Organize your feelings through today\'s diary'**
+  String get writeDiaryHint7;
+
+  /// Diary hint 8
+  ///
+  /// In en, this message translates to:
+  /// **'Leave your precious memories'**
+  String get writeDiaryHint8;
+
+  /// Diary hint 9
+  ///
+  /// In en, this message translates to:
+  /// **'Make your day special'**
+  String get writeDiaryHint9;
+
+  /// Diary hint 10
+  ///
+  /// In en, this message translates to:
+  /// **'Express your inner stories in writing'**
+  String get writeDiaryHint10;
+
+  /// Diary hint 11
+  ///
+  /// In en, this message translates to:
+  /// **'Leave today\'s feelings in writing'**
+  String get writeDiaryHint11;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
