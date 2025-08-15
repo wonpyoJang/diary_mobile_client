@@ -153,29 +153,28 @@ void main() {
     group('이벤트 동등성 테스트', () {
       test('동일한 값을 가진 이벤트가 동등해야 함', () {
         // Given & When & Then
-        expect(TextChangedEvent('test'), equals(TextChangedEvent('test')));
-        expect(DeleteMedia(1), equals(DeleteMedia(1)));
-        expect(ChangeToEdit(), equals(ChangeToEdit()));
-        expect(AddMedias(), equals(AddMedias()));
-        expect(WriteByImage(), equals(WriteByImage()));
-        expect(ResetIsTextGenerated(), equals(ResetIsTextGenerated()));
+        expect(const TextChangedEvent('test'), equals(const TextChangedEvent('test')));
+        expect(const DeleteMedia(1), equals(const DeleteMedia(1)));
+        expect(const ChangeToEdit(), equals(const ChangeToEdit()));
+        expect(const AddMedias(), equals(const AddMedias()));
+        expect(const WriteByImage(), equals(const WriteByImage()));
+        expect(const ResetIsTextGenerated(), equals(const ResetIsTextGenerated()));
       });
 
       test('다른 값을 가진 이벤트가 다르게 처리되어야 함', () {
         // Given & When & Then
-        expect(TextChangedEvent('test1'),
-            isNot(equals(TextChangedEvent('test2'))));
-        expect(DeleteMedia(1), isNot(equals(DeleteMedia(2))));
+        expect(const TextChangedEvent('test1'), isNot(equals(const TextChangedEvent('test2'))));
+        expect(const DeleteMedia(1), isNot(equals(const DeleteMedia(2))));
       });
 
       test('이벤트의 props가 올바르게 설정되어야 함', () {
         // Given & When & Then
-        expect(TextChangedEvent('hello').props, contains('hello'));
-        expect(DeleteMedia(10).props, contains(10));
-        expect(ChangeToEdit().props, isEmpty);
-        expect(AddMedias().props, isEmpty);
-        expect(WriteByImage().props, isEmpty);
-        expect(ResetIsTextGenerated().props, isEmpty);
+        expect(const TextChangedEvent('hello').props, contains('hello'));
+        expect(const DeleteMedia(10).props, contains(10));
+        expect(const ChangeToEdit().props, isEmpty);
+        expect(const AddMedias().props, isEmpty);
+        expect(const WriteByImage().props, isEmpty);
+        expect(const ResetIsTextGenerated().props, isEmpty);
       });
     });
 

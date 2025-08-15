@@ -64,8 +64,8 @@ void main() {
 
       // When - 감정 강도 추가
       final emotionalIntensities = [
-        EmotionalIntensity(emotion: Emotion.joy, intensity: 0.8),
-        EmotionalIntensity(emotion: Emotion.gratitude, intensity: 0.6),
+        const EmotionalIntensity(emotion: Emotion.joy, intensity: 0.8),
+        const EmotionalIntensity(emotion: Emotion.gratitude, intensity: 0.6),
       ];
 
       final updatedMoment = moment.copyWith(
@@ -112,8 +112,8 @@ void main() {
     test('Moment의 JSON 직렬화/역직렬화', () {
       // Given
       final emotionalIntensities = [
-        EmotionalIntensity(emotion: Emotion.joy, intensity: 0.8),
-        EmotionalIntensity(emotion: Emotion.gratitude, intensity: 0.6),
+        const EmotionalIntensity(emotion: Emotion.joy, intensity: 0.8),
+        const EmotionalIntensity(emotion: Emotion.gratitude, intensity: 0.6),
       ];
 
       final moment = Moment.create(
