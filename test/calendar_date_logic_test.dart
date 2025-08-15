@@ -334,13 +334,13 @@ Moment _createTestMoment(DateTime date) {
     reflection: '테스트 일기 내용',
     date: date,
     modifiedAt: date,
-    emotionalIntensities: [
+    emotionalIntensities: const [
       EmotionalIntensity(
         emotion: Emotion.joy,
         intensity: 0.8,
       ),
     ],
-    medias: [],
+    medias: const [],
   );
 }
 

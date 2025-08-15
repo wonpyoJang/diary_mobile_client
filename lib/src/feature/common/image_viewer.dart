@@ -123,26 +123,26 @@ class _ImageViewerPageState extends State<ImageViewerPage> {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
+        children: const [
+          Icon(
             Icons.error_outline,
             color: Colors.white,
             size: 64,
           ),
-          const SizedBox(height: 16),
-          const Text(
+          SizedBox(height: 16),
+          Text(
             '이미지를 불러올 수 없습니다',
             style: TextStyle(
               color: Colors.white,
               fontSize: 16,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           TextButton(
             onPressed: () {
               setState(() {});
             },
-            child: const Text(
+            child: Text(
               '다시 시도',
               style: TextStyle(color: Colors.white),
             ),
@@ -231,14 +231,14 @@ class SimpleImageViewer extends StatelessWidget {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
+        children: const [
+          Icon(
             Icons.error_outline,
             color: Colors.white,
             size: 64,
           ),
-          const SizedBox(height: 16),
-          const Text(
+          SizedBox(height: 16),
+          Text(
             '이미지를 불러올 수 없습니다',
             style: TextStyle(
               color: Colors.white,
