@@ -389,8 +389,11 @@ class WriteMomentPageState extends State<WriteMomentPage> {
 class HeaderArea extends StatelessWidget {
   final DateTime date;
   final ScreenshotController screenshotController;
-  const HeaderArea(
-      {super.key, required this.date, required this.screenshotController});
+  const HeaderArea({
+    super.key,
+    required this.date,
+    required this.screenshotController,
+  });
 
   @override
   Widget build(BuildContext context) {
