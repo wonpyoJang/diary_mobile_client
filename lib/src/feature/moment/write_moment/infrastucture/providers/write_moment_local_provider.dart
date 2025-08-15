@@ -22,7 +22,7 @@ class WriteMomentLocalProvider implements IWriteMomentLocalProvider {
     try {
       await _database.transaction(() async {
         // 1. Save moment
-        await _database.into(_database.momentTable).insert(
+        await _database.into(_database.momentTable).insertOnConflictUpdate(
               MomentTableCompanion.insert(
                 id: moment.id,
                 reflection: moment.reflection,
@@ -64,11 +64,11 @@ class WriteMomentLocalProvider implements IWriteMomentLocalProvider {
         for (final path in mediaPaths) {
           final file = File(path);
           if (!await file.exists()) {
-            return left(LocalFailure(
+            throw LocalFailure(
               message: '파일을 찾을 수 없습니다.',
               code: 'FILE_NOT_FOUND',
               details: {'path': path},
-            ));
+            );
           }
 
           final bytes = await file.readAsBytes();
@@ -88,6 +88,9 @@ class WriteMomentLocalProvider implements IWriteMomentLocalProvider {
 
       return right(unit);
     } catch (e) {
+      if (e is LocalFailure) {
+        return left(e);
+      }
       return left(LocalFailure(
         message: '미디어 저장 중 오류가 발생했습니다.',
         code: 'DB_ERROR',
@@ -155,11 +158,11 @@ class WriteMomentLocalProvider implements IWriteMomentLocalProvider {
         for (final path in mediaPaths) {
           final file = File(path);
           if (!await file.exists()) {
-            return left(LocalFailure(
+            throw LocalFailure(
               message: '파일을 찾을 수 없습니다.',
               code: 'FILE_NOT_FOUND',
               details: {'path': path},
-            ));
+            );
           }
 
           final bytes = await file.readAsBytes();
@@ -179,6 +182,9 @@ class WriteMomentLocalProvider implements IWriteMomentLocalProvider {
 
       return right(unit);
     } catch (e) {
+      if (e is LocalFailure) {
+        return left(e);
+      }
       return left(LocalFailure(
         message: '미디어 업데이트 중 오류가 발생했습니다.',
         code: 'DB_ERROR',

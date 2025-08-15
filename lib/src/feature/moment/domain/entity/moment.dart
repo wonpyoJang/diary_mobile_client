@@ -23,6 +23,10 @@ class Moment extends Equatable {
   final List<EmotionalIntensity> emotionalIntensities;
   final List<File> medias;
 
+  @override
+  List<Object?> get props =>
+      [id, reflection, date, modifiedAt, emotionalIntensities, medias];
+
   /// 새로운 Moment를 생성합니다.
   factory Moment.create({
     required String reflection,
@@ -51,9 +55,7 @@ class Moment extends Equatable {
 
   String getFormattedDay({String locale = 'ko_KR'}) {
     final isKorean = locale.startsWith('ko');
-    final formatStr = isKorean
-        ? 'yyyy년 MM월 dd일 EEEE'
-        : 'yyyy-MM-dd EEEE';
+    final formatStr = isKorean ? 'yyyy년 MM월 dd일 EEEE' : 'yyyy-MM-dd EEEE';
     final DateFormat formatter = DateFormat(formatStr, locale);
     return formatter.format(date);
   }
@@ -91,10 +93,6 @@ class Moment extends Equatable {
           [],
     );
   }
-
-  @override
-  List<Object?> get props =>
-      [id, reflection, date, modifiedAt, emotionalIntensities, medias];
 
   Moment copyWith({
     String? id,

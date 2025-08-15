@@ -84,7 +84,7 @@ class MomentListBloc extends Bloc<MomentListEvent, MomentListState> {
         firstDay = event.moment.date;
       }
 
-      emit(MomentListState(moments: newMoments, firstDay: firstDay));
+      emit(state.copyWith(moments: newMoments, firstDay: firstDay));
     });
 
     on<UpdateMoment>(
