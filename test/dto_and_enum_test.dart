@@ -4,6 +4,8 @@ import 'package:diary_mobile_client/src/feature/moment/infrastructure/dtos/emoti
 import 'package:diary_mobile_client/src/feature/moment/domain/entity/emotional_intensity.dart';
 import 'package:diary_mobile_client/src/feature/moment/domain/enums/emotion.dart';
 import 'package:diary_mobile_client/src/core/failure/local_failure.dart';
+import 'package:flutter/widgets.dart'; // Mock BuildContext
+// import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Mock AppLocalizations
 
 void main() {
   group('DTO 및 열거형 테스트', () {
@@ -109,6 +111,25 @@ void main() {
         // Then
         expect(emotionNames.length, equals(emotions.length));
       });
+
+      // test('Emotion.localizedName이 올바른 로컬라이즈 이름을 반환해야 함', () async {
+      //   // Given
+      //   final emotion = Emotion.joy;
+      //   final fakeContext = _FakeBuildContext();
+      //   final fakeLocalizations = _FakeAppLocalizations();
+      //
+      //   // AppLocalizations.of(context) mocking
+      //   AppLocalizations.overrideOf = (context) => fakeLocalizations;
+      //
+      //   // When
+      //   final localized = emotion.localizedName(fakeContext);
+      //
+      //   // Then
+      //   expect(localized, equals('기쁨')); // _FakeAppLocalizations에서 반환하는 값
+      //
+      //   // Clean up
+      //   AppLocalizations.overrideOf = null;
+      // });
     });
 
     group('LocalFailure 구조 테스트', () {
@@ -283,3 +304,13 @@ void main() {
     });
   });
 }
+
+// class _FakeBuildContext implements BuildContext {}
+//
+// class _FakeAppLocalizations implements AppLocalizations {
+//   @override
+//   String emotionName(String key) {
+//     if (key == 'emotion.joy.name') return '기쁨';
+//     return key;
+//   }
+// }
