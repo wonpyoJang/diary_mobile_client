@@ -2,6 +2,7 @@ import 'package:uuid/uuid.dart';
 
 class IdGenerator {
   static final _uuid = Uuid();
+  static const _chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
   /// 유니크한 ID를 생성합니다.
   ///

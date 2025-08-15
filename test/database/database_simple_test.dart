@@ -7,7 +7,8 @@ void main() {
     late Database database;
 
     setUp(() async {
-      database = Database(':memory:');
+      const dbName = ':memory:';
+      database = Database(dbName);
     });
 
     tearDown(() async {
@@ -20,7 +21,7 @@ void main() {
     });
 
     test('MomentTable 기본 테스트', () async {
-      final momentId = 'simple_test_moment';
+      const momentId = 'simple_test_moment';
       final testDate = DateTime(2024, 1, 1);
       final testReflection = '간단한 테스트 일기';
 
