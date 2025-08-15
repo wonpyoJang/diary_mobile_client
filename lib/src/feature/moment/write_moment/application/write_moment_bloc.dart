@@ -228,9 +228,9 @@ class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
   }
 
   Future<WriteMomentState> _saveMomentWithMedia(Moment newMoment) async {
-    bus.publish(MomentCreatedMessage(moment: state.moment, date: date));
+    bus.publish(MomentCreatedMessage(moment: newMoment, date: date));
 
-    final saveResult = await writeMomentRepository.saveMoment(state.moment);
+    final saveResult = await writeMomentRepository.saveMoment(newMoment);
 
     return saveResult.fold(
       (failure) => state.copyWith(isLoading: false, failure: failure),
@@ -245,7 +245,7 @@ class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
   Future<WriteMomentState> _updateMomentWithMedia(
       List<File> medias, Moment newMoment) async {
     final result =
-        await writeMomentRepository.updateMedias(state.moment.id, medias);
+        await writeMomentRepository.updateMedias(newMoment.id, medias);
 
     return result.fold(
       (failure) => state.copyWith(failure: failure, isLoading: false),
