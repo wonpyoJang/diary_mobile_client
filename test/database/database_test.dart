@@ -12,7 +12,8 @@ void main() {
 
   group('Database Tests', () {
     test('데이터베이스 스키마 버전이 올바른지 확인', () async {
-      final dbPath = 'test_db_main_${DateTime.now().microsecondsSinceEpoch}.sqlite';
+      final dbPath =
+          'test_db_main_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       await database.customStatement('PRAGMA foreign_keys = ON;');
       expect(database.schemaVersion, equals(1));
@@ -22,7 +23,8 @@ void main() {
     });
 
     test('데이터베이스 테이블들이 올바르게 생성되었는지 확인', () async {
-      final dbPath = 'test_db_main_${DateTime.now().microsecondsSinceEpoch}.sqlite';
+      final dbPath =
+          'test_db_main_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       await database.customStatement('PRAGMA foreign_keys = ON;');
       final tables = await database.allTables;
@@ -35,7 +37,8 @@ void main() {
     });
 
     test('MomentTable CRUD 작업 테스트', () async {
-      final dbPath = 'test_db_main_${DateTime.now().microsecondsSinceEpoch}.sqlite';
+      final dbPath =
+          'test_db_main_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       await database.customStatement('PRAGMA foreign_keys = ON;');
       final momentId = 'test_moment_1';
@@ -76,7 +79,8 @@ void main() {
     });
 
     test('EmotionalIntensityTable CRUD 작업 테스트', () async {
-      final dbPath = 'test_db_main_${DateTime.now().microsecondsSinceEpoch}.sqlite';
+      final dbPath =
+          'test_db_main_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       await database.customStatement('PRAGMA foreign_keys = ON;');
       final momentId = 'test_moment_2';
@@ -130,7 +134,8 @@ void main() {
     });
 
     test('MediaTable CRUD 작업 테스트', () async {
-      final dbPath = 'test_db_main_${DateTime.now().microsecondsSinceEpoch}.sqlite';
+      final dbPath =
+          'test_db_main_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       await database.customStatement('PRAGMA foreign_keys = ON;');
       final momentId = 'test_moment_3';
@@ -185,7 +190,8 @@ void main() {
     });
 
     test('외래 키 제약 조건 테스트', () async {
-      final dbPath = 'test_db_main_${DateTime.now().microsecondsSinceEpoch}.sqlite';
+      final dbPath =
+          'test_db_main_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       await database.customStatement('PRAGMA foreign_keys = ON;');
       final nonExistentMomentId = 'non_existent_moment';
@@ -208,7 +214,8 @@ void main() {
     });
 
     test('복합 쿼리 테스트', () async {
-      final dbPath = 'test_db_main_${DateTime.now().microsecondsSinceEpoch}.sqlite';
+      final dbPath =
+          'test_db_main_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       await database.customStatement('PRAGMA foreign_keys = ON;');
       // 테스트 데이터 생성

@@ -76,7 +76,6 @@ extension GetItInjectableX on _i174.GetIt {
     final dioModule = _$DioModule();
     gh.factory<_i584.SettingsBloc>(() => _i584.SettingsBloc());
     gh.factory<_i307.MomentCalendarBloc>(() => _i307.MomentCalendarBloc());
-    gh.singleton<_i587.Database>(() => _i587.Database());
     gh.singleton<_i681.Gemini>(() => _i681.Gemini());
     gh.singleton<_i891.FileManager>(() => _i891.FileManager());
     gh.singleton<_i917.ImagePickerClient>(() => _i917.ImagePickerClient());
@@ -94,6 +93,7 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i1061.MediaInfoLocalProvider());
     gh.lazySingleton<_i23.IDeviceInfoLocalProvider>(
         () => _i505.DeviceInfoLocalProvider());
+    gh.singleton<_i587.Database>(() => _i587.Database(gh<String>()));
     gh.lazySingleton<_i772.IWriteMomentInternalProvider>(
         () => _i603.WriteMomentInternalProvider(gh<_i356.HttpClient>()));
     gh.factory<_i468.IWriteMomentLocalProvider>(

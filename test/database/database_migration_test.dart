@@ -1,3 +1,4 @@
+@Tags(['no-hook'])
 import 'package:flutter_test/flutter_test.dart';
 import 'package:drift/drift.dart' hide isNotNull, isNull;
 import 'dart:io';
@@ -25,7 +26,8 @@ void main() {
     });
 
     test('데이터베이스 스키마 버전이 올바르게 설정됐는지 확인', () async {
-      final dbPath = 'test_db_migration_${DateTime.now().microsecondsSinceEpoch}.sqlite';
+      final dbPath =
+          'test_db_migration_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       try {
         expect(database.schemaVersion, equals(1));
@@ -37,7 +39,8 @@ void main() {
     });
 
     test('테이블 스키마가 올바르게 생성됐는지 확인', () async {
-      final dbPath = 'test_db_migration_${DateTime.now().microsecondsSinceEpoch}.sqlite';
+      final dbPath =
+          'test_db_migration_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       try {
         // 모든 테이블 조회
@@ -76,7 +79,8 @@ void main() {
     });
 
     test('테이블 간 관계가 올바르게 설정됐는지 확인', () async {
-      final dbPath = 'test_db_migration_${DateTime.now().microsecondsSinceEpoch}.sqlite';
+      final dbPath =
+          'test_db_migration_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       try {
         final tables = await database.allTables;
@@ -112,8 +116,10 @@ void main() {
     });
 
     test('여러 데이터베이스 인스턴스가 독립적으로 작동하는지 확인', () async {
-      final dbPath1 = 'test_db_migration1_${DateTime.now().microsecondsSinceEpoch}.sqlite';
-      final dbPath2 = 'test_db_migration2_${DateTime.now().microsecondsSinceEpoch}.sqlite';
+      final dbPath1 =
+          'test_db_migration1_${DateTime.now().microsecondsSinceEpoch}.sqlite';
+      final dbPath2 =
+          'test_db_migration2_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database1 = Database(dbPath1);
       final database2 = Database(dbPath2);
 

@@ -9,7 +9,8 @@ void main() {
 
   group('Database Basic Tests', () {
     test('데이터베이스 생성 및 연결 테스트', () async {
-      final dbPath = 'test_db_basic_${DateTime.now().microsecondsSinceEpoch}.sqlite';
+      final dbPath =
+          'test_db_basic_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       expect(database, isNotNull);
       expect(database.schemaVersion, equals(1));
@@ -19,7 +20,8 @@ void main() {
     });
 
     test('MomentTable 기본 CRUD 테스트', () async {
-      final dbPath = 'test_db_basic_${DateTime.now().microsecondsSinceEpoch}.sqlite';
+      final dbPath =
+          'test_db_basic_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       final momentId = 'test_moment_1';
       final testDate = DateTime(2024, 1, 1);
@@ -72,7 +74,8 @@ void main() {
     });
 
     test('EmotionalIntensityTable 기본 CRUD 테스트', () async {
-      final dbPath = 'test_db_basic_${DateTime.now().microsecondsSinceEpoch}.sqlite';
+      final dbPath =
+          'test_db_basic_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       // 먼저 moment 생성
       final momentId = 'test_moment_2_crud';
@@ -142,7 +145,8 @@ void main() {
     });
 
     test('날짜 범위 검색 테스트', () async {
-      final dbPath = 'test_db_basic_${DateTime.now().microsecondsSinceEpoch}.sqlite';
+      final dbPath =
+          'test_db_basic_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       // 테스트 데이터 생성
       final testDate1 = DateTime(2024, 1, 1);
@@ -200,7 +204,8 @@ void main() {
     });
 
     test('감정별 검색 테스트', () async {
-      final dbPath = 'test_db_basic_${DateTime.now().microsecondsSinceEpoch}.sqlite';
+      final dbPath =
+          'test_db_basic_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       // 테스트 데이터 생성
       final momentId1 = 'emotion_moment_1_search';
@@ -262,7 +267,8 @@ void main() {
     });
 
     test('트랜잭션 테스트', () async {
-      final dbPath = 'test_db_basic_${DateTime.now().microsecondsSinceEpoch}.sqlite';
+      final dbPath =
+          'test_db_basic_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       await database.transaction(() async {
         // 트랜잭션 내에서 데이터 삽입
@@ -300,7 +306,8 @@ void main() {
     });
 
     test('데이터 정합성 테스트', () async {
-      final dbPath = 'test_db_basic_${DateTime.now().microsecondsSinceEpoch}.sqlite';
+      final dbPath =
+          'test_db_basic_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       final momentId = 'integrity_test_moment_unique';
 

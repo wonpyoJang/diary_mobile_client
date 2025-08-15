@@ -1,3 +1,4 @@
+@Tags(['no-hook'])
 import 'package:flutter_test/flutter_test.dart';
 import 'package:diary_mobile_client/src/database/app_database.dart';
 

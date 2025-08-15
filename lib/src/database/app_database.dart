@@ -15,29 +15,18 @@ part 'app_database.g.dart';
 @DriftDatabase(tables: [MomentTable, EmotionalIntensityTable, MediaTable])
 @singleton
 class Database extends _$Database {
-  Database() : super(_openConnection());
+  Database(String dbPath) : super(_openConnection(dbPath));
 
   @override
   int get schemaVersion => 1;
 }
 
-LazyDatabase _openConnection() {
+LazyDatabase _openConnection(String dbPath) {
   return LazyDatabase(() async {
-    try {
-      final dbFolder = await getApplicationDocumentsDirectory();
-      final file = File(p.join(dbFolder.path, 'db.sqlite'));
-
-      // 데이터베이스 파일이 존재하지 않으면 디렉토리 생성
-      if (!file.parent.existsSync()) {
-        await file.parent.create(recursive: true);
-      }
-
-      return NativeDatabase.createInBackground(file);
-    } catch (e) {
-      // 에러 발생 시 기본 경로 사용
-      final tempDir = Directory.systemTemp;
-      final file = File(p.join(tempDir.path, 'db.sqlite'));
-      return NativeDatabase.createInBackground(file);
+    final file = File(dbPath);
+    if (!file.parent.existsSync()) {
+      await file.parent.create(recursive: true);
     }
+    return NativeDatabase.createInBackground(file);
   });
 }
