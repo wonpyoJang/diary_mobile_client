@@ -63,6 +63,10 @@ import 'feature/moment/write_moment/infrastucture/providers/write_moment_local_p
 import 'feature/moment/write_moment/infrastucture/repositories/write_moment_repository.dart'
     as _i767;
 import 'feature/settings/application/settings_bloc.dart' as _i584;
+import 'feature/settings/configurations/language/application/language_bloc.dart'
+    as _i136;
+import 'feature/settings/settings_controller.dart' as _i890;
+import 'feature/settings/settings_service.dart' as _i778;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -82,6 +86,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i891.FileManager>(() => _i891.FileManager());
     gh.singleton<_i917.ImagePickerClient>(() => _i917.ImagePickerClient());
     gh.singleton<_i248.FirebaseClient>(() => _i248.FirebaseClient());
+    gh.singleton<_i778.SettingsService>(() => _i778.SettingsService());
     gh.lazySingleton<_i361.Dio>(() => dioModule.dio());
     gh.lazySingleton<_i958.AnalyticsManager>(() => _i958.AnalyticsManager());
     gh.lazySingleton<_i461.Bus>(() => _i461.Bus());
@@ -100,6 +105,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i603.WriteMomentInternalProvider(gh<_i356.HttpClient>()));
     gh.singleton<_i407.DriftClient>(
         () => _i407.DriftClientImpl(gh<_i587.Database>()));
+    gh.singleton<_i890.SettingsController>(
+        () => _i890.SettingsController(gh<_i778.SettingsService>()));
     gh.singleton<_i320.ToastCubit>(() => _i320.ToastCubit(gh<_i461.Bus>()));
     gh.factory<_i63.IMomentListLocalProvider>(
         () => _i801.MomentListLocalProvider(gh<_i587.Database>()));
@@ -111,6 +118,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i461.Bus>(),
           gh<_i1053.IMomentListRepository>(),
         ));
+    gh.factory<_i136.LanguageCubit>(
+        () => _i136.LanguageCubit(gh<_i890.SettingsController>()));
     gh.lazySingleton<_i79.IWriteMomentRepository>(() =>
         _i767.WriteMomentRepository(
           writeMomentExternalProvider:
@@ -119,6 +128,7 @@ extension GetItInjectableX on _i174.GetIt {
           writeMomentLocalProvider: gh<_i468.IWriteMomentLocalProvider>(),
           deviceInfoLocalProvider: gh<_i23.IDeviceInfoLocalProvider>(),
           mediaInfoLocalProvider: gh<_i130.IMeidaInfoLocalProvider>(),
+          driftClient: gh<_i407.DriftClient>(),
         ));
     gh.factoryParam<_i812.WriteMomentBloc, _i900.Moment?, DateTime>((
       moment,

@@ -18,10 +18,7 @@ import 'feature/settings/settings_view.dart';
 class MyApp extends StatelessWidget {
   const MyApp({
     super.key,
-    required this.settingsController,
   });
-
-  final SettingsController settingsController;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +39,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: ListenableBuilder(
-        listenable: settingsController,
+        listenable: getIt<SettingsController>(),
         builder: (BuildContext context, Widget? child) {
           return BlocListener<ToastCubit, ToastState>(
             listener: (context, state) {
@@ -74,7 +71,7 @@ class MyApp extends StatelessWidget {
               // returns to the app after it has been killed while running in the
               // background.
               restorationScopeId: 'app',
-              locale: settingsController.locale, // 사용자가 선택한 언어 적용
+              locale: getIt<SettingsController>().locale, // 사용자가 선택한 언어 적용
 
               // Provide the generated AppLocalizations to the MaterialApp. This
               // allows descendant Widgets to display the correct translations
@@ -184,7 +181,8 @@ class MyApp extends StatelessWidget {
                   builder: (BuildContext context) {
                     switch (routeSettings.name) {
                       case SettingsView.routeName:
-                        return SettingsView(controller: settingsController);
+                        return SettingsView(
+                            controller: getIt<SettingsController>());
                       case WriteMomentPage.routeName:
                         if (routeSettings.arguments != null) {
                           final WriteMomentPageArguments args = routeSettings

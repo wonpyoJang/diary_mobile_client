@@ -29,7 +29,7 @@ class DriftClientImpl implements DriftClient {
       final result = await query(_database);
       final end = DateTime.now();
       debugPrint(
-          '[DriftClient] SUCCESS: $description, duration:  [32m [32m${end.difference(start).inMilliseconds}ms  [0m');
+          '[DriftClient] SUCCESS: $description, duration:  [32m [32m [32m${end.difference(start).inMilliseconds}ms  [0m, result: $result');
       return right(result);
     } on DriftWrappedException catch (e, stack) {
       final end = DateTime.now();

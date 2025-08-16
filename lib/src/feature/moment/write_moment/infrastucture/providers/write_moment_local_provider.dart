@@ -7,6 +7,7 @@ import 'package:diary_mobile_client/src/core/media/infrastructure/dtos/media_inf
 import 'package:diary_mobile_client/src/database/app_database.dart';
 import 'package:diary_mobile_client/src/feature/moment/domain/enums/emotion.dart';
 import 'package:diary_mobile_client/src/feature/moment/infrastructure/dtos/moment_dto.dart';
+import 'package:diary_mobile_client/src/feature/moment/infrastructure/dtos/emotional_intensity_dto.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/infrastucture/interfaces/i_write_moment_local_provider.dart';
 import 'package:drift/drift.dart';
 import 'package:fpdart/fpdart.dart';
@@ -18,33 +19,46 @@ class WriteMomentLocalProvider implements IWriteMomentLocalProvider {
 
   WriteMomentLocalProvider(this._driftClient);
 
+  /// [DEPRECATED] 트랜잭션 분리로 인해 더 이상 사용하지 않음
   @override
   Future<Either<LocalFailure, Unit>> saveMoment(MomentDto moment) async {
+    // 더 이상 사용하지 않음
+    throw UnimplementedError('saveMoment는 deprecated 되었습니다.');
+  }
+
+  /// moment만 저장
+  @override
+  Future<Either<LocalFailure, Unit>> saveMomentOnly(MomentDto moment) async {
     return await _driftClient.runQuery<Unit>((db) async {
-      await db.transaction(() async {
-        // 1. Save moment
-        await db.into(db.momentTable).insertOnConflictUpdate(
-              MomentTableCompanion.insert(
-                id: moment.id,
-                reflection: moment.reflection,
-                date: DateTime.parse(moment.date),
-                modifiedAt: DateTime.parse(moment.modifiedAt),
+      await db.into(db.momentTable).insertOnConflictUpdate(
+            MomentTableCompanion.insert(
+              id: moment.id,
+              reflection: moment.reflection,
+              date: DateTime.parse(moment.date),
+              modifiedAt: DateTime.parse(moment.modifiedAt),
+            ),
+          );
+      return unit;
+    }, description: 'saveMomentOnly');
+  }
+
+  /// intensity만 저장
+  @override
+  Future<Either<LocalFailure, Unit>> saveEmotionalIntensities(
+      String momentId, List<EmotionalIntensityDto> intensities) async {
+    return await _driftClient.runQuery<Unit>((db) async {
+      for (final emotionalIntensity in intensities) {
+        await db.into(db.emotionalIntensityTable).insert(
+              EmotionalIntensityTableCompanion.insert(
+                id: '${momentId}_${emotionalIntensity.emotion}',
+                emotion: Emotion.findByName(emotionalIntensity.emotion),
+                intensity: emotionalIntensity.intensity,
+                momentId: momentId,
               ),
             );
-        // 2. Save emotional intensities
-        for (final emotionalIntensity in moment.emotionalIntensities) {
-          await db.into(db.emotionalIntensityTable).insert(
-                EmotionalIntensityTableCompanion.insert(
-                  id: '${moment.id}_${emotionalIntensity.emotion}',
-                  emotion: Emotion.findByName(emotionalIntensity.emotion),
-                  intensity: emotionalIntensity.intensity,
-                  momentId: moment.id,
-                ),
-              );
-        }
-      });
+      }
       return unit;
-    }, description: 'saveMoment');
+    }, description: 'saveEmotionalIntensities');
   }
 
   @override

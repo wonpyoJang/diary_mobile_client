@@ -45,8 +45,13 @@ void main() {
       ],
       medias: [],
     );
-    final saveResult = await provider.saveMoment(moment);
+    final saveResult = await provider.saveMomentOnly(moment);
     expect(saveResult.isRight(), true);
+    final intensityResult = await provider.saveEmotionalIntensities(
+      moment.id,
+      moment.emotionalIntensities,
+    );
+    expect(intensityResult.isRight(), true);
 
     final updated = moment.copyWith(reflection: '수정된 일기');
     final updateResult = await provider.updateMoment(updated);
@@ -65,7 +70,11 @@ void main() {
       emotionalIntensities: [],
       medias: [],
     );
-    await provider.saveMoment(moment);
+    await provider.saveMomentOnly(moment);
+    await provider.saveEmotionalIntensities(
+      moment.id,
+      moment.emotionalIntensities,
+    );
     final saveMediaResult = await provider.saveMedia(moment.id, [file.path]);
     expect(saveMediaResult.isRight(), true);
 
@@ -101,7 +110,11 @@ void main() {
       emotionalIntensities: [],
       medias: [],
     );
-    await provider.saveMoment(moment);
+    await provider.saveMomentOnly(moment);
+    await provider.saveEmotionalIntensities(
+      moment.id,
+      moment.emotionalIntensities,
+    );
     final result = await provider.saveMedia(moment.id, ['/not/exist/file.png']);
     expect(result.isLeft(), true);
   });

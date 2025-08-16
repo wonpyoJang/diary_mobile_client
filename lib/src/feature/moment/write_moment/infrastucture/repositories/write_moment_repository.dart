@@ -13,6 +13,7 @@ import 'package:diary_mobile_client/src/feature/moment/write_moment/infrastuctur
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
+import 'package:diary_mobile_client/src/core/drift/drift_client.dart';
 
 @LazySingleton(as: IWriteMomentRepository)
 class WriteMomentRepository implements IWriteMomentRepository {
@@ -21,6 +22,7 @@ class WriteMomentRepository implements IWriteMomentRepository {
   final IWriteMomentLocalProvider writeMomentLocalProvider;
   final IDeviceInfoLocalProvider deviceInfoLocalProvider;
   final IMeidaInfoLocalProvider mediaInfoLocalProvider;
+  final DriftClient driftClient;
 
   WriteMomentRepository({
     required this.writeMomentExternalProvider,
@@ -28,6 +30,7 @@ class WriteMomentRepository implements IWriteMomentRepository {
     required this.writeMomentLocalProvider,
     required this.deviceInfoLocalProvider,
     required this.mediaInfoLocalProvider,
+    required this.driftClient,
   });
 
   @override
@@ -57,22 +60,36 @@ class WriteMomentRepository implements IWriteMomentRepository {
     return await result.fold(
       (failure) => left(MomentAnalyzeFailed(message: failure.message)),
       (emotionalIntensityDtos) async {
-        final emotionalIntensities =
-            emotionalIntensityDtos.map((e) => e.toDomain()).toList();
+        return writeMomentLocalProvider
+            .saveEmotionalIntensities(
+              moment.id,
+              emotionalIntensityDtos,
+            )
+            .then((result) => result.fold(
+                  (failure) =>
+                      left(MomentAnalyzeFailed(message: failure.message)),
+                  (success) async {
+                    final emotionalIntensities = emotionalIntensityDtos
+                        .map((e) => e.toDomain())
+                        .toList();
 
-        final fidOrFailure = await writeMomentExternalProvider.getFirebaseId();
+                    final fidOrFailure =
+                        await writeMomentExternalProvider.getFirebaseId();
 
-        final log =
-            """[일기]\n\n일기 날짜: ${moment.getFormattedDay()}\n${moment.reflection}\n------------------------------------\n[메타 데이터]\n\n감정분석일시: ${DateFormat('yy년 MM월 dd일 EEEE a hh시 mm분 ss초', 'ko').format(DateTime.now())}\nAI가 분석한 감정: ${emotionalIntensities.map((e) => "${e.emotion.enName} (${e.intensity})").join(', ')}\n\n${fidOrFailure.fold((failure) => "유저 ID:Unknown User", (fid) => "유저 ID: $fid")}""";
+                    final log =
+                        """[일기]\n\n일기 날짜: ${moment.getFormattedDay()}\n${moment.reflection}\n------------------------------------\n[메타 데이터]\n\n감정분석일시: ${DateFormat('yy년 MM월 dd일 EEEE a hh시 mm분 ss초', 'ko').format(DateTime.now())}\nAI가 분석한 감정: ${emotionalIntensities.map((e) => "${e.emotion.enName} (${e.intensity})").join(', ')}\n\n${fidOrFailure.fold((failure) => "유저 ID:Unknown User", (fid) => "유저 ID: $fid")}""";
 
-        return (await writeMomentInternalProvider.log(log,
-                deviceId: fidOrFailure.fold((failure) => null, (fid) => fid)))
-            .fold(
-          (failure) => right(
-              moment.copyWith(emotionalIntensities: emotionalIntensities)),
-          (response) => right(
-              moment.copyWith(emotionalIntensities: emotionalIntensities)),
-        );
+                    return (await writeMomentInternalProvider.log(log,
+                            deviceId: fidOrFailure.fold(
+                                (failure) => null, (fid) => fid)))
+                        .fold(
+                      (failure) => right(moment.copyWith(
+                          emotionalIntensities: emotionalIntensities)),
+                      (response) => right(moment.copyWith(
+                          emotionalIntensities: emotionalIntensities)),
+                    );
+                  },
+                ));
       },
     );
   }
@@ -85,20 +102,51 @@ class WriteMomentRepository implements IWriteMomentRepository {
 
     return result.fold(
       (failure) => left(MomentDescribeImageFailed(message: failure.message)),
-      (description) => right(description),
+      (description) {
+        return writeMomentLocalProvider
+            .updateMoment(
+              MomentDto.fromDomain(moment.copyWith(
+                  reflection: moment.reflection.isEmpty
+                      ? description
+                      : "${moment.reflection}\n\n$description")),
+            )
+            .then((result) => result.fold(
+                  (failure) =>
+                      left(MomentDescribeImageFailed(message: failure.message)),
+                  (_) => right(moment.reflection.isEmpty
+                      ? description
+                      : "${moment.reflection}\n\n$description"),
+                ));
+      },
     );
   }
 
   @override
   Future<Either<WriteMomentFailure, Unit>> saveMoment(Moment moment) async {
-    final result = await writeMomentLocalProvider.saveMoment(
-      MomentDto.fromDomain(moment),
-    );
+    final momentDto = MomentDto.fromDomain(moment);
+    return await driftClient.runQuery<Unit>((db) async {
+      return await db.transaction(() async {
+        // moment 저장
+        final result = await writeMomentLocalProvider.saveMomentOnly(momentDto);
+        if (result.isLeft()) {
+          throw Exception(result.getLeft());
+        }
+        // intensity 저장
+        final intensityResult =
+            await writeMomentLocalProvider.saveEmotionalIntensities(
+          momentDto.id,
+          momentDto.emotionalIntensities,
+        );
 
-    return result.fold(
-      (failure) => left(SaveMomentFailed(message: failure.message)),
-      (_) => right(unit),
-    );
+        if (intensityResult.isLeft()) {
+          throw Exception(intensityResult.getLeft());
+        }
+        return unit;
+      });
+    }, description: 'saveMoment (transaction)').then((result) => result.fold(
+          (failure) => left(SaveMomentFailed(message: failure.message)),
+          (_) => right(unit),
+        ));
   }
 
   @override
