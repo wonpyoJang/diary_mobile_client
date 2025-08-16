@@ -890,23 +890,23 @@ abstract class AppLocalizations {
   /// **'A state of pain and depression, felt after loss or disappointment.\n\nHelps deepen empathy and understanding.'**
   String get emotion_depression_explanation;
 
-  /// Language setting page title
+  /// Settings page version menu title
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get version;
+
+  /// Settings page language menu title
   ///
   /// In en, this message translates to:
   /// **'Language Setting'**
   String get languageSetting;
 
-  /// Korean language name
+  /// Message shown when version info fails to load
   ///
   /// In en, this message translates to:
-  /// **'Korean'**
-  String get korean;
-
-  /// English language name
-  ///
-  /// In en, this message translates to:
-  /// **'English'**
-  String get english;
+  /// **'Failed to load version information.'**
+  String get versionLoadError;
 }
 
 class _AppLocalizationsDelegate

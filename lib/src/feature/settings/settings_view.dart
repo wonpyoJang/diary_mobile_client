@@ -1,5 +1,6 @@
 import 'package:diary_mobile_client/src/feature/settings/application/settings_bloc.dart';
 import 'package:diary_mobile_client/src/feature/settings/configurations/language/presentation/language_setting_page.dart';
+import 'package:diary_mobile_client/src/feature/settings/configurations/version/application/version_bloc.dart';
 import 'package:diary_mobile_client/src/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,8 +21,15 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<SettingsBloc>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => getIt<SettingsBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<VersionBloc>()..fetchVersionInfo(),
+        ),
+      ],
       child: Builder(builder: (context) {
         return Scaffold(
           appBar: AppBar(
@@ -48,8 +56,25 @@ class SettingsView extends StatelessWidget {
                     );
                   },
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 1),
                 // 언어 선택 드롭다운
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.version),
+                  subtitle: BlocBuilder<VersionBloc, VersionState>(
+                    builder: (context, state) {
+                      if (state is VersionLoaded) {
+                        return Text('${state.version} (${state.buildNumber})');
+                      } else if (state is VersionError) {
+                        return Text(
+                            AppLocalizations.of(context)!.versionLoadError,
+                            style: const TextStyle(color: Colors.red));
+                      }
+                      return const SizedBox.shrink();
+                    },
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () {},
+                ),
               ],
             ),
           ),

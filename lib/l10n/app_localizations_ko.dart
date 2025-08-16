@@ -446,9 +446,11 @@ class AppLocalizationsKo extends AppLocalizations {
       '마음이 아프고 우울한 상태로, 상실이나 실망을 경험할 때 느끼는 감정입니다.\n\n우울은 감정의 깊이를 이해하고 공감을 높이는 데 도움을 줍니다.';
 
   @override
+  String get version => '버전';
+
+  @override
+  String get versionLoadError => '버전 정보를 불러오지 못했습니다.';
+
+  @override
   String get languageSetting => '언어 설정';
-  @override
-  String get korean => '한국어';
-  @override
-  String get english => '영어';
 }

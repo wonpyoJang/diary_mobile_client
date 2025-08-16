@@ -65,6 +65,16 @@ import 'feature/moment/write_moment/infrastucture/repositories/write_moment_repo
 import 'feature/settings/application/settings_bloc.dart' as _i584;
 import 'feature/settings/configurations/language/application/language_bloc.dart'
     as _i136;
+import 'feature/settings/configurations/version/application/version_bloc.dart'
+    as _i635;
+import 'feature/settings/configurations/version/domain/repositories/interfaces/i_version_repository.dart'
+    as _i170;
+import 'feature/settings/configurations/version/infrastructure/providers/interfaces/i_version_local_provider.dart'
+    as _i743;
+import 'feature/settings/configurations/version/infrastructure/providers/version_local_provider.dart'
+    as _i550;
+import 'feature/settings/configurations/version/infrastructure/repositories/version_repository.dart'
+    as _i191;
 import 'feature/settings/settings_controller.dart' as _i890;
 import 'feature/settings/settings_service.dart' as _i778;
 
@@ -90,11 +100,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i361.Dio>(() => dioModule.dio());
     gh.lazySingleton<_i958.AnalyticsManager>(() => _i958.AnalyticsManager());
     gh.lazySingleton<_i461.Bus>(() => _i461.Bus());
+    gh.lazySingleton<_i743.IVersionLocalProvider>(
+        () => _i550.VersionLocalProvider());
     gh.lazySingleton<_i1039.IWriteMomentExternalProvider>(
         () => _i550.WriteMomentExternalProvider(
               gh<_i681.Gemini>(),
               gh<_i248.FirebaseClient>(),
             ));
+    gh.lazySingleton<_i170.IVersionRepository>(
+        () => _i191.VersionRepository(gh<_i743.IVersionLocalProvider>()));
     gh.singleton<_i356.HttpClient>(() => _i356.HttpClient(gh<_i361.Dio>()));
     gh.lazySingleton<_i130.IMeidaInfoLocalProvider>(
         () => _i1061.MediaInfoLocalProvider());
@@ -103,6 +117,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i587.Database>(() => _i587.Database(gh<String>()));
     gh.lazySingleton<_i772.IWriteMomentInternalProvider>(
         () => _i603.WriteMomentInternalProvider(gh<_i356.HttpClient>()));
+    gh.factory<_i635.VersionBloc>(
+        () => _i635.VersionBloc(gh<_i170.IVersionRepository>()));
     gh.singleton<_i407.DriftClient>(
         () => _i407.DriftClientImpl(gh<_i587.Database>()));
     gh.singleton<_i890.SettingsController>(

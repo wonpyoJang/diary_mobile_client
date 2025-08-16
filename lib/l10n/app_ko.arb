@@ -234,5 +234,17 @@
   "emotion_tension_name": "긴장",
   "emotion_tension_explanation": "긴장되고 불안한 상태로, 중요한 일이나 도전에 직면할 때 느끼는 감정입니다.\n\n긴장은 주의를 집중시키고 문제 해결을 촉진합니다.",
   "emotion_depression_name": "우울",
-  "emotion_depression_explanation": "마음이 아프고 우울한 상태로, 상실이나 실망을 경험할 때 느끼는 감정입니다.\n\n우울은 감정의 깊이를 이해하고 공감을 높이는 데 도움을 줍니다."
+  "emotion_depression_explanation": "마음이 아프고 우울한 상태로, 상실이나 실망을 경험할 때 느끼는 감정입니다.\n\n우울은 감정의 깊이를 이해하고 공감을 높이는 데 도움을 줍니다.",
+  "version": "버전",
+  "@version": {
+    "description": "설정 페이지 버전 메뉴 타이틀"
+  },
+  "versionLoadError": "버전 정보를 불러오지 못했습니다.",
+  "@versionLoadError": {
+    "description": "버전 정보를 가져오지 못했을 때 안내 문구"
+  },
+  "languageSetting": "언어 설정",
+  "@languageSetting": {
+    "description": "설정 페이지 언어 메뉴 타이틀"
+  }
 }

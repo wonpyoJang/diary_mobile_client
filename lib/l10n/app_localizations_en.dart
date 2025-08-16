@@ -448,9 +448,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'A state of pain and depression, felt after loss or disappointment.\n\nHelps deepen empathy and understanding.';
 
   @override
+  String get version => 'Version';
+
+  @override
+  String get versionLoadError => 'Failed to load version information.';
+
+  @override
   String get languageSetting => 'Language Setting';
-  @override
-  String get korean => 'Korean';
-  @override
-  String get english => 'English';
 }
