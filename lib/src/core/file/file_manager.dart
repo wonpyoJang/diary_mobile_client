@@ -1,10 +1,10 @@
 import 'dart:io';
-import 'package:diary_mobile_client/src/core/failure/local_failure.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
+import '../failure/local_failure.dart';
 
 @singleton
 class FileManager {

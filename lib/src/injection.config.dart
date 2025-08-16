@@ -19,6 +19,7 @@ import 'core/device/infrastructure/interfaces/i_device_info_local_provider.dart'
     as _i23;
 import 'core/device/infrastructure/providers/device_info_local_provider.dart'
     as _i505;
+import 'core/drift/drift_client.dart' as _i407;
 import 'core/file/file_manager.dart' as _i891;
 import 'core/firebase/firebase_client.dart' as _i248;
 import 'core/http_client/dio_module.dart' as _i871;
@@ -88,6 +89,8 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i681.Gemini>(),
               gh<_i248.FirebaseClient>(),
             ));
+    gh.factory<_i468.IWriteMomentLocalProvider>(
+        () => _i220.WriteMomentLocalProvider(gh<_i407.DriftClient>()));
     gh.singleton<_i356.HttpClient>(() => _i356.HttpClient(gh<_i361.Dio>()));
     gh.lazySingleton<_i130.IMeidaInfoLocalProvider>(
         () => _i1061.MediaInfoLocalProvider());
@@ -96,8 +99,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i587.Database>(() => _i587.Database(gh<String>()));
     gh.lazySingleton<_i772.IWriteMomentInternalProvider>(
         () => _i603.WriteMomentInternalProvider(gh<_i356.HttpClient>()));
-    gh.factory<_i468.IWriteMomentLocalProvider>(
-        () => _i220.WriteMomentLocalProvider(gh<_i587.Database>()));
+    gh.singleton<_i407.DriftClientImpl>(
+        () => _i407.DriftClientImpl(gh<_i587.Database>()));
     gh.lazySingleton<_i79.IWriteMomentRepository>(() =>
         _i767.WriteMomentRepository(
           writeMomentExternalProvider:

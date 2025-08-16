@@ -6,6 +6,7 @@ import 'package:diary_mobile_client/src/feature/moment/write_moment/infrastuctur
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 import 'package:fpdart/fpdart.dart';
+import 'package:diary_mobile_client/src/core/drift/drift_client.dart';
 
 void main() {
   late Database database;
@@ -22,7 +23,7 @@ void main() {
     dbPath = p.join(
         dbDir.path, 'test_${DateTime.now().microsecondsSinceEpoch}.sqlite');
     database = Database(dbPath);
-    provider = WriteMomentLocalProvider(database);
+    provider = WriteMomentLocalProvider(DriftClientImpl(database));
   });
 
   tearDown(() async {
