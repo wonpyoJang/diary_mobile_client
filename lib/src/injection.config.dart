@@ -31,6 +31,7 @@ import 'core/media/infrastructure/interfaces/i_media_info_local_provider.dart'
 import 'core/media/infrastructure/providers/media_info_local_provider.dart'
     as _i1061;
 import 'database/app_database.dart' as _i587;
+import 'feature/common/toast/application/toast_cubit.dart' as _i320;
 import 'feature/moment/application/moments/moment_list_bloc.dart' as _i269;
 import 'feature/moment/domain/entity/moment.dart' as _i900;
 import 'feature/moment/moment_calendar/application/moment_calendar_bloc.dart'
@@ -89,8 +90,6 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i681.Gemini>(),
               gh<_i248.FirebaseClient>(),
             ));
-    gh.factory<_i468.IWriteMomentLocalProvider>(
-        () => _i220.WriteMomentLocalProvider(gh<_i407.DriftClient>()));
     gh.singleton<_i356.HttpClient>(() => _i356.HttpClient(gh<_i361.Dio>()));
     gh.lazySingleton<_i130.IMeidaInfoLocalProvider>(
         () => _i1061.MediaInfoLocalProvider());
@@ -99,8 +98,19 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i587.Database>(() => _i587.Database(gh<String>()));
     gh.lazySingleton<_i772.IWriteMomentInternalProvider>(
         () => _i603.WriteMomentInternalProvider(gh<_i356.HttpClient>()));
-    gh.singleton<_i407.DriftClientImpl>(
+    gh.singleton<_i407.DriftClient>(
         () => _i407.DriftClientImpl(gh<_i587.Database>()));
+    gh.singleton<_i320.ToastCubit>(() => _i320.ToastCubit(gh<_i461.Bus>()));
+    gh.factory<_i63.IMomentListLocalProvider>(
+        () => _i801.MomentListLocalProvider(gh<_i587.Database>()));
+    gh.factory<_i468.IWriteMomentLocalProvider>(
+        () => _i220.WriteMomentLocalProvider(gh<_i407.DriftClient>()));
+    gh.factory<_i1053.IMomentListRepository>(
+        () => _i203.MomentListRepository(gh<_i63.IMomentListLocalProvider>()));
+    gh.factory<_i269.MomentListBloc>(() => _i269.MomentListBloc(
+          gh<_i461.Bus>(),
+          gh<_i1053.IMomentListRepository>(),
+        ));
     gh.lazySingleton<_i79.IWriteMomentRepository>(() =>
         _i767.WriteMomentRepository(
           writeMomentExternalProvider:
@@ -119,14 +129,6 @@ extension GetItInjectableX on _i174.GetIt {
           moment,
           date,
           gh<_i79.IWriteMomentRepository>(),
-        ));
-    gh.factory<_i63.IMomentListLocalProvider>(
-        () => _i801.MomentListLocalProvider(gh<_i587.Database>()));
-    gh.factory<_i1053.IMomentListRepository>(
-        () => _i203.MomentListRepository(gh<_i63.IMomentListLocalProvider>()));
-    gh.factory<_i269.MomentListBloc>(() => _i269.MomentListBloc(
-          gh<_i461.Bus>(),
-          gh<_i1053.IMomentListRepository>(),
         ));
     return this;
   }

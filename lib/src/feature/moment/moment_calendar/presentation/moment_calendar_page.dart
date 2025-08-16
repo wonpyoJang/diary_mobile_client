@@ -57,25 +57,27 @@ class MomentCalendarPageState extends State<MomentCalendarPage> {
           // building all Widgets up front, the ListView.builder constructor lazily
           // builds Widgets as they’re scrolled into view.
           body: SafeArea(
-            child: Column(
-              children: [
-                CalendarHeader(
-                  onTapRight: () {
-                    pageController.nextPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut);
-                  },
-                  onTapLeft: () {
-                    pageController.previousPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut);
-                  },
-                ),
-                const SizedBox(height: 15),
-                Calendar(onCalendarCreated: (pageController) {
-                  this.pageController = pageController;
-                }),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  CalendarHeader(
+                    onTapRight: () {
+                      pageController.nextPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut);
+                    },
+                    onTapLeft: () {
+                      pageController.previousPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut);
+                    },
+                  ),
+                  const SizedBox(height: 15),
+                  Calendar(onCalendarCreated: (pageController) {
+                    this.pageController = pageController;
+                  }),
+                ],
+              ),
             ),
           ),
           // floatingActionButton: WriteMomentButton(

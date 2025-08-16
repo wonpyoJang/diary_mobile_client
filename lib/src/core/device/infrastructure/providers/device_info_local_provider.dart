@@ -3,6 +3,7 @@ import 'package:diary_mobile_client/src/core/device/infrastructure/interfaces/i_
 import 'package:diary_mobile_client/src/core/failure/local_failure.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
+import 'package:flutter/foundation.dart';
 
 @LazySingleton(as: IDeviceInfoLocalProvider)
 class DeviceInfoLocalProvider implements IDeviceInfoLocalProvider {
@@ -29,8 +30,21 @@ class DeviceInfoLocalProvider implements IDeviceInfoLocalProvider {
       } else {
         deviceId = "Unknown Device ID";
       }
-    } catch (e) {
-      return left(const LocalFailure(message: "DeviceInfo 를 가져오는데 실패했습니다."));
+    } on Exception catch (e, stack) {
+      debugPrint('Exception 발생: '
+          '\u001b[31m$e\n$stack\u001b[0m');
+      return left(const LocalFailure(
+          message: "DeviceInfo 를 가져오는데 실패했습니다. (Exception)"));
+    } on Error catch (e, stack) {
+      debugPrint('Error 발생: '
+          '\u001b[31m$e\n$stack\u001b[0m');
+      return left(
+          const LocalFailure(message: "DeviceInfo 를 가져오는데 실패했습니다. (Error)"));
+    } catch (e, stack) {
+      debugPrint('알 수 없는 예외 발생: '
+          '\u001b[31m$e\n$stack\u001b[0m');
+      return left(
+          const LocalFailure(message: "DeviceInfo 를 가져오는데 실패했습니다. (Unknown)"));
     }
 
     return right(deviceId);

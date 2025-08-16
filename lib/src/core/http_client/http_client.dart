@@ -43,11 +43,62 @@ class HttpClient {
           break;
       }
     } on DioException catch (e) {
-      return left(HttpFailure(message: e.toString()));
+      String message = '알 수 없는 네트워크 오류가 발생했습니다.';
+      String? code;
+      dynamic details = e.message;
+      switch (e.type) {
+        case DioExceptionType.connectionTimeout:
+          message = '서버 연결 시간이 초과되었습니다.';
+          code = 'CONNECTION_TIMEOUT';
+          break;
+        case DioExceptionType.sendTimeout:
+          message = '요청 전송 시간이 초과되었습니다.';
+          code = 'SEND_TIMEOUT';
+          break;
+        case DioExceptionType.receiveTimeout:
+          message = '응답 대기 시간이 초과되었습니다.';
+          code = 'RECEIVE_TIMEOUT';
+          break;
+        case DioExceptionType.badCertificate:
+          message = '서버 인증서 오류가 발생했습니다.';
+          code = 'BAD_CERTIFICATE';
+          break;
+        case DioExceptionType.badResponse:
+          message = '서버에서 잘못된 응답을 반환했습니다.';
+          code = 'BAD_RESPONSE';
+          details = {
+            'statusCode': e.response?.statusCode,
+            'data': e.response?.data,
+            'headers': e.response?.headers.map
+          };
+          break;
+        case DioExceptionType.cancel:
+          message = '요청이 취소되었습니다.';
+          code = 'CANCEL';
+          break;
+        case DioExceptionType.connectionError:
+          message = '네트워크 연결 오류가 발생했습니다.';
+          code = 'CONNECTION_ERROR';
+          break;
+        case DioExceptionType.unknown:
+          message = '알 수 없는 오류가 발생했습니다.';
+          code = 'UNKNOWN';
+          break;
+      }
+      return left(HttpFailure(message: message, code: code, details: details));
+    } on TypeError catch (e) {
+      return left(HttpFailure(
+          message: '응답 데이터 타입 오류', code: 'TYPE_ERROR', details: e.toString()));
     } catch (e) {
-      return left(HttpFailure(message: e.toString()));
+      return left(HttpFailure(
+          message: '예상치 못한 오류 발생', code: 'UNEXPECTED', details: e.toString()));
     }
 
-    return right(HttpResponse(data: response.data as Map<String, dynamic>));
+    try {
+      return right(HttpResponse(data: response.data as Map<String, dynamic>));
+    } on TypeError catch (e) {
+      return left(HttpFailure(
+          message: '응답 데이터 타입 오류', code: 'TYPE_ERROR', details: e.toString()));
+    }
   }
 }

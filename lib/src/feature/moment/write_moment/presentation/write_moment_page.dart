@@ -103,6 +103,16 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                     .add(const ResetIsTextGenerated());
               },
             ),
+            BlocListener<WriteMomentBloc, WriteMomentState>(
+              listenWhen: (prev, next) {
+                return prev.failure != null && next.failure == null;
+              },
+              listener: (context, state) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(state.failure!.message)),
+                );
+              },
+            ),
           ],
           child: Material(
             child: Stack(

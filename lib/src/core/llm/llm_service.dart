@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:async';
+import 'dart:io';
 
 import 'package:diary_mobile_client/main.dart';
 import 'package:diary_mobile_client/src/core/llm/llm_failure.dart';
@@ -35,7 +37,23 @@ class Gemini {
       {required LLMQuery query}) async {
     final prompt = TextPart(query.toPrompt());
 
-    final imageParts = await query.getImageParts();
+    List<InlineDataPart> imageParts = [];
+    try {
+      imageParts = await query.getImageParts();
+    } on PlatformException {
+      return left(const LLMFailure(
+          message: '[AI] 이미지 처리 중 플랫폼 오류가 발생했습니다. 다시 시도해주세요.'));
+    } on TimeoutException {
+      return left(const LLMFailure(
+          message: '[AI] 이미지 처리 중 타임아웃이 발생했습니다. 네트워크 상태를 확인해주세요.'));
+    } on SocketException {
+      return left(const LLMFailure(
+          message: '[AI] 이미지 처리 중 네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요.'));
+    } on Exception catch (e) {
+      return left(LLMFailure(message: '[AI] 이미지 처리 중 알 수 없는 오류: $e'));
+    } on Error catch (e) {
+      return left(LLMFailure(message: '[AI] 이미지 처리 중 치명적 오류: $e'));
+    }
 
     final content = [
       Content.multi([
@@ -46,18 +64,33 @@ class Gemini {
 
     GenerateContentResponse result;
 
-    logger.d("[prompt]\n${prompt.text}");
+    logger.d("[prompt]\n");
+    logger.d(prompt.text);
     for (var i = 0; i < imageParts.length; i++) {
-      logger.d("[image $i] path: ${query.medias[i].path}");
+      logger.d(
+        "[image $i] path: ",
+      );
+      logger.d(query.medias[i].path);
     }
 
     try {
       result = await model.generateContent(content);
-    } catch (e) {
-      return left(LLMFailure(message: "[AI] $e"));
+    } on PlatformException {
+      return left(const LLMFailure(message: '[AI] 플랫폼 오류가 발생했습니다. 다시 시도해주세요.'));
+    } on TimeoutException {
+      return left(
+          const LLMFailure(message: '[AI] AI 응답이 지연되고 있습니다. 네트워크 상태를 확인해주세요.'));
+    } on SocketException {
+      return left(
+          const LLMFailure(message: '[AI] 네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요.'));
+    } on Exception catch (e) {
+      return left(LLMFailure(message: '[AI] AI 요청 중 알 수 없는 오류: $e'));
+    } on Error catch (e) {
+      return left(LLMFailure(message: '[AI] AI 요청 중 치명적 오류: $e'));
     }
 
-    logger.d("[response]\n${result.text}");
+    logger.d("[response]\n");
+    logger.d(result.text);
 
     if (result.text == null) {
       return left(const LLMFailure(message: "[AI] 응답의 내용이 빈 값입니다."));
@@ -80,9 +113,13 @@ class Gemini {
 
     try {
       json = jsonDecode(responseWithoutNotation);
-    } catch (e) {
+    } on FormatException {
       return left(const LLMFailure(
           message: "[AI] 응답을 JSON 형식으로 변환하는데 실패했어요. 다시 시도해주세요."));
+    } on Exception catch (e) {
+      return left(LLMFailure(message: '[AI] JSON 파싱 중 알 수 없는 오류: $e'));
+    } on Error catch (e) {
+      return left(LLMFailure(message: '[AI] JSON 파싱 중 치명적 오류: $e'));
     }
 
     if (json == null) {
