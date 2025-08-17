@@ -25,6 +25,12 @@ class LanguageSettingPage extends StatelessWidget {
                       context, selectedLocale, const Locale('ko'), '한국어'),
                   _buildLanguageTile(
                       context, selectedLocale, const Locale('en'), 'English'),
+                  _buildLanguageTile(
+                      context, selectedLocale, const Locale('zh'), '中文'),
+                  _buildLanguageTile(
+                      context, selectedLocale, const Locale('ja'), '日本語'),
+                  _buildLanguageTile(context, selectedLocale,
+                      const Locale('zh', 'TW'), '繁體中文'),
                 ],
               ),
             );

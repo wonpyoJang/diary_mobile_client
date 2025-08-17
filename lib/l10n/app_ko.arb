@@ -246,5 +246,17 @@
   "languageSetting": "언어 설정",
   "@languageSetting": {
     "description": "설정 페이지 언어 메뉴 타이틀"
+  },
+  "termsAndPrivacy": "약관 및 개인정보 처리방침",
+  "@termsAndPrivacy": {
+    "description": "설정화면에서 약관 및 개인정보 처리방침 타일에 사용되는 텍스트"
+  },
+  "privacyPolicy": "개인정보 처리방침",
+  "@privacyPolicy": {
+    "description": "설정화면 개인정보 처리방침 타일 텍스트"
+  },
+  "terms": "약관",
+  "@terms": {
+    "description": "설정화면 약관 타일 텍스트"
   }
 }

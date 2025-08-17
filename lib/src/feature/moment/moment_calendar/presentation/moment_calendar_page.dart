@@ -5,7 +5,7 @@ import 'package:diary_mobile_client/src/feature/moment/moment_calendar/applicati
 import 'package:diary_mobile_client/src/feature/moment/moment_calendar/presentation/widgets/day_detail_bottom_sheet.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/write_moment_page.dart';
 import 'package:diary_mobile_client/src/feature/settings/settings_view.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide LockState;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';

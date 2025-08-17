@@ -1,8 +1,9 @@
+import 'package:diary_mobile_client/src/feature/lock/application/lock_cubit.dart';
 import 'package:diary_mobile_client/src/feature/settings/application/settings_bloc.dart';
 import 'package:diary_mobile_client/src/feature/settings/configurations/language/presentation/language_setting_page.dart';
 import 'package:diary_mobile_client/src/feature/settings/configurations/version/application/version_bloc.dart';
 import 'package:diary_mobile_client/src/injection.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide LockState;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:diary_mobile_client/l10n/app_localizations.dart';
 
@@ -56,8 +57,32 @@ class SettingsView extends StatelessWidget {
                     );
                   },
                 ),
+                BlocBuilder<LockCubit, LockState>(
+                  builder: (context, state) {
+                    return ListTile(
+                      title: const Text('잠금화면 설정'),
+                      trailing: Switch(
+                        value: state.isLockEnabled,
+                        onChanged: (bool value) {
+                          if (value) {
+                            context.read<LockCubit>().setLockEnabled(value);
+                          } else {
+                            context.read<LockCubit>().setLockDisabled();
+                          }
+                        },
+                      ),
+                    ); 
+                  },
+                ),
                 const SizedBox(height: 1),
-                // 언어 선택 드롭다운
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.termsAndPrivacy),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () {
+                    // TODO: 약관 페이지로 이동
+                  },
+                ),
+                const SizedBox(height: 1),
                 ListTile(
                   title: Text(AppLocalizations.of(context)!.version),
                   subtitle: BlocBuilder<VersionBloc, VersionState>(

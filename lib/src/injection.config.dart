@@ -32,6 +32,15 @@ import 'core/media/infrastructure/providers/media_info_local_provider.dart'
     as _i1061;
 import 'database/app_database.dart' as _i587;
 import 'feature/common/toast/application/toast_cubit.dart' as _i320;
+import 'feature/lock/application/lock_cubit.dart' as _i600;
+import 'feature/lock/domain/repositories/interfaces/i_local_authenticator_repository.dart'
+    as _i828;
+import 'feature/lock/infrastructure/providers/interfaces/i_local_authenticator_provider.dart'
+    as _i895;
+import 'feature/lock/infrastructure/providers/local_authenticator_provider.dart'
+    as _i911;
+import 'feature/lock/infrastructure/repositories/local_authenticator_repository.dart'
+    as _i845;
 import 'feature/moment/application/moments/moment_list_bloc.dart' as _i269;
 import 'feature/moment/domain/entity/moment.dart' as _i900;
 import 'feature/moment/moment_calendar/application/moment_calendar_bloc.dart'
@@ -109,6 +118,8 @@ extension GetItInjectableX on _i174.GetIt {
             ));
     gh.lazySingleton<_i170.IVersionRepository>(
         () => _i191.VersionRepository(gh<_i743.IVersionLocalProvider>()));
+    gh.factory<_i895.IAuthenticatorProvider>(
+        () => _i911.LocalAuthenticatorProvider());
     gh.singleton<_i356.HttpClient>(() => _i356.HttpClient(gh<_i361.Dio>()));
     gh.lazySingleton<_i130.IMeidaInfoLocalProvider>(
         () => _i1061.MediaInfoLocalProvider());
@@ -119,10 +130,17 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i603.WriteMomentInternalProvider(gh<_i356.HttpClient>()));
     gh.factory<_i635.VersionBloc>(
         () => _i635.VersionBloc(gh<_i170.IVersionRepository>()));
+    gh.lazySingleton<_i828.IAuthenticatorRepository>(() =>
+        _i845.LocalAuthenticatorRepository(
+            authenticatorProvider: gh<_i895.IAuthenticatorProvider>()));
     gh.singleton<_i407.DriftClient>(
         () => _i407.DriftClientImpl(gh<_i587.Database>()));
     gh.singleton<_i890.SettingsController>(
         () => _i890.SettingsController(gh<_i778.SettingsService>()));
+    gh.singleton<_i600.LockCubit>(() => _i600.LockCubit(
+          authenticatorRepository: gh<_i828.IAuthenticatorRepository>(),
+          passcode: gh<String>(),
+        ));
     gh.singleton<_i320.ToastCubit>(() => _i320.ToastCubit(gh<_i461.Bus>()));
     gh.factory<_i63.IMomentListLocalProvider>(
         () => _i801.MomentListLocalProvider(gh<_i587.Database>()));
