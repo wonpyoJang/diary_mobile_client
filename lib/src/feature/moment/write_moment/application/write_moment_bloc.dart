@@ -9,7 +9,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../bus/bus.dart';
-import '../../domain/entity/moment.dart';
+import '../../../common/moment/domain/entity/moment.dart';
 import 'write_moment_event.dart';
 import 'write_moment_state.dart';
 

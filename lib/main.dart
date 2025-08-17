@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:diary_mobile_client/firebase_options.dart';
+import 'package:diary_mobile_client/src/core/hive_client/hive_client.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -10,6 +11,7 @@ import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:crypto/crypto.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'src/injection.dart';
 import 'src/feature/settings/settings_controller.dart';
@@ -64,6 +66,12 @@ void main() async {
         encryptionCipher: HydratedAesCipher(byteskey),
       );
 
+      await Supabase.initialize(
+        url: 'https://qnpolyxygqnismrzvklz.supabase.co',
+        anonKey:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFucG9seXh5Z3FuaXNtcnp2a2x6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MzAzNzIsImV4cCI6MjA3MTAwNjM3Mn0.1qmqNbZmxhmRa5AJ-b6D7OmuUXuXSWyNnL8c9VmKJwo',
+      );
+
       // 의존성 주입 설정
       await configureDependencies();
 
@@ -84,6 +92,8 @@ void main() async {
           },
         ),
       );
+
+      await getIt<HiveClient>().initialize();
 
       // Load the user's preferred theme while the splash screen is displayed.
       // This prevents a sudden theme change when the app is first displayed.

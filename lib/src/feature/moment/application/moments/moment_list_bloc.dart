@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:diary_mobile_client/src/feature/moment/application/moment_messages.dart';
-import 'package:diary_mobile_client/src/feature/moment/domain/entity/moment.dart';
+import 'package:diary_mobile_client/src/feature/common/moment/domain/entity/moment.dart';
 import 'package:diary_mobile_client/src/feature/moment/moment_list/domain/interface/i_moment_list_repository.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -109,20 +109,21 @@ class MomentListBloc extends Bloc<MomentListEvent, MomentListState> {
           .switchMap(mapper),
     );
 
-    on<DeleteMoment>((event, emit) {
-      final updatedMoments = state.moments;
+    on<DeleteMoment>((event, emit) async {
+      final result = await momentListRepository.deleteMoment(event.moment.id);
 
-      updatedMoments[event.moment.date] = updatedMoments[event.moment.date]!
-          .where((moment) => moment.id != event.moment.id)
-          .toList();
-
-      // moment가 삭제된 경우, 삭제된 moment가 firstDay였다면 재계산 필요
-      DateTime? firstDay = state.firstDay;
-      if (firstDay != null && isSameDay(event.moment.date, firstDay)) {
-        firstDay = _calculateFirstDay(updatedMoments);
-      }
-
-      emit(MomentListState(moments: updatedMoments, firstDay: firstDay));
+      emit(result.fold((l) => state.copyWith(failure: l), (r) {
+        final updatedMoments = state.moments;
+        updatedMoments[event.moment.date] = updatedMoments[event.moment.date]!
+            .where((moment) => moment.id != event.moment.id)
+            .toList();
+        // moment가 삭제된 경우, 삭제된 moment가 firstDay였다면 재계산 필요
+        DateTime? firstDay = state.firstDay;
+        if (firstDay != null && isSameDay(event.moment.date, firstDay)) {
+          firstDay = _calculateFirstDay(updatedMoments);
+        }
+        return MomentListState(moments: updatedMoments, firstDay: firstDay);
+      }));
     });
   }
 

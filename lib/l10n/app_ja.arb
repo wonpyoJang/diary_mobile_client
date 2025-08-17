@@ -194,5 +194,11 @@
   "privacyPolicy": "プライバシーポリシー",
   "@privacyPolicy": {"description": "設定画面のプライバシーポリシーメニューのテキスト"},
   "terms": "利用規約",
-  "@terms": {"description": "設定画面の利用規約メニューのテキスト"}
+  "@terms": {"description": "設定画面の利用規約メニューのテキスト"},
+  "signin": "ログイン",
+  "@signin": {"description": "ログインボタンのテキスト"},
+  "kakaoLogin": "Kakaoで始める",
+  "@kakaoLogin": {"description": "カカオログインボタンテキスト"},
+  "appleLogin": "Appleで始める",
+  "@appleLogin": {"description": "Appleログインボタンテキスト"}
 }

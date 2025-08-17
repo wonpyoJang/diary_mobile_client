@@ -421,4 +421,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get terms => 'Terms';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get editProfile => 'Edit Profile';
+
+  @override
+  String get userName => 'User Name';
+
+  @override
+  String get userEmail => 'user@email.com';
+
+  @override
+  String get signin => 'Sign In';
+
+  @override
+  String get kakaoLogin => 'Continue with Kakao';
+
+  @override
+  String get appleLogin => 'Continue with Apple';
 }

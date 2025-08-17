@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:diary_mobile_client/src/feature/moment/infrastructure/dtos/moment_dto.dart';
-import 'package:diary_mobile_client/src/feature/moment/infrastructure/dtos/emotional_intensity_dto.dart';
-import 'package:diary_mobile_client/src/feature/moment/domain/entity/emotional_intensity.dart';
-import 'package:diary_mobile_client/src/feature/moment/domain/enums/emotion.dart';
+import 'package:diary_mobile_client/src/feature/common/moment/infrastructure/dtos/moment_dto.dart';
+import 'package:diary_mobile_client/src/feature/common/moment/infrastructure/dtos/emotional_intensity_dto.dart';
+import 'package:diary_mobile_client/src/feature/common/moment/domain/entity/emotional_intensity.dart';
+import 'package:diary_mobile_client/src/feature/common/moment/domain/enums/emotion.dart';
 import 'package:diary_mobile_client/src/core/failure/local_failure.dart';
 import 'package:flutter/widgets.dart'; // Mock BuildContext
 // import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Mock AppLocalizations

@@ -1,7 +1,7 @@
 import 'package:diary_mobile_client/src/feature/moment/write_moment/domain/failures/write_moment_failures.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entity/moment.dart';
+import '../../../common/moment/domain/entity/moment.dart';
 import 'write_moment_bloc.dart';
 
 class WriteMomentState extends Equatable {

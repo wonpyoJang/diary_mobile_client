@@ -13,7 +13,7 @@ import 'package:screenshot/screenshot.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:diary_mobile_client/l10n/app_localizations.dart';
 
-import '../../../domain/entity/moment.dart';
+import '../../../../common/moment/domain/entity/moment.dart';
 
 Future<dynamic> showEmotionBlending(BuildContext context, Moment moment) {
   final screenshotController = ScreenshotController();

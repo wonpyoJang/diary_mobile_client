@@ -1,5 +1,5 @@
 import '../../../bus/bus_message.dart';
-import '../domain/entity/moment.dart';
+import '../../common/moment/domain/entity/moment.dart';
 
 class MomentCreatedMessage extends BusMessage {
   final Moment moment;

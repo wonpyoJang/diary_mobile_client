@@ -421,4 +421,25 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get terms => '약관';
+
+  @override
+  String get profile => '프로필';
+
+  @override
+  String get editProfile => '프로필 편집';
+
+  @override
+  String get userName => '유저 이름';
+
+  @override
+  String get userEmail => 'user@email.com';
+
+  @override
+  String get signin => '로그인';
+
+  @override
+  String get kakaoLogin => '카카오로 시작하기';
+
+  @override
+  String get appleLogin => 'Apple로 시작하기';
 }

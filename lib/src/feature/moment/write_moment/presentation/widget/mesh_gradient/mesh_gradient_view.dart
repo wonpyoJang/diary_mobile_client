@@ -4,7 +4,7 @@ import 'package:diary_mobile_client/main.dart';
 import 'package:flutter/material.dart';
 import 'package:mesh_gradient/mesh_gradient.dart';
 
-import '../../../../domain/entity/moment.dart';
+import '../../../../../common/moment/domain/entity/moment.dart';
 
 class MeshGradientView extends StatefulWidget {
   const MeshGradientView({super.key, required this.moment});

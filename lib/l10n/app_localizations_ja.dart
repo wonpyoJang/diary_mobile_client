@@ -421,4 +421,25 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get terms => '利用規約';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get editProfile => 'Edit Profile';
+
+  @override
+  String get userName => 'User Name';
+
+  @override
+  String get userEmail => 'user@email.com';
+
+  @override
+  String get signin => 'ログイン';
+
+  @override
+  String get kakaoLogin => 'Kakaoで始める';
+
+  @override
+  String get appleLogin => 'Appleで始める';
 }

@@ -1,3 +1,6 @@
+import 'package:diary_mobile_client/src/feature/data_control/application/data_control_bloc.dart';
+import 'package:diary_mobile_client/src/feature/data_control/application/data_control_event.dart';
+import 'package:diary_mobile_client/src/feature/data_control/application/data_control_state.dart';
 import 'package:diary_mobile_client/src/feature/lock/application/lock_cubit.dart';
 import 'package:diary_mobile_client/src/feature/settings/application/settings_bloc.dart';
 import 'package:diary_mobile_client/src/feature/settings/configurations/language/presentation/language_setting_page.dart';
@@ -71,10 +74,31 @@ class SettingsView extends StatelessWidget {
                           }
                         },
                       ),
-                    ); 
+                    );
                   },
                 ),
                 const SizedBox(height: 1),
+                BlocBuilder<DataControlBloc, DataControlState>(
+                  builder: (context, state) {
+                    return ListTile(
+                      title: const Text('데이터 서버 전송 여부'),
+                      trailing: Switch(
+                        value: state.allowedSendDataToServer,
+                        onChanged: (bool value) {
+                          if (value) {
+                            context
+                                .read<DataControlBloc>()
+                                .add(SetSendDataToServer());
+                          } else {
+                            context
+                                .read<DataControlBloc>()
+                                .add(UnsetSendDataToServer());
+                          }
+                        },
+                      ),
+                    );
+                  },
+                ),
                 ListTile(
                   title: Text(AppLocalizations.of(context)!.termsAndPrivacy),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
