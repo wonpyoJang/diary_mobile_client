@@ -85,6 +85,9 @@ class MyApp extends StatelessWidget {
               supportedLocales: const [
                 Locale('ko', ''), // Korean, no country code
                 Locale('en', ''), // English, no country code
+                Locale('zh', ''), // Chinese, no country code
+                Locale('ja', ''), // Japanese, no country code
+                Locale('zh_TW', ''), // Traditional Chinese, no country code
               ],
 
               // Define a light and dark color theme. Then, read the user's

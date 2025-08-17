@@ -57,7 +57,14 @@ class SettingsView extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 1),
-                // 언어 선택 드롭다운
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.termsAndPrivacy),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () {
+                    // TODO: 약관 페이지로 이동
+                  },
+                ),
+                const SizedBox(height: 1),
                 ListTile(
                   title: Text(AppLocalizations.of(context)!.version),
                   subtitle: BlocBuilder<VersionBloc, VersionState>(

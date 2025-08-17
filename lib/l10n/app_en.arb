@@ -246,5 +246,17 @@
   "versionLoadError": "Failed to load version information.",
   "@versionLoadError": {
     "description": "Message shown when version info fails to load"
+  },
+  "termsAndPrivacy": "Terms & Privacy Policy",
+  "@termsAndPrivacy": {
+    "description": "Text for the terms and privacy policy tile in the settings screen"
+  },
+  "privacyPolicy": "Privacy Policy",
+  "@privacyPolicy": {
+    "description": "Text for the privacy policy tile in the settings screen"
+  },
+  "terms": "Terms",
+  "@terms": {
+    "description": "Text for the terms tile in the settings screen"
   }
 }
