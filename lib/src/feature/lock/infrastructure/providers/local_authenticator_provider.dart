@@ -4,7 +4,9 @@ import 'package:local_auth/local_auth.dart';
 import 'interfaces/i_local_authenticator_provider.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/error_codes.dart' as auth_error;
+import 'package:injectable/injectable.dart';
 
+@Injectable(as: IAuthenticatorProvider)
 class LocalAuthenticatorProvider implements IAuthenticatorProvider {
   @override
   Future<Either<LocalAuthFailure, bool>> authenticate() async {

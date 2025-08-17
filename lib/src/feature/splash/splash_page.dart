@@ -19,7 +19,7 @@ class SplashPageState extends State<SplashPage> {
     super.initState();
     AnalyticsManager.logEvent('splash_viewed');
     Timer(const Duration(seconds: 3), () {
-      if ((context.read<LockCubit>().state is LockUnlocked) == false) {
+      if (context.read<LockCubit>().state.isLockEnabled == true) {
         context.read<LockCubit>().authenticate();
       } else {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -35,7 +35,7 @@ class SplashPageState extends State<SplashPage> {
       listeners: [
         BlocListener<LockCubit, LockState>(
           listener: (context, state) {
-            if (state is LockUnlocked) {
+            if (state.status == LockStatus.unlocked) {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => const MomentCalendarPage()));
             }
