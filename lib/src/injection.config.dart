@@ -32,6 +32,9 @@ import 'core/media/infrastructure/providers/media_info_local_provider.dart'
     as _i1061;
 import 'database/app_database.dart' as _i587;
 import 'feature/common/toast/application/toast_cubit.dart' as _i320;
+import 'feature/lock/application/lock_cubit.dart' as _i600;
+import 'feature/lock/domain/repositories/interfaces/local_authenticator_repository.dart'
+    as _i710;
 import 'feature/moment/application/moments/moment_list_bloc.dart' as _i269;
 import 'feature/moment/domain/entity/moment.dart' as _i900;
 import 'feature/moment/moment_calendar/application/moment_calendar_bloc.dart'
@@ -117,6 +120,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i587.Database>(() => _i587.Database(gh<String>()));
     gh.lazySingleton<_i772.IWriteMomentInternalProvider>(
         () => _i603.WriteMomentInternalProvider(gh<_i356.HttpClient>()));
+    gh.factory<_i600.LockCubit>(() => _i600.LockCubit(
+          authenticatorRepository: gh<_i710.IAuthenticatorRepository>(),
+          passcode: gh<String>(),
+        ));
     gh.factory<_i635.VersionBloc>(
         () => _i635.VersionBloc(gh<_i170.IVersionRepository>()));
     gh.singleton<_i407.DriftClient>(
