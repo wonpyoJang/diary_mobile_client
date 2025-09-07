@@ -2,9 +2,9 @@ import 'dart:collection';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_bloc.dart';
-import 'package:diary_mobile_client/src/feature/moment/domain/entity/moment.dart';
-import 'package:diary_mobile_client/src/feature/moment/domain/entity/emotional_intensity.dart';
-import 'package:diary_mobile_client/src/feature/moment/domain/enums/emotion.dart';
+import 'package:diary_mobile_client/src/feature/common/moment/domain/entity/moment.dart';
+import 'package:diary_mobile_client/src/feature/common/moment/domain/entity/emotional_intensity.dart';
+import 'package:diary_mobile_client/src/feature/common/moment/domain/enums/emotion.dart';
 
 void main() {
   group('날짜 해시코드 테스트', () {

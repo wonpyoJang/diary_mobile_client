@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:diary_mobile_client/src/core/media/domain/entity/media_info.dart';
-import 'package:diary_mobile_client/src/feature/moment/domain/entity/moment.dart';
+import 'package:diary_mobile_client/src/feature/common/moment/domain/entity/moment.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/domain/failures/write_moment_failures.dart';
 import 'package:fpdart/fpdart.dart';
 

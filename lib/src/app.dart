@@ -1,12 +1,18 @@
 import 'package:diary_mobile_client/l10n/app_localizations.dart';
 import 'package:diary_mobile_client/src/feature/common/toast/application/toast_cubit.dart';
+import 'package:diary_mobile_client/src/feature/data_control/application/data_control_bloc.dart';
 import 'package:diary_mobile_client/src/feature/lock/application/lock_cubit.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_bloc.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_event.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/write_moment_page.dart';
+import 'package:diary_mobile_client/src/feature/profile/presentation/profile_page.dart';
 import 'package:diary_mobile_client/src/feature/settings/application/settings_bloc.dart';
 import 'package:diary_mobile_client/src/feature/splash/splash_page.dart';
+import 'package:diary_mobile_client/src/feature/user/application/user_bloc.dart';
+import 'package:diary_mobile_client/src/feature/user/application/user_event.dart';
 import 'package:diary_mobile_client/src/injection.dart';
+import 'package:diary_mobile_client/src/core/deep_link/deep_link_service.dart';
+import 'package:diary_mobile_client/src/core/deep_link/deep_link_cubit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide LockState;
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +20,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'feature/moment/moment_list/presentation/moment_list_page.dart';
 import 'feature/settings/settings_controller.dart';
 import 'feature/settings/settings_view.dart';
+import 'feature/signin/presentation/signin_page.dart';
+import 'feature/auth/login_callback_page.dart';
+import 'feature/auth/deep_link_test_page.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatefulWidget {
@@ -29,6 +38,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    // 딥링크 서비스 초기화
+    DeepLinkService().initialize();
   }
 
   @override
@@ -51,6 +62,11 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
           create: (context) => getIt<LockCubit>(),
         ),
+        BlocProvider(
+          create: (context) => getIt<UserBloc>()..add(FetchUser()),
+        ),
+        BlocProvider(create: (context) => getIt<DeepLinkCubit>()),
+        BlocProvider(create: (context) => getIt<DataControlBloc>()),
       ],
       child: Builder(builder: (context) {
         return ListenableBuilder(
@@ -198,14 +214,63 @@ class _MyAppState extends State<MyApp> {
                 // Define a function to handle named routes in order to support
                 // Flutter web url navigation and deep linking.
                 onGenerateRoute: (RouteSettings routeSettings) {
+                  if (kDebugMode) {
+                    debugPrint('=== 라우트 생성 시작 ===');
+                    debugPrint('라우트 이름: ${routeSettings.name}');
+                    debugPrint('라우트 인수: ${routeSettings.arguments}');
+                  }
+
+                  // 딥링크 처리 - 일반 라우트로 처리되지 않도록 먼저 체크
+                  if (routeSettings.name?.startsWith('cassette-diary://') ==
+                      true) {
+                    if (kDebugMode) {
+                      debugPrint('딥링크 감지됨: ${routeSettings.name}');
+                      debugPrint('딥링크를 일반 라우트로 처리하지 않음');
+                    }
+
+                    final deepLinkCubit = context.read<DeepLinkCubit>();
+                    final route = deepLinkCubit
+                        .generateRouteFromDeepLink(routeSettings.name!);
+
+                    if (route != null) {
+                      if (kDebugMode) {
+                        debugPrint('딥링크 라우트 생성 성공: ${route.settings.name}');
+                      }
+                      return route;
+                    } else {
+                      if (kDebugMode) {
+                        debugPrint('딥링크 라우트 생성 실패: ${routeSettings.name}');
+                        debugPrint('기본 라우트로 폴백');
+                      }
+                    }
+                  }
+
                   return MaterialPageRoute<void>(
                     settings: routeSettings,
                     builder: (BuildContext context) {
-                      switch (routeSettings.name) {
+                      final uri = Uri.parse(routeSettings.name ?? '/');
+                      final path = uri.path;
+
+                      if (kDebugMode) {
+                        debugPrint('일반 라우트 처리:');
+                        debugPrint('  - 전체 URI: $uri');
+                        debugPrint('  - 경로: $path');
+                        debugPrint('  - 쿼리 파라미터: ${uri.queryParameters}');
+                      }
+
+                      switch (path) {
                         case SettingsView.routeName:
+                          if (kDebugMode) {
+                            debugPrint('설정 페이지로 라우팅');
+                          }
                           return SettingsView(
                               controller: getIt<SettingsController>());
                         case WriteMomentPage.routeName:
+                          if (kDebugMode) {
+                            debugPrint('모멘트 작성 페이지로 라우팅');
+                            debugPrint('인수: ${routeSettings.arguments}');
+                          }
+
                           if (routeSettings.arguments != null) {
                             final WriteMomentPageArguments args = routeSettings
                                 .arguments! as WriteMomentPageArguments;
@@ -221,10 +286,41 @@ class _MyAppState extends State<MyApp> {
                           }
 
                         case MomentListPage.routeName:
+                          if (kDebugMode) {
+                            debugPrint('모멘트 목록 페이지로 라우팅');
+                          }
                           return const MomentListPage();
                         case SplashPage.routeName:
+                          if (kDebugMode) {
+                            debugPrint('스플래시 페이지로 라우팅');
+                          }
                           return const SplashPage();
+                        case ProfilePage.routeName:
+                          if (kDebugMode) {
+                            debugPrint('프로필 페이지로 라우팅');
+                          }
+                          return const ProfilePage();
+                        case SignInPage.routeName:
+                          if (kDebugMode) {
+                            debugPrint('로그인 페이지로 라우팅');
+                          }
+                          return const SignInPage();
+                        case LoginCallbackPage.routeName:
+                          if (kDebugMode) {
+                            debugPrint('로그인 콜백 페이지로 라우팅');
+                          }
+                          return const LoginCallbackPage();
+                        case DeepLinkTestPage.routeName:
+                          if (kDebugMode) {
+                            debugPrint('딥링크 테스트 페이지로 라우팅');
+                          }
+                          return const DeepLinkTestPage();
                         default:
+                          if (kDebugMode) {
+                            debugPrint('알 수 없는 경로: $path');
+                            debugPrint('웹 환경: $kIsWeb');
+                          }
+
                           return kIsWeb
                               ? MaterialApp(
                                   home: WriteMomentPage(
@@ -237,6 +333,19 @@ class _MyAppState extends State<MyApp> {
                       }
                     },
                   );
+                },
+                builder: (context, child) {
+                  // MaterialApp이 빌드된 후 초기 딥링크 처리
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    final deepLinkCubit = context.read<DeepLinkCubit>();
+                    if (kDebugMode) {
+                      debugPrint('=== MaterialApp 빌드 완료 - 초기 딥링크 처리 시작 ===');
+                    }
+                    deepLinkCubit.notifyNavigatorReady();
+                    deepLinkCubit.processInitialDeepLink();
+                  });
+
+                  return child ?? const SizedBox.shrink();
                 },
               ),
             );

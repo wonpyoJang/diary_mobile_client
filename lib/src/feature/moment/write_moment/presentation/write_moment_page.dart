@@ -6,7 +6,7 @@ import 'package:diary_mobile_client/src/feature/common/loading_indicator.dart';
 import 'package:diary_mobile_client/src/feature/common/yes_or_no_dialog.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_bloc.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_event.dart';
-import 'package:diary_mobile_client/src/feature/moment/domain/entity/emotional_intensity.dart';
+import 'package:diary_mobile_client/src/feature/common/moment/domain/entity/emotional_intensity.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/application/write_moment_event.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/emotion_blending_dialog.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/emotion_palette.dart';
@@ -24,7 +24,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'dart:io';
 
 import '../../../../injection.dart';
-import '../../domain/entity/moment.dart';
+import '../../../common/moment/domain/entity/moment.dart';
 import '../application/write_moment_bloc.dart';
 import '../application/write_moment_state.dart';
 import 'widget/extract_emotion_button.dart';

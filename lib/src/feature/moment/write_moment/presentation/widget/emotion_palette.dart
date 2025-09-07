@@ -1,5 +1,5 @@
 import 'package:diary_mobile_client/src/feature/common/simple_dialog.dart';
-import 'package:diary_mobile_client/src/feature/moment/domain/entity/emotional_intensity.dart';
+import 'package:diary_mobile_client/src/feature/common/moment/domain/entity/emotional_intensity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

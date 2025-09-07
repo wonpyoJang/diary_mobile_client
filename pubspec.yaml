@@ -63,6 +63,11 @@ dependencies:
   drift_flutter: ^0.2.5
   path_provider: ^2.1.5
   path: ^1.9.0
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  supabase_flutter: ^2.9.1
+  app_links: ^3.4.5
+  webview_flutter: ^4.7.0
 
 dev_dependencies:
   flutter_test:
@@ -84,6 +89,7 @@ flutter:
     - assets/images/feature/moment/write_moment/
     - assets/images/feature/moment/moment_calendar/
     - assets/images/common/background/
+    - assets/images/common/
     - .env
   fonts:
     - family: SpoqaHanSansNeo

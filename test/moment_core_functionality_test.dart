@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:diary_mobile_client/src/feature/moment/domain/entity/moment.dart';
-import 'package:diary_mobile_client/src/feature/moment/domain/entity/emotional_intensity.dart';
-import 'package:diary_mobile_client/src/feature/moment/domain/enums/emotion.dart';
+import 'package:diary_mobile_client/src/feature/common/moment/domain/entity/moment.dart';
+import 'package:diary_mobile_client/src/feature/common/moment/domain/entity/emotional_intensity.dart';
+import 'package:diary_mobile_client/src/feature/common/moment/domain/enums/emotion.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() {

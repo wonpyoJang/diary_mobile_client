@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:diary_mobile_client/src/database/app_database.dart';
-import 'package:diary_mobile_client/src/feature/moment/infrastructure/dtos/emotional_intensity_dto.dart';
-import 'package:diary_mobile_client/src/feature/moment/infrastructure/dtos/moment_dto.dart';
+import 'package:diary_mobile_client/src/feature/common/moment/infrastructure/dtos/emotional_intensity_dto.dart';
+import 'package:diary_mobile_client/src/feature/common/moment/infrastructure/dtos/moment_dto.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/infrastucture/providers/write_moment_local_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;

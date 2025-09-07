@@ -927,6 +927,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Terms'**
   String get terms;
+
+  /// Profile page top title
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// Edit profile button text
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get editProfile;
+
+  /// Default user name text
+  ///
+  /// In en, this message translates to:
+  /// **'User Name'**
+  String get userName;
+
+  /// Default user email text
+  ///
+  /// In en, this message translates to:
+  /// **'user@email.com'**
+  String get userEmail;
+
+  /// Sign in button text
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get signin;
+
+  /// Kakao login button text
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Kakao'**
+  String get kakaoLogin;
+
+  /// Apple login button text
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Apple'**
+  String get appleLogin;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

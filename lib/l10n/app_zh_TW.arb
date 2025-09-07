@@ -194,5 +194,9 @@
   "privacyPolicy": "隱私政策",
   "@privacyPolicy": {"description": "設定頁面中隱私政策選單文字"},
   "terms": "條款",
-  "@terms": {"description": "設定頁面中條款選單文字"}
+  "@terms": {"description": "設定頁面中條款選單文字"},
+  "kakaoLogin": "使用Kakao登入",
+  "@kakaoLogin": {"description": "Kakao登入按鈕文字"},
+  "appleLogin": "使用Apple登入",
+  "@appleLogin": {"description": "Apple登入按鈕文字"}
 }

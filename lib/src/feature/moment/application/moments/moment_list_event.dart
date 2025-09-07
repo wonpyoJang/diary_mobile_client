@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entity/moment.dart';
+import '../../../common/moment/domain/entity/moment.dart';
 
 abstract class MomentListEvent extends Equatable {
   const MomentListEvent();

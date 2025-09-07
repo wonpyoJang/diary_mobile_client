@@ -3,7 +3,7 @@ import 'package:diary_mobile_client/src/feature/moment/write_moment/application/
 import 'package:diary_mobile_client/src/feature/moment/write_moment/application/write_moment_event.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/application/write_moment_state.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/domain/failures/write_moment_failures.dart';
-import 'package:diary_mobile_client/src/feature/moment/domain/entity/moment.dart';
+import 'package:diary_mobile_client/src/feature/common/moment/domain/entity/moment.dart';
 
 void main() {
   group('WriteMomentBloc 테스트', () {

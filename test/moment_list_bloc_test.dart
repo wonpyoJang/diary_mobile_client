@@ -4,7 +4,7 @@ import 'dart:collection';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_event.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_state.dart';
-import 'package:diary_mobile_client/src/feature/moment/domain/entity/moment.dart';
+import 'package:diary_mobile_client/src/feature/common/moment/domain/entity/moment.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moment_messages.dart';
 import 'package:diary_mobile_client/src/feature/moment/moment_list/domain/interface/i_moment_list_repository.dart';
 import 'package:diary_mobile_client/src/bus/bus.dart';

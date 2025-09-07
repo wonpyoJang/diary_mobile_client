@@ -421,6 +421,27 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get terms => '条款';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get editProfile => 'Edit Profile';
+
+  @override
+  String get userName => 'User Name';
+
+  @override
+  String get userEmail => 'user@email.com';
+
+  @override
+  String get signin => 'Sign In';
+
+  @override
+  String get kakaoLogin => '使用Kakao登录';
+
+  @override
+  String get appleLogin => '使用Apple登录';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -840,4 +861,10 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get terms => '條款';
+
+  @override
+  String get kakaoLogin => '使用Kakao登入';
+
+  @override
+  String get appleLogin => '使用Apple登入';
 }

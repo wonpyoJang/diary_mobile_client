@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:drift/drift.dart' hide isNull, isNotNull;
 import 'package:diary_mobile_client/src/database/app_database.dart';
-import 'package:diary_mobile_client/src/feature/moment/domain/enums/emotion.dart';
+import 'package:diary_mobile_client/src/feature/common/moment/domain/enums/emotion.dart';
 import 'dart:io';
 
 void main() {

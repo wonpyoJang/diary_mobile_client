@@ -4,7 +4,9 @@ import 'package:diary_mobile_client/src/feature/moment/moment_calendar/applicati
 import 'package:diary_mobile_client/src/feature/moment/moment_calendar/application/moment_calendar_state.dart';
 import 'package:diary_mobile_client/src/feature/moment/moment_calendar/presentation/widgets/day_detail_bottom_sheet.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/write_moment_page.dart';
-import 'package:diary_mobile_client/src/feature/settings/settings_view.dart';
+import 'package:diary_mobile_client/src/feature/profile/presentation/profile_page.dart';
+import 'package:diary_mobile_client/src/core/deep_link/deep_link_cubit.dart';
+import 'package:diary_mobile_client/src/feature/signin/presentation/signin_page.dart';
 import 'package:flutter/material.dart' hide LockState;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -44,49 +46,68 @@ class MomentCalendarPageState extends State<MomentCalendarPage> {
           create: (context) => getIt<MomentCalendarBloc>(),
         ),
       ],
-      child: Builder(builder: (context) {
-        return Scaffold(
-          backgroundColor: Colors.white,
-
-          bottomSheet: const DayDetailBottomSheet(),
-
-          // To work with lists that may contain a large number of items, it’s best
-          // to use the ListView.builder constructor.
-          //
-          // In contrast to the default ListView constructor, which requires
-          // building all Widgets up front, the ListView.builder constructor lazily
-          // builds Widgets as they’re scrolled into view.
-          body: SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  CalendarHeader(
-                    onTapRight: () {
-                      pageController.nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut);
-                    },
-                    onTapLeft: () {
-                      pageController.previousPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut);
-                    },
-                  ),
-                  const SizedBox(height: 15),
-                  Calendar(onCalendarCreated: (pageController) {
-                    this.pageController = pageController;
-                  }),
-                ],
+      child: Builder(
+        builder: (context) {
+          return MultiBlocListener(
+            listeners: [
+              BlocListener<DeepLinkCubit, DeepLinkState>(
+                listener: (context, state) {
+                  if (state is LoginCallbackReceived) {
+                    // 로그인 콜백 처리
+                    Navigator.of(context)
+                        .pushReplacementNamed(ProfilePage.routeName);
+                  } else if (state is DeepLinkError) {
+                    // 오류 발생 시 로그인 페이지로 이동
+                    Navigator.of(context)
+                        .pushReplacementNamed(SignInPage.routeName);
+                  }
+                },
               ),
-            ),
-          ),
-          // floatingActionButton: WriteMomentButton(
-          //   onTap: () async {
+            ],
+            child: Scaffold(
+              backgroundColor: Colors.white,
 
-          //   },
-          // ),
-        );
-      }),
+              bottomSheet: const DayDetailBottomSheet(),
+
+              // To work with lists that may contain a large number of items, it’s best
+              // to use the ListView.builder constructor.
+              //
+              // In contrast to the default ListView constructor, which requires
+              // building all Widgets up front, the ListView.builder constructor lazily
+              // builds Widgets as they’re scrolled into view.
+              body: SafeArea(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      CalendarHeader(
+                        onTapRight: () {
+                          pageController.nextPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut);
+                        },
+                        onTapLeft: () {
+                          pageController.previousPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut);
+                        },
+                      ),
+                      const SizedBox(height: 15),
+                      Calendar(onCalendarCreated: (pageController) {
+                        this.pageController = pageController;
+                      }),
+                    ],
+                  ),
+                ),
+              ),
+              // floatingActionButton: WriteMomentButton(
+              //   onTap: () async {
+
+              //   },
+              // ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -406,12 +427,10 @@ class CalendarHeader extends StatelessWidget {
                     right: 0,
                     child: InkWell(
                       onTap: () {
-                        // TODO: 설정 페이지로 이동
-                        Navigator.restorablePushNamed(
-                            context, SettingsView.routeName);
+                        Navigator.of(context).pushNamed(ProfilePage.routeName);
                       },
                       child: const Icon(
-                        Icons.settings,
+                        Icons.person,
                         color: Colors.grey,
                       ),
                     ),

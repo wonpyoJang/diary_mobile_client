@@ -194,5 +194,9 @@
   "privacyPolicy": "隐私政策",
   "@privacyPolicy": {"description": "设置页面中隐私政策菜单文本"},
   "terms": "条款",
-  "@terms": {"description": "设置页面中条款菜单文本"}
+  "@terms": {"description": "设置页面中条款菜单文本"},
+  "kakaoLogin": "使用Kakao登录",
+  "@kakaoLogin": {"description": "Kakao登录按钮文本"},
+  "appleLogin": "使用Apple登录",
+  "@appleLogin": {"description": "Apple登录按钮文本"}
 }

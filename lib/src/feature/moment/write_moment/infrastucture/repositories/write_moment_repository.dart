@@ -3,13 +3,16 @@ import 'dart:io';
 import 'package:diary_mobile_client/src/core/device/infrastructure/interfaces/i_device_info_local_provider.dart';
 import 'package:diary_mobile_client/src/core/media/domain/entity/media_info.dart';
 import 'package:diary_mobile_client/src/core/media/infrastructure/interfaces/i_media_info_local_provider.dart';
-import 'package:diary_mobile_client/src/feature/moment/domain/entity/moment.dart';
-import 'package:diary_mobile_client/src/feature/moment/infrastructure/dtos/moment_dto.dart';
+import 'package:diary_mobile_client/src/feature/common/moment/domain/entity/moment.dart';
+import 'package:diary_mobile_client/src/feature/common/moment/infrastructure/dtos/moment_dto.dart';
+import 'package:diary_mobile_client/src/feature/common/moment/infrastructure/dtos/emotional_intensity_dto.dart';
+import 'package:diary_mobile_client/src/feature/data_control/application/data_control_bloc.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/domain/failures/write_moment_failures.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/domain/interface/i_write_moment_repository.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/infrastucture/interfaces/i_write_moment_internal_provider.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/infrastucture/interfaces/i_write_moment_external_provider.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/infrastucture/interfaces/i_write_moment_local_provider.dart';
+import 'package:diary_mobile_client/src/injection.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
@@ -54,44 +57,69 @@ class WriteMomentRepository implements IWriteMomentRepository {
 
   @override
   Future<Either<WriteMomentFailure, Moment>> analyze(Moment moment) async {
-    final result =
-        await writeMomentExternalProvider.analyze(MomentDto.fromDomain(moment));
+    final momentDto = MomentDto.fromDomain(moment);
 
-    return await result.fold(
-      (failure) => left(MomentAnalyzeFailed(message: failure.message)),
-      (emotionalIntensityDtos) async {
-        return writeMomentLocalProvider
-            .saveEmotionalIntensities(
-              moment.id,
-              emotionalIntensityDtos,
-            )
-            .then((result) => result.fold(
-                  (failure) =>
-                      left(MomentAnalyzeFailed(message: failure.message)),
-                  (success) async {
-                    final emotionalIntensities = emotionalIntensityDtos
-                        .map((e) => e.toDomain())
-                        .toList();
-
-                    final fidOrFailure =
-                        await writeMomentExternalProvider.getFirebaseId();
-
-                    final log =
-                        """[일기]\n\n일기 날짜: ${moment.getFormattedDay()}\n${moment.reflection}\n------------------------------------\n[메타 데이터]\n\n감정분석일시: ${DateFormat('yy년 MM월 dd일 EEEE a hh시 mm분 ss초', 'ko').format(DateTime.now())}\nAI가 분석한 감정: ${emotionalIntensities.map((e) => "${e.emotion.enName} (${e.intensity})").join(', ')}\n\n${fidOrFailure.fold((failure) => "유저 ID:Unknown User", (fid) => "유저 ID: $fid")}""";
-
-                    return (await writeMomentInternalProvider.log(log,
-                            deviceId: fidOrFailure.fold(
-                                (failure) => null, (fid) => fid)))
-                        .fold(
-                      (failure) => right(moment.copyWith(
-                          emotionalIntensities: emotionalIntensities)),
-                      (response) => right(moment.copyWith(
-                          emotionalIntensities: emotionalIntensities)),
-                    );
-                  },
-                ));
+    return await TaskEither<WriteMomentFailure, List<EmotionalIntensityDto>>(
+      () async {
+        final res = await writeMomentExternalProvider.analyze(momentDto);
+        return res.mapLeft((f) => MomentAnalyzeFailed(message: f.message));
       },
-    );
+    )
+        // save local and keep dtos
+        .flatMap((dtos) =>
+            TaskEither<WriteMomentFailure, List<EmotionalIntensityDto>>(
+              () async {
+                final res = await writeMomentLocalProvider
+                    .saveEmotionalIntensities(moment.id, dtos);
+                return res
+                    .map((_) => dtos)
+                    .mapLeft((f) => MomentAnalyzeFailed(message: f.message));
+              },
+            ))
+        // decide log and carry (dtos, fid?)
+        .flatMap((dtos) {
+      final intensities = dtos.map((e) => e.toDomain()).toList();
+      // [변경] DataControl 상태까지 함께 확인
+      final allowed = getIt<DataControlBloc>().state.allowedSendDataToServer;
+      final shouldLog = intensities.isNotEmpty && allowed;
+      if (!shouldLog) {
+        return TaskEither<WriteMomentFailure,
+            (List<EmotionalIntensityDto>, String?)>(
+          () async => right((dtos, null)),
+        );
+      }
+      return TaskEither<WriteMomentFailure,
+          (List<EmotionalIntensityDto>, String?)>(
+        () async {
+          final res = await writeMomentExternalProvider.getFirebaseId();
+          return res
+              .map((fid) => (dtos, fid))
+              .mapLeft((f) => MomentAnalyzeFailed(message: f.message));
+        },
+      );
+    })
+        // log (if needed) and return final Moment; swallow log failure
+        .flatMap((tuple) {
+      final dtos = tuple.$1;
+      final fid = tuple.$2;
+      final intensities = dtos.map((e) => e.toDomain()).toList();
+      if (fid == null) {
+        return TaskEither<WriteMomentFailure, Moment>(
+          () async => right(moment.copyWith(emotionalIntensities: intensities)),
+        );
+      }
+
+      final log =
+          """[일기]\n\n일기 날짜: ${moment.getFormattedDay()}\n${moment.reflection}\n------------------------------------\n[메타 데이터]\n\n감정분석일시: ${DateFormat('yy년 MM월 dd일 EEEE a hh시 mm분 ss초', 'ko').format(DateTime.now())}\nAI가 분석한 감정: ${intensities.map((e) => "${e.emotion.enName} (${e.intensity})").join(', ')}\n\n유저 ID: $fid""";
+
+      return TaskEither<WriteMomentFailure, Moment>(
+        () async {
+          // 로깅 실패는 결과에 영향 주지 않음
+          await writeMomentInternalProvider.log(log, deviceId: fid);
+          return right(moment.copyWith(emotionalIntensities: intensities));
+        },
+      );
+    }).run();
   }
 
   @override

@@ -258,5 +258,27 @@
   "terms": "Terms",
   "@terms": {
     "description": "Text for the terms tile in the settings screen"
-  }
+  },
+  "profile": "Profile",
+  "@profile": {
+    "description": "Profile page top title"
+  },
+  "editProfile": "Edit Profile",
+  "@editProfile": {
+    "description": "Edit profile button text"
+  },
+  "userName": "User Name",
+  "@userName": {
+    "description": "Default user name text"
+  },
+  "userEmail": "user@email.com",
+  "@userEmail": {
+    "description": "Default user email text"
+  },
+  "signin": "Sign In",
+  "@signin": {"description": "Sign in button text"},
+  "kakaoLogin": "Continue with Kakao",
+  "@kakaoLogin": {"description": "Kakao login button text"},
+  "appleLogin": "Continue with Apple",
+  "@appleLogin": {"description": "Apple login button text"}
 }

@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 import 'moment_table.dart';
-import '../../feature/moment/domain/enums/emotion.dart';
+import '../../feature/common/moment/domain/enums/emotion.dart';
 
 class EmotionalIntensityTable extends Table {
   TextColumn get id => text()();

@@ -258,5 +258,27 @@
   "terms": "약관",
   "@terms": {
     "description": "설정화면 약관 타일 텍스트"
-  }
+  },
+  "profile": "프로필",
+  "@profile": {
+    "description": "프로필 페이지 상단 타이틀"
+  },
+  "editProfile": "프로필 편집",
+  "@editProfile": {
+    "description": "프로필 편집 버튼 텍스트"
+  },
+  "userName": "유저 이름",
+  "@userName": {
+    "description": "유저 이름 기본 텍스트"
+  },
+  "userEmail": "user@email.com",
+  "@userEmail": {
+    "description": "유저 이메일 기본 텍스트"
+  },
+  "signin": "로그인",
+  "@signin": {"description": "로그인 버튼 텍스트"},
+  "kakaoLogin": "카카오로 시작하기",
+  "@kakaoLogin": {"description": "카카오 로그인 버튼 텍스트"},
+  "appleLogin": "Apple로 시작하기",
+  "@appleLogin": {"description": "애플 로그인 버튼 텍스트"}
 }
