@@ -18,35 +18,33 @@ class DataControlBloc extends Bloc<DataControlEvent, DataControlState> {
       required this.authenticatorRepository})
       : super(const DataControlState()) {
     on<SetSendDataToServer>((event, emit) async {
-      final result = await TaskEither<LocalAuthFailure, bool>(
+      emit(await TaskEither<LocalAuthFailure, bool>(
         () async => await authenticatorRepository.authenticate(),
       )
           .mapLeft((l) => DataControlFailure(l.message))
           .filterOrElse((did) => did, (_) => DataControlFailure('인증 실패'))
           .flatMap((_) => TaskEither<DataControlFailure, Unit>(
               () async => await dataControlRepository.setSendDataToServer()))
-          .run();
-
-      emit(result.fold(
-        (failure) => state.copyWith(failure: failure),
-        (_) => state.copyWith(allowedSendDataToServer: true),
-      ));
+          .match(
+            (failure) => state.copyWith(failure: failure),
+            (_) => state.copyWith(allowedSendDataToServer: true),
+          )
+          .run());
     });
 
     on<UnsetSendDataToServer>((event, emit) async {
-      final result = await TaskEither<LocalAuthFailure, bool>(
+      emit(await TaskEither<LocalAuthFailure, bool>(
         () async => await authenticatorRepository.authenticate(),
       )
           .mapLeft((l) => DataControlFailure(l.message))
           .filterOrElse((did) => did, (_) => DataControlFailure('인증 실패'))
           .flatMap((_) => TaskEither<DataControlFailure, Unit>(
               () async => await dataControlRepository.unsetSendDataToServer()))
-          .run();
-
-      emit(result.fold(
-        (failure) => state.copyWith(failure: failure),
-        (_) => state.copyWith(allowedSendDataToServer: false),
-      ));
+          .match(
+            (failure) => state.copyWith(failure: failure),
+            (_) => state.copyWith(allowedSendDataToServer: false),
+          )
+          .run());
     });
   }
 }
