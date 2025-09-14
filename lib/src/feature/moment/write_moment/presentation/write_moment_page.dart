@@ -4,16 +4,17 @@ import 'package:diary_mobile_client/src/feature/common/image_viewer.dart';
 import 'package:diary_mobile_client/src/feature/common/loading_indicator.dart';
 import 'package:diary_mobile_client/src/feature/common/yes_or_no_dialog.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/application/write_moment_event.dart';
-import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/add_photo_button.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/date_box.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/emotion_blending_dialog.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/emotion_list.dart';
+import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/image_buttons.dart';
+import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/more_button.dart';
+import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/next_button.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/title.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/verification_dialog.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/write_page_menus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:screenshot/screenshot.dart';
 import 'dart:io';
 
@@ -21,7 +22,6 @@ import '../../../../injection.dart';
 import '../../../common/moment/domain/entity/moment.dart';
 import '../application/write_moment_bloc.dart';
 import '../application/write_moment_state.dart';
-import 'widget/extract_emotion_button.dart';
 import 'widget/moment_writing_area.dart';
 import 'package:diary_mobile_client/l10n/app_localizations.dart';
 
@@ -311,43 +311,9 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                             BlocBuilder<WriteMomentBloc, WriteMomentState>(
                               builder: (context, state) {
                                 if (state.mode == WriteMode.view) {
-                                  return Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          bottom: 30, right: 27),
-                                      child: InkWell(
-                                        onTap: () async {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Container(
-                                          height: 44,
-                                          width: 44,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xFFFF956C),
-                                            borderRadius:
-                                                BorderRadius.circular(22.0),
-                                          ),
-                                          child: Center(
-                                              child: SvgPicture.asset(
-                                                  "assets/images/feature/moment/write_moment/next.svg")),
-                                        ),
-                                      ),
-                                    ),
-                                  );
+                                  return const NextButton();
                                 } else {
-                                  return const Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        AddPhotoButton(),
-                                        SizedBox(width: 8),
-                                        ExtractEmotionButon(),
-                                      ],
-                                    ),
-                                  );
+                                  return const ImageButtons();
                                 }
                               },
                             ),
@@ -419,21 +385,7 @@ class HeaderArea extends StatelessWidget {
                                   onTap: () async {
                                     await verificationDialog(context);
                                   },
-                                  child: const Padding(
-                                    padding: EdgeInsets.only(bottom: 8),
-                                    child: SizedBox(
-                                        child: Text(
-                                      "more +",
-                                      style: TextStyle(
-                                        fontFamily: "Pretendard",
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w700,
-                                        color: Color(0xFF959490),
-                                        height: 2,
-                                        letterSpacing: -0.24,
-                                      ),
-                                    )),
-                                  ),
+                                  child: const MoreButton(),
                                 )
                               ]
                             ],
