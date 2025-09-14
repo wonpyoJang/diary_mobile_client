@@ -111,12 +111,6 @@ class WriteMomentPageState extends State<WriteMomentPage> {
           child: Material(
             child: Stack(
               children: [
-                // Image.asset(
-                //   "assets/images/common/background/background.png",
-                //   width: MediaQuery.of(context).size.width,
-                //   height: MediaQuery.of(context).size.height,
-                //   fit: BoxFit.cover,
-                // ),
                 Positioned.fill(
                     child: Container(color: const Color(0xFFF6F6F6))),
                 Positioned.fill(
@@ -131,10 +125,6 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                     ),
                   ),
                 ),
-                // 오버레이용 blend 효과 레이어
-
-                // const Align(
-                //     alignment: Alignment.topCenter, child: PaperTextureOverlay()),
                 SafeArea(
                   child: MultiBlocListener(
                     listeners: [
@@ -315,25 +305,6 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                                     },
                                   ),
                                   const SizedBox(height: 104),
-                                  // BlocBuilder<WriteMomentBloc, WriteMomentState>(
-                                  //   builder: (context, state) {
-                                  //     if (state
-                                  //         .moment.emotionalIntensities.isEmpty) {
-                                  //       return const SizedBox(height: 23);
-                                  //     } else {
-                                  //       return Padding(
-                                  //         padding: const EdgeInsets.only(
-                                  //             top: 15.0, bottom: 29),
-                                  //         child: Screenshot(
-                                  //           controller: _screenshotController,
-                                  //           child: EmotionPalette(
-                                  //               emotionalIntensities: state
-                                  //                   .moment.emotionalIntensities),
-                                  //         ),
-                                  //       );
-                                  //     }
-                                  //   },
-                                  // ),
                                 ],
                               ),
                             ),
