@@ -30,6 +30,17 @@ var loggerNoStack = Logger(
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await Supabase.initialize(
+    url: 'https://qnpolyxygqnismrzvklz.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFucG9seXh5Z3FuaXNtcnp2a2x6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MzAzNzIsImV4cCI6MjA3MTAwNjM3Mn0.1qmqNbZmxhmRa5AJ-b6D7OmuUXuXSWyNnL8c9VmKJwo',
+  );
+
+  // 의존성 주입 설정
+  await configureDependencies();
+
+  await getIt<HiveClient>().initialize();
+
   await SentryFlutter.init(
     (options) {
       options.dsn =
@@ -66,15 +77,6 @@ void main() async {
         encryptionCipher: HydratedAesCipher(byteskey),
       );
 
-      await Supabase.initialize(
-        url: 'https://qnpolyxygqnismrzvklz.supabase.co',
-        anonKey:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFucG9seXh5Z3FuaXNtcnp2a2x6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MzAzNzIsImV4cCI6MjA3MTAwNjM3Mn0.1qmqNbZmxhmRa5AJ-b6D7OmuUXuXSWyNnL8c9VmKJwo',
-      );
-
-      // 의존성 주입 설정
-      await configureDependencies();
-
       // 데이터베이스 인스턴스 가져오기 (의존성 주입 후)
       final database = getIt<Database>();
       logger.i('데이터베이스가 초기화되었습니다.');
@@ -92,8 +94,6 @@ void main() async {
           },
         ),
       );
-
-      await getIt<HiveClient>().initialize();
 
       // Load the user's preferred theme while the splash screen is displayed.
       // This prevents a sudden theme change when the app is first displayed.

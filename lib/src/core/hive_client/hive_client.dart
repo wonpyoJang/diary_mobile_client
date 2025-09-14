@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:diary_mobile_client/src/core/hive_client/hive_box_names.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
@@ -61,6 +62,7 @@ class HiveClientImpl implements HiveClient {
     try {
       try {
         await Hive.initFlutter();
+        await Hive.openBox<dynamic>(HiveBoxNames.userSettings);
       } catch (e) {
         // 테스트 등 경로 제공이 필요한 환경에서 임시 디렉터리로 초기화
         final Directory tempDir =

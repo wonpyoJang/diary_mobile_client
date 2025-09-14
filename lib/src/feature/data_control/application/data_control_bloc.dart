@@ -17,6 +17,7 @@ class DataControlBloc extends Bloc<DataControlEvent, DataControlState> {
       {required this.dataControlRepository,
       required this.authenticatorRepository})
       : super(const DataControlState()) {
+        
     on<SetSendDataToServer>((event, emit) async {
       final result = await TaskEither<LocalAuthFailure, bool>(
         () async => await authenticatorRepository.authenticate(),

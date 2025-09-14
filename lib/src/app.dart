@@ -6,6 +6,7 @@ import 'package:diary_mobile_client/src/feature/moment/application/moments/momen
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_event.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/write_moment_page.dart';
 import 'package:diary_mobile_client/src/feature/profile/presentation/profile_page.dart';
+import 'package:diary_mobile_client/src/feature/recommend/application/recommend_bloc.dart';
 import 'package:diary_mobile_client/src/feature/settings/application/settings_bloc.dart';
 import 'package:diary_mobile_client/src/feature/splash/splash_page.dart';
 import 'package:diary_mobile_client/src/feature/user/application/user_bloc.dart';
@@ -60,10 +61,13 @@ class _MyAppState extends State<MyApp> {
           create: (context) => getIt<ToastCubit>(),
         ),
         BlocProvider(
-          create: (context) => getIt<LockCubit>(),
+          create: (context) => getIt<LockCubit>()..loadLockEnabled(),
         ),
         BlocProvider(
           create: (context) => getIt<UserBloc>()..add(FetchUser()),
+        ),
+        BlocProvider(
+          create: (context) => getIt<RecommendBloc>(),
         ),
         BlocProvider(create: (context) => getIt<DeepLinkCubit>()),
         BlocProvider(create: (context) => getIt<DataControlBloc>()),

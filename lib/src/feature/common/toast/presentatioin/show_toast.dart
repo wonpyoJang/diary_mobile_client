@@ -3,11 +3,9 @@ import 'package:diary_mobile_client/src/feature/common/toast/application/toast_c
 import 'package:diary_mobile_client/src/feature/common/toast/application/toast_message.dart';
 import 'package:diary_mobile_client/src/injection.dart';
 
-showToast(
-  String message,
-  ToastType type,
-  Duration duration,
-) {
-  getIt<Bus>().publish(
-      ShowToastMessage(message: message, type: type, duration: duration));
+showToast(String message,
+    {ToastType? type = ToastType.info,
+    Duration duration = const Duration(seconds: 3)}) {
+  getIt<Bus>().publish(ShowToastMessage(
+      message: message, type: type ?? ToastType.info, duration: duration));
 }
