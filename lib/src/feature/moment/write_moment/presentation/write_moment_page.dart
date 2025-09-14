@@ -373,7 +373,15 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                                 } else {
                                   return const Align(
                                     alignment: Alignment.bottomRight,
-                                    child: ExtractEmotionButon(),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        AddPhotoButton(),
+                                        SizedBox(width: 8),
+                                        ExtractEmotionButon(),
+                                      ],
+                                    ),
                                   );
                                 }
                               },
@@ -398,6 +406,29 @@ class WriteMomentPageState extends State<WriteMomentPage> {
           ),
         );
       }),
+    );
+  }
+}
+
+class AddPhotoButton extends StatelessWidget {
+  const AddPhotoButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        context.read<WriteMomentBloc>().add(const AddMedias());
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 30),
+        width: 44,
+        height: 44,
+        decoration: BoxDecoration(
+          color: const Color(0xFFFF965C),
+          borderRadius: BorderRadius.circular(22.0),
+        ),
+        child: const Center(child: Icon(Icons.camera_alt)),
+      ),
     );
   }
 }
