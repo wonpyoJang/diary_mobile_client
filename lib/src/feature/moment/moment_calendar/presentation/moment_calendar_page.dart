@@ -122,6 +122,9 @@ class Calendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<bloc.MomentListBloc, MomentListState>(
+      buildWhen: (previous, current) {
+        return previous.moments != current.moments;
+      },
       builder: (context, listState) {
         return BlocBuilder<MomentCalendarBloc, MomentCalendarState>(
           buildWhen: (previous, current) {

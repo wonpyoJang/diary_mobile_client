@@ -405,6 +405,72 @@ class AppLocalizationsZh extends AppLocalizations {
   String get emotion_depression_explanation => '在失落或失望后感受到的痛苦和忧郁状态。\n\n有助于加深同理心和理解。';
 
   @override
+  String get emotion_passion_name => '激情';
+
+  @override
+  String get emotion_passion_explanation => '激发行动的强烈热情与动力。\n\n激发创造力与坚持。';
+
+  @override
+  String get emotion_cheerfulness_name => '开朗';
+
+  @override
+  String get emotion_cheerfulness_explanation => '轻松明快的心情，让日常更有生气。\n\n把正能量传递给他人。';
+
+  @override
+  String get emotion_peace_name => '和平';
+
+  @override
+  String get emotion_peace_explanation => '没有冲突的和谐与安全感。\n\n带来平衡与清明。';
+
+  @override
+  String get emotion_composure_name => '镇定';
+
+  @override
+  String get emotion_composure_explanation => '压力之下仍不动摇的冷静。\n\n有助于做出理性决定。';
+
+  @override
+  String get emotion_indifference_name => '冷漠';
+
+  @override
+  String get emotion_indifference_explanation => '对事件兴趣不高的疏离态度。\n\n可能是情绪疲劳的信号。';
+
+  @override
+  String get emotion_compassion_name => '怜悯';
+
+  @override
+  String get emotion_compassion_explanation => '对他人痛苦的温暖关怀与援助之心。\n\n加深连接与善意。';
+
+  @override
+  String get emotion_grief_name => '悲恸';
+
+  @override
+  String get emotion_grief_explanation => '失去之后的深切悲伤。\n\n疗愈需要时间与照料。';
+
+  @override
+  String get emotion_despair_name => '绝望';
+
+  @override
+  String get emotion_despair_explanation => '觉得再无出路的状态。\n\n需要支持与温柔的自我照顾。';
+
+  @override
+  String get emotion_emptiness_name => '空虚';
+
+  @override
+  String get emotion_emptiness_explanation => '仿佛生活失去颜色的空洞与无意义感。\n\n反思与重整会有帮助。';
+
+  @override
+  String get emotion_apathy_name => '冷淡';
+
+  @override
+  String get emotion_apathy_explanation => '对曾经在意的事缺乏动力和能量。\n\n需要休息与恢复。';
+
+  @override
+  String get emotion_purity_name => '纯净';
+
+  @override
+  String get emotion_purity_explanation => '心意清澈、不受污染的状态。\n\n带来诚实与简约。';
+
+  @override
   String get version => '版本';
 
   @override
@@ -423,19 +489,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get terms => '条款';
 
   @override
-  String get profile => 'Profile';
+  String get profile => '个人资料';
 
   @override
-  String get editProfile => 'Edit Profile';
+  String get editProfile => '编辑资料';
 
   @override
-  String get userName => 'User Name';
+  String get userName => '用户名';
 
   @override
   String get userEmail => 'user@email.com';
 
   @override
-  String get signin => 'Sign In';
+  String get signin => '登录';
 
   @override
   String get kakaoLogin => '使用Kakao登录';
@@ -845,6 +911,72 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get emotion_depression_explanation => '在失落或失望後感受到的痛苦和憂鬱狀態。\n\n有助於加深同理心和理解。';
 
   @override
+  String get emotion_passion_name => '熱情';
+
+  @override
+  String get emotion_passion_explanation => '驅動行動的強烈熱忱與動力。\n\n激發創造力與堅持。';
+
+  @override
+  String get emotion_cheerfulness_name => '開朗';
+
+  @override
+  String get emotion_cheerfulness_explanation => '輕快明亮的心情，讓日常更有生氣。\n\n把正能量傳遞給他人。';
+
+  @override
+  String get emotion_peace_name => '和平';
+
+  @override
+  String get emotion_peace_explanation => '沒有衝突的和諧與安全感。\n\n帶來平衡與清明。';
+
+  @override
+  String get emotion_composure_name => '沈著';
+
+  @override
+  String get emotion_composure_explanation => '在壓力下仍能保持不慌不亂的冷靜。\n\n有助於理性決策。';
+
+  @override
+  String get emotion_indifference_name => '冷漠';
+
+  @override
+  String get emotion_indifference_explanation => '對事件興趣不高的疏離態度。\n\n可能是情緒疲勞的訊號。';
+
+  @override
+  String get emotion_compassion_name => '憐憫';
+
+  @override
+  String get emotion_compassion_explanation => '對他人痛苦的溫暖關懷與援助之心。\n\n加深連結與善意。';
+
+  @override
+  String get emotion_grief_name => '悲痛';
+
+  @override
+  String get emotion_grief_explanation => '失去之後的深切悲傷。\n\n療癒需要時間與照料。';
+
+  @override
+  String get emotion_despair_name => '絕望';
+
+  @override
+  String get emotion_despair_explanation => '覺得再無出路的狀態。\n\n需要支持與溫柔的自我照顧。';
+
+  @override
+  String get emotion_emptiness_name => '虛無';
+
+  @override
+  String get emotion_emptiness_explanation => '彷彿生活失去顏色的空洞與無意義感。\n\n反思與重整有幫助。';
+
+  @override
+  String get emotion_apathy_name => '無力感';
+
+  @override
+  String get emotion_apathy_explanation => '對曾經在意的事物缺乏動力與能量。\n\n需要休息與恢復。';
+
+  @override
+  String get emotion_purity_name => '純粹';
+
+  @override
+  String get emotion_purity_explanation => '心意清澈、未被污染的狀態。\n\n帶來誠實與簡約。';
+
+  @override
   String get version => '版本';
 
   @override
@@ -861,6 +993,21 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get terms => '條款';
+
+  @override
+  String get profile => '個人檔案';
+
+  @override
+  String get editProfile => '編輯個人檔案';
+
+  @override
+  String get userName => '使用者名稱';
+
+  @override
+  String get userEmail => 'user@email.com';
+
+  @override
+  String get signin => '登入';
 
   @override
   String get kakaoLogin => '使用Kakao登入';

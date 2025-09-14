@@ -405,6 +405,72 @@ class AppLocalizationsJa extends AppLocalizations {
   String get emotion_depression_explanation => '喪失や失望の後に感じる痛みや憂鬱の状態。\n\n共感や理解を深めるのに役立ちます。';
 
   @override
+  String get emotion_passion_name => '情熱';
+
+  @override
+  String get emotion_passion_explanation => '行動を駆り立てる強い熱意と推進力。\n\n創造性と粘り強さを育てます。';
+
+  @override
+  String get emotion_cheerfulness_name => '快活';
+
+  @override
+  String get emotion_cheerfulness_explanation => '軽やかで明るい気分。日常に活気を与え、前向きなエネルギーが広がります。';
+
+  @override
+  String get emotion_peace_name => '平和';
+
+  @override
+  String get emotion_peace_explanation => '葛藤のない調和と安心の感覚。\n\nバランスと澄んだ心をもたらします。';
+
+  @override
+  String get emotion_composure_name => '沈着';
+
+  @override
+  String get emotion_composure_explanation => 'プレッシャーの中でも揺らがない落ち着き。\n\n冷静で合理的な判断を助けます。';
+
+  @override
+  String get emotion_indifference_name => '無関心';
+
+  @override
+  String get emotion_indifference_explanation => '出来事から距離を置いた関心の薄い態度。\n\n情緒的な疲労のサインのこともあります。';
+
+  @override
+  String get emotion_compassion_name => '思いやり';
+
+  @override
+  String get emotion_compassion_explanation => '他者の苦しみに温かく共感し、助けたいと願う心。\n\nつながりと優しさを深めます。';
+
+  @override
+  String get emotion_grief_name => '深い悲しみ';
+
+  @override
+  String get emotion_grief_explanation => '喪失の後に訪れる深い悲しみ。\n\n癒しには時間とケアが必要です。';
+
+  @override
+  String get emotion_despair_name => '絶望';
+
+  @override
+  String get emotion_despair_explanation => '解決策が残っていないと感じる状態。\n\n支援とやさしい自己配慮が必要です。';
+
+  @override
+  String get emotion_emptiness_name => '空虚';
+
+  @override
+  String get emotion_emptiness_explanation => '生活の色が失われたような空っぽで意味のない感覚。\n\n内省と立て直しが役立ちます。';
+
+  @override
+  String get emotion_apathy_name => '無気力';
+
+  @override
+  String get emotion_apathy_explanation => '以前は関心があった事柄にも意欲やエネルギーがわかない状態。\n\n休息と回復が必要です。';
+
+  @override
+  String get emotion_purity_name => '純粋';
+
+  @override
+  String get emotion_purity_explanation => '心と意図が澄み、汚れのない状態。\n\n正直さとシンプルさをもたらします。';
+
+  @override
   String get version => 'バージョン';
 
   @override
@@ -423,13 +489,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get terms => '利用規約';
 
   @override
-  String get profile => 'Profile';
+  String get profile => 'プロフィール';
 
   @override
-  String get editProfile => 'Edit Profile';
+  String get editProfile => 'プロフィール編集';
 
   @override
-  String get userName => 'User Name';
+  String get userName => 'ユーザー名';
 
   @override
   String get userEmail => 'user@email.com';

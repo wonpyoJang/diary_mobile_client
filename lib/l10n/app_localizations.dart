@@ -892,6 +892,138 @@ abstract class AppLocalizations {
   /// **'A state of pain and depression, felt after loss or disappointment.\n\nHelps deepen empathy and understanding.'**
   String get emotion_depression_explanation;
 
+  /// No description provided for @emotion_passion_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Passion'**
+  String get emotion_passion_name;
+
+  /// No description provided for @emotion_passion_explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Strong enthusiasm and drive that ignite action.\n\nFuels creativity and perseverance.'**
+  String get emotion_passion_explanation;
+
+  /// No description provided for @emotion_cheerfulness_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Cheerfulness'**
+  String get emotion_cheerfulness_name;
+
+  /// No description provided for @emotion_cheerfulness_explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'A light and bright mood that makes everyday moments lively.\n\nSpreads positive energy to others.'**
+  String get emotion_cheerfulness_explanation;
+
+  /// No description provided for @emotion_peace_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Peace'**
+  String get emotion_peace_name;
+
+  /// No description provided for @emotion_peace_explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'A deep sense of harmony and safety, free from conflict.\n\nBrings balance and clarity.'**
+  String get emotion_peace_explanation;
+
+  /// No description provided for @emotion_composure_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Composure'**
+  String get emotion_composure_name;
+
+  /// No description provided for @emotion_composure_explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'A steady, unshaken state under pressure.\n\nHelps calm and rational decisions.'**
+  String get emotion_composure_explanation;
+
+  /// No description provided for @emotion_indifference_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Indifference'**
+  String get emotion_indifference_name;
+
+  /// No description provided for @emotion_indifference_explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'A detached, uninterested attitude toward events.\n\nMay signal emotional fatigue.'**
+  String get emotion_indifference_explanation;
+
+  /// No description provided for @emotion_compassion_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Compassion'**
+  String get emotion_compassion_name;
+
+  /// No description provided for @emotion_compassion_explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Warm concern for others’ suffering and a wish to help.\n\nDeepens connection and kindness.'**
+  String get emotion_compassion_explanation;
+
+  /// No description provided for @emotion_grief_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Grief'**
+  String get emotion_grief_name;
+
+  /// No description provided for @emotion_grief_explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Profound sorrow after loss.\n\nHealing takes time and care.'**
+  String get emotion_grief_explanation;
+
+  /// No description provided for @emotion_despair_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Despair'**
+  String get emotion_despair_name;
+
+  /// No description provided for @emotion_despair_explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'A feeling that no solution remains.\n\nCalls for support and gentle self-care.'**
+  String get emotion_despair_explanation;
+
+  /// No description provided for @emotion_emptiness_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Emptiness'**
+  String get emotion_emptiness_name;
+
+  /// No description provided for @emotion_emptiness_explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'A hollow, meaningless feeling as if life has lost its color.\n\nInvites reflection and re-grounding.'**
+  String get emotion_emptiness_explanation;
+
+  /// No description provided for @emotion_apathy_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Apathy'**
+  String get emotion_apathy_name;
+
+  /// No description provided for @emotion_apathy_explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Lack of motivation or energy for things once cared about.\n\nRest and recovery are often needed.'**
+  String get emotion_apathy_explanation;
+
+  /// No description provided for @emotion_purity_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Purity'**
+  String get emotion_purity_name;
+
+  /// No description provided for @emotion_purity_explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'A clear and untainted state of mind and intention.\n\nBrings honesty and simplicity.'**
+  String get emotion_purity_explanation;
+
   /// Settings page version menu title
   ///
   /// In en, this message translates to:
