@@ -122,10 +122,10 @@ import 'feature/signin/infrastructure/repositories/auth_repository.dart'
     as _i174;
 import 'feature/user/application/user_bloc.dart' as _i428;
 import 'feature/user/domain/interfaces/i_user_repository.dart' as _i586;
-import 'feature/user/infrastructure/providers/interfaces/i_superbase_user_provider.dart'
-    as _i809;
-import 'feature/user/infrastructure/providers/supabase_user_provider.dart'
-    as _i1015;
+import 'feature/user/infrastructure/providers/interfaces/i_superbase_user_external_provider.dart'
+    as _i633;
+import 'feature/user/infrastructure/providers/supabase_user_external_provider.dart'
+    as _i48;
 import 'feature/user/infrastructure/repositories/user_repository.dart' as _i885;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -154,6 +154,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i735.DeepLinkService>(() => _i735.DeepLinkService.new());
     gh.lazySingleton<_i958.AnalyticsManager>(() => _i958.AnalyticsManager());
     gh.lazySingleton<_i461.Bus>(() => _i461.Bus());
+    gh.lazySingleton<_i633.ISupabaseUserExternalProvider>(
+        () => _i48.SupabaseUserExternalProvider(gh<_i454.SupabaseClient>()));
     gh.lazySingleton<_i743.IVersionLocalProvider>(
         () => _i550.VersionLocalProvider());
     gh.lazySingleton<_i1039.IWriteMomentExternalProvider>(
@@ -173,10 +175,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i356.HttpClient>(() => _i356.HttpClient(gh<_i361.Dio>()));
     gh.lazySingleton<_i130.IMeidaInfoLocalProvider>(
         () => _i1061.MediaInfoLocalProvider());
-    gh.lazySingleton<_i809.ISupabaseUserExternalProvider>(
-        () => _i1015.SupabaseUserExternalProvider(gh<_i454.SupabaseClient>()));
-    gh.lazySingleton<_i586.IUserRepository>(
-        () => _i885.UserRepository(gh<_i809.ISupabaseUserExternalProvider>()));
     gh.lazySingleton<_i23.IDeviceInfoLocalProvider>(
         () => _i505.DeviceInfoLocalProvider());
     gh.singleton<_i587.Database>(() => _i587.Database(gh<String>()));
@@ -184,6 +182,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i603.WriteMomentInternalProvider(gh<_i356.HttpClient>()));
     gh.factory<_i740.DeepLinkCubit>(
         () => _i740.DeepLinkCubit(gh<_i735.DeepLinkService>()));
+    gh.lazySingleton<_i586.IUserRepository>(
+        () => _i885.UserRepository(gh<_i633.ISupabaseUserExternalProvider>()));
     gh.factory<_i635.VersionBloc>(
         () => _i635.VersionBloc(gh<_i170.IVersionRepository>()));
     gh.factory<_i47.SignInBloc>(() => _i47.SignInBloc(
