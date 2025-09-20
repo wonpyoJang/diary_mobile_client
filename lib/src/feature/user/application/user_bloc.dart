@@ -25,8 +25,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<UserEvent>((event, emit) async {
       final result = await repository.fetchUser();
       emit(result.fold(
-        (failure) => state.copyWith(failure: failure),
-        (user) => state.copyWith(user: user),
+        (failure) {
+          return state.copyWith(failure: failure);
+        },
+        (user) {
+          return state.copyWith(user: user);
+        },
       ));
     });
   }
