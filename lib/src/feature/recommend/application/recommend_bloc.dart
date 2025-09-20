@@ -28,10 +28,9 @@ class RecommendBloc extends HydratedBloc<RecommendEvent, RecommendState> {
     on<RecommendEvent>((event, emit) async {
       final result = await recommendRepository.getRecommendStatus();
       emit(result.fold((failure) => state.copyWith(), (recommendStatus) {
-        final bool isUnlockedTarget =
-            state.recommendTargetSet?.isLocked == false;
+        final bool isUnlockedTarget = recommendStatus.isLocked == false;
         final bool isOffSendingDataToServerTarget =
-            state.recommendTargetSet?.isSendingDataToServer == false;
+            recommendStatus.isSendingDataToServer == false;
         final bool isRecommendLock =
             (state.recommendCount == null || state.recommendCount == 0) &&
                 isUnlockedTarget;
@@ -62,7 +61,8 @@ class RecommendBloc extends HydratedBloc<RecommendEvent, RecommendState> {
   @override
   RecommendState? fromJson(Map<String, dynamic> json) {
     return RecommendState(
-      lastRecommendDate: json['lastRecommendDate'] as DateTime?,
+      lastRecommendDate:
+          DateTime.tryParse((json['lastRecommendDate'] as String?) ?? ''),
       recommendCount: json['recommendCount'] as int?,
     );
   }
@@ -70,7 +70,7 @@ class RecommendBloc extends HydratedBloc<RecommendEvent, RecommendState> {
   @override
   Map<String, dynamic>? toJson(RecommendState state) {
     return {
-      'lastRecommendDate': state.lastRecommendDate,
+      'lastRecommendDate': state.lastRecommendDate?.toIso8601String(),
       'recommendCount': state.recommendCount,
     };
   }

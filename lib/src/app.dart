@@ -1,5 +1,6 @@
 import 'package:diary_mobile_client/l10n/app_localizations.dart';
-import 'package:diary_mobile_client/src/feature/common/toast/application/toast_cubit.dart';
+import 'package:diary_mobile_client/src/feature/common/toast/application/toast_bloc.dart';
+import 'package:diary_mobile_client/src/feature/common/toast/application/toast_state.dart';
 import 'package:diary_mobile_client/src/feature/data_control/application/data_control_bloc.dart';
 import 'package:diary_mobile_client/src/feature/lock/application/lock_cubit.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_bloc.dart';
@@ -58,7 +59,7 @@ class _MyAppState extends State<MyApp> {
           create: (context) => getIt<MomentListBloc>()..add(LoadMoments()),
         ),
         BlocProvider(
-          create: (context) => getIt<ToastCubit>(),
+          create: (context) => getIt<ToastBloc>(),
         ),
         BlocProvider(
           create: (context) => getIt<LockCubit>()..loadLockEnabled(),
@@ -322,36 +323,34 @@ class _MyAppState extends State<MyApp> {
                   deepLinkCubit.processInitialDeepLink();
                 });
 
-                return child ??
-                    MultiBlocListener(
-                      listeners: [
-                        BlocListener<ToastCubit, ToastState>(
-                          listener: (context, state) {
-                            if (state is ToastVisible) {
-                              final color = () {
-                                switch (state.type) {
-                                  case ToastType.success:
-                                    return Colors.green;
-                                  case ToastType.error:
-                                    return Colors.red;
-                                  case ToastType.warning:
-                                    return Colors.orange;
-                                  case ToastType.info:
-                                }
-                              }();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text("[SYSTEM] //${state.message}"),
-                                  backgroundColor: color,
-                                  duration: state.duration,
-                                ),
-                              );
-                            }
-                          },
-                        ),
-                      ],
-                      child: const SizedBox.shrink(),
-                    );
+                return MultiBlocListener(
+                  listeners: [
+                    BlocListener<ToastBloc, ToastState>(
+                      listenWhen: (previous, current) {
+                        return previous.currentToast != current.currentToast &&
+                            current.currentToast != null;
+                      },
+                      listener: (context, state) {
+                        final toast = state.currentToast;
+                        if (toast == null) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(toast.message),
+                            backgroundColor: toast.type == ToastType.success
+                                ? Colors.green
+                                : toast.type == ToastType.error
+                                    ? Colors.red
+                                    : toast.type == ToastType.warning
+                                        ? Colors.orange
+                                        : Colors.blue,
+                            duration: toast.duration,
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                  child: child ?? const SizedBox.shrink(),
+                );
               },
             );
           },

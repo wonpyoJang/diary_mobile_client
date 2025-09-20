@@ -84,6 +84,18 @@ class MomentCalendarPageState extends State<MomentCalendarPage> {
                       yesText: '확인',
                       noText: '취소',
                     );
+                  } else if (state
+                      .recommendResultSet.isRecommendSendingDataToServer) {
+                    showYesOrNoDialog(
+                      context,
+                      title: '데이터 전송을 활성화하시겠습니까?',
+                      message: '데이터 전송을 활성화하면 앱을 사용하기 전에 데이터 전송이 표시됩니다.',
+                      onConfirm: (bool value) {
+                        context.read<LockCubit>().setLockEnabled(true);
+                      },
+                      yesText: '확인',
+                      noText: '취소',
+                    );
                   }
                 },
               ),

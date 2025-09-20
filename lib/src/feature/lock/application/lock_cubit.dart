@@ -69,7 +69,10 @@ class LockCubit extends Cubit<LockState> {
   Future<void> setLockEnabled(bool isLockEnabled) async {
     await _withAuthenticated(
       action: () => lockRepository.setLockEnabled(),
-      onSuccess: (enabled) => emit(state.copyWith(isLockEnabled: enabled)),
+      onSuccess: (enabled) {
+        showToast('앱 잠금을 활성화하였습니다.');
+        emit(state.copyWith(isLockEnabled: enabled));
+      },
     );
   }
 
@@ -88,7 +91,6 @@ class LockCubit extends Cubit<LockState> {
     result.fold(
       (_) => emit(state.copyWith(isLockEnabled: false)),
       (isEnabled) {
-        showToast('앱 잠금을 활성화하였습니다.');
         emit(state.copyWith(isLockEnabled: isEnabled));
       },
     );

@@ -43,7 +43,7 @@ import 'feature/common/moment/infrastructure/providers/moment_list_local_provide
     as _i209;
 import 'feature/common/moment/infrastructure/repositories/moment_list_repository.dart'
     as _i690;
-import 'feature/common/toast/application/toast_cubit.dart' as _i320;
+import 'feature/common/toast/application/toast_bloc.dart' as _i190;
 import 'feature/data_control/application/data_control_bloc.dart' as _i1;
 import 'feature/data_control/domain/repositories/interfaces/i_data_control_repository.dart'
     as _i1018;
@@ -197,7 +197,7 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i407.DriftClientImpl(gh<_i587.Database>()));
     gh.singleton<_i890.SettingsController>(
         () => _i890.SettingsController(gh<_i778.SettingsService>()));
-    gh.singleton<_i320.ToastCubit>(() => _i320.ToastCubit(gh<_i461.Bus>()));
+    gh.lazySingleton<_i190.ToastBloc>(() => _i190.ToastBloc(gh<_i461.Bus>()));
     gh.lazySingleton<_i27.ILocalLockProvider>(
         () => _i625.LocalLockProvider(hiveClient: gh<_i951.HiveClient>()));
     gh.factory<_i163.ILocalDataControlProvider>(

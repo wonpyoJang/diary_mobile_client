@@ -1,7 +1,7 @@
 import 'package:diary_mobile_client/src/bus/bus_message.dart';
-import 'package:diary_mobile_client/src/feature/common/toast/application/toast_cubit.dart';
+import 'package:diary_mobile_client/src/feature/common/toast/application/toast_bloc.dart';
 
-class ToastMessage extends BusMessage {
+class ToastMessage {
   final String message;
   final ToastType type;
   final Duration duration;
@@ -12,10 +12,9 @@ class ToastMessage extends BusMessage {
   });
 }
 
-class ShowToastMessage extends ToastMessage {
+class ShowToastMessage extends BusMessage {
+  final ToastMessage toast;
   ShowToastMessage({
-    required super.message,
-    super.type = ToastType.info,
-    super.duration = const Duration(seconds: 3),
+    required this.toast,
   });
 }
