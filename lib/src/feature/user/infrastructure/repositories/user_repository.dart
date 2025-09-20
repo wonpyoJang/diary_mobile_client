@@ -8,7 +8,7 @@ import '../../domain/interfaces/i_user_repository.dart';
 
 @LazySingleton(as: IUserRepository)
 class UserRepository implements IUserRepository {
-  final ISupabaseUserProvider provider;
+  final ISupabaseUserExternalProvider provider;
   UserRepository(this.provider);
 
   @override

@@ -173,10 +173,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i356.HttpClient>(() => _i356.HttpClient(gh<_i361.Dio>()));
     gh.lazySingleton<_i130.IMeidaInfoLocalProvider>(
         () => _i1061.MediaInfoLocalProvider());
-    gh.lazySingleton<_i809.ISupabaseUserProvider>(
-        () => _i1015.SupabaseUserProvider(gh<_i454.SupabaseClient>()));
+    gh.lazySingleton<_i809.ISupabaseUserExternalProvider>(
+        () => _i1015.SupabaseUserExternalProvider(gh<_i454.SupabaseClient>()));
     gh.lazySingleton<_i586.IUserRepository>(
-        () => _i885.UserRepository(gh<_i809.ISupabaseUserProvider>()));
+        () => _i885.UserRepository(gh<_i809.ISupabaseUserExternalProvider>()));
     gh.lazySingleton<_i23.IDeviceInfoLocalProvider>(
         () => _i505.DeviceInfoLocalProvider());
     gh.singleton<_i587.Database>(() => _i587.Database(gh<String>()));

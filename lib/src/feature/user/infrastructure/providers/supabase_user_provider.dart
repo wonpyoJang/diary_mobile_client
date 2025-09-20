@@ -6,10 +6,10 @@ import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-@LazySingleton(as: ISupabaseUserProvider)
-class SupabaseUserProvider implements ISupabaseUserProvider {
+@LazySingleton(as: ISupabaseUserExternalProvider)
+class SupabaseUserExternalProvider implements ISupabaseUserExternalProvider {
   final SupabaseClient client;
-  SupabaseUserProvider(this.client);
+  SupabaseUserExternalProvider(this.client);
   @override
   Future<Either<UserFailure, UserDto>> fetchUser() async {
     try {
