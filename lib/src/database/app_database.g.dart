@@ -874,6 +874,280 @@ class MediaTableCompanion extends UpdateCompanion<MediaTableData> {
   }
 }
 
+class $UserTableTable extends UserTable
+    with TableInfo<$UserTableTable, UserTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $UserTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _usernameMeta =
+      const VerificationMeta('username');
+  @override
+  late final GeneratedColumn<String> username = GeneratedColumn<String>(
+      'username', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _profileImageUrlMeta =
+      const VerificationMeta('profileImageUrl');
+  @override
+  late final GeneratedColumn<String> profileImageUrl = GeneratedColumn<String>(
+      'profile_image_url', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _emailMeta = const VerificationMeta('email');
+  @override
+  late final GeneratedColumn<String> email = GeneratedColumn<String>(
+      'email', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, username, profileImageUrl, email];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'user_table';
+  @override
+  VerificationContext validateIntegrity(Insertable<UserTableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('username')) {
+      context.handle(_usernameMeta,
+          username.isAcceptableOrUnknown(data['username']!, _usernameMeta));
+    } else if (isInserting) {
+      context.missing(_usernameMeta);
+    }
+    if (data.containsKey('profile_image_url')) {
+      context.handle(
+          _profileImageUrlMeta,
+          profileImageUrl.isAcceptableOrUnknown(
+              data['profile_image_url']!, _profileImageUrlMeta));
+    } else if (isInserting) {
+      context.missing(_profileImageUrlMeta);
+    }
+    if (data.containsKey('email')) {
+      context.handle(
+          _emailMeta, email.isAcceptableOrUnknown(data['email']!, _emailMeta));
+    } else if (isInserting) {
+      context.missing(_emailMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  UserTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UserTableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      username: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}username'])!,
+      profileImageUrl: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}profile_image_url'])!,
+      email: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}email'])!,
+    );
+  }
+
+  @override
+  $UserTableTable createAlias(String alias) {
+    return $UserTableTable(attachedDatabase, alias);
+  }
+}
+
+class UserTableData extends DataClass implements Insertable<UserTableData> {
+  final String id;
+  final String username;
+  final String profileImageUrl;
+  final String email;
+  const UserTableData(
+      {required this.id,
+      required this.username,
+      required this.profileImageUrl,
+      required this.email});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['username'] = Variable<String>(username);
+    map['profile_image_url'] = Variable<String>(profileImageUrl);
+    map['email'] = Variable<String>(email);
+    return map;
+  }
+
+  UserTableCompanion toCompanion(bool nullToAbsent) {
+    return UserTableCompanion(
+      id: Value(id),
+      username: Value(username),
+      profileImageUrl: Value(profileImageUrl),
+      email: Value(email),
+    );
+  }
+
+  factory UserTableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return UserTableData(
+      id: serializer.fromJson<String>(json['id']),
+      username: serializer.fromJson<String>(json['username']),
+      profileImageUrl: serializer.fromJson<String>(json['profileImageUrl']),
+      email: serializer.fromJson<String>(json['email']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'username': serializer.toJson<String>(username),
+      'profileImageUrl': serializer.toJson<String>(profileImageUrl),
+      'email': serializer.toJson<String>(email),
+    };
+  }
+
+  UserTableData copyWith(
+          {String? id,
+          String? username,
+          String? profileImageUrl,
+          String? email}) =>
+      UserTableData(
+        id: id ?? this.id,
+        username: username ?? this.username,
+        profileImageUrl: profileImageUrl ?? this.profileImageUrl,
+        email: email ?? this.email,
+      );
+  UserTableData copyWithCompanion(UserTableCompanion data) {
+    return UserTableData(
+      id: data.id.present ? data.id.value : this.id,
+      username: data.username.present ? data.username.value : this.username,
+      profileImageUrl: data.profileImageUrl.present
+          ? data.profileImageUrl.value
+          : this.profileImageUrl,
+      email: data.email.present ? data.email.value : this.email,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserTableData(')
+          ..write('id: $id, ')
+          ..write('username: $username, ')
+          ..write('profileImageUrl: $profileImageUrl, ')
+          ..write('email: $email')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, username, profileImageUrl, email);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UserTableData &&
+          other.id == this.id &&
+          other.username == this.username &&
+          other.profileImageUrl == this.profileImageUrl &&
+          other.email == this.email);
+}
+
+class UserTableCompanion extends UpdateCompanion<UserTableData> {
+  final Value<String> id;
+  final Value<String> username;
+  final Value<String> profileImageUrl;
+  final Value<String> email;
+  final Value<int> rowid;
+  const UserTableCompanion({
+    this.id = const Value.absent(),
+    this.username = const Value.absent(),
+    this.profileImageUrl = const Value.absent(),
+    this.email = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  UserTableCompanion.insert({
+    required String id,
+    required String username,
+    required String profileImageUrl,
+    required String email,
+    this.rowid = const Value.absent(),
+  })  : id = Value(id),
+        username = Value(username),
+        profileImageUrl = Value(profileImageUrl),
+        email = Value(email);
+  static Insertable<UserTableData> custom({
+    Expression<String>? id,
+    Expression<String>? username,
+    Expression<String>? profileImageUrl,
+    Expression<String>? email,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (username != null) 'username': username,
+      if (profileImageUrl != null) 'profile_image_url': profileImageUrl,
+      if (email != null) 'email': email,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  UserTableCompanion copyWith(
+      {Value<String>? id,
+      Value<String>? username,
+      Value<String>? profileImageUrl,
+      Value<String>? email,
+      Value<int>? rowid}) {
+    return UserTableCompanion(
+      id: id ?? this.id,
+      username: username ?? this.username,
+      profileImageUrl: profileImageUrl ?? this.profileImageUrl,
+      email: email ?? this.email,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (username.present) {
+      map['username'] = Variable<String>(username.value);
+    }
+    if (profileImageUrl.present) {
+      map['profile_image_url'] = Variable<String>(profileImageUrl.value);
+    }
+    if (email.present) {
+      map['email'] = Variable<String>(email.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserTableCompanion(')
+          ..write('id: $id, ')
+          ..write('username: $username, ')
+          ..write('profileImageUrl: $profileImageUrl, ')
+          ..write('email: $email, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
   $DatabaseManager get managers => $DatabaseManager(this);
@@ -881,12 +1155,13 @@ abstract class _$Database extends GeneratedDatabase {
   late final $EmotionalIntensityTableTable emotionalIntensityTable =
       $EmotionalIntensityTableTable(this);
   late final $MediaTableTable mediaTable = $MediaTableTable(this);
+  late final $UserTableTable userTable = $UserTableTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [momentTable, emotionalIntensityTable, mediaTable];
+      [momentTable, emotionalIntensityTable, mediaTable, userTable];
 }
 
 typedef $$MomentTableTableCreateCompanionBuilder = MomentTableCompanion
@@ -1755,6 +2030,158 @@ typedef $$MediaTableTableProcessedTableManager = ProcessedTableManager<
     (MediaTableData, $$MediaTableTableReferences),
     MediaTableData,
     PrefetchHooks Function({bool momentId})>;
+typedef $$UserTableTableCreateCompanionBuilder = UserTableCompanion Function({
+  required String id,
+  required String username,
+  required String profileImageUrl,
+  required String email,
+  Value<int> rowid,
+});
+typedef $$UserTableTableUpdateCompanionBuilder = UserTableCompanion Function({
+  Value<String> id,
+  Value<String> username,
+  Value<String> profileImageUrl,
+  Value<String> email,
+  Value<int> rowid,
+});
+
+class $$UserTableTableFilterComposer
+    extends Composer<_$Database, $UserTableTable> {
+  $$UserTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get username => $composableBuilder(
+      column: $table.username, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get profileImageUrl => $composableBuilder(
+      column: $table.profileImageUrl,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get email => $composableBuilder(
+      column: $table.email, builder: (column) => ColumnFilters(column));
+}
+
+class $$UserTableTableOrderingComposer
+    extends Composer<_$Database, $UserTableTable> {
+  $$UserTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get username => $composableBuilder(
+      column: $table.username, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get profileImageUrl => $composableBuilder(
+      column: $table.profileImageUrl,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get email => $composableBuilder(
+      column: $table.email, builder: (column) => ColumnOrderings(column));
+}
+
+class $$UserTableTableAnnotationComposer
+    extends Composer<_$Database, $UserTableTable> {
+  $$UserTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get username =>
+      $composableBuilder(column: $table.username, builder: (column) => column);
+
+  GeneratedColumn<String> get profileImageUrl => $composableBuilder(
+      column: $table.profileImageUrl, builder: (column) => column);
+
+  GeneratedColumn<String> get email =>
+      $composableBuilder(column: $table.email, builder: (column) => column);
+}
+
+class $$UserTableTableTableManager extends RootTableManager<
+    _$Database,
+    $UserTableTable,
+    UserTableData,
+    $$UserTableTableFilterComposer,
+    $$UserTableTableOrderingComposer,
+    $$UserTableTableAnnotationComposer,
+    $$UserTableTableCreateCompanionBuilder,
+    $$UserTableTableUpdateCompanionBuilder,
+    (UserTableData, BaseReferences<_$Database, $UserTableTable, UserTableData>),
+    UserTableData,
+    PrefetchHooks Function()> {
+  $$UserTableTableTableManager(_$Database db, $UserTableTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$UserTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$UserTableTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$UserTableTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String> username = const Value.absent(),
+            Value<String> profileImageUrl = const Value.absent(),
+            Value<String> email = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              UserTableCompanion(
+            id: id,
+            username: username,
+            profileImageUrl: profileImageUrl,
+            email: email,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            required String username,
+            required String profileImageUrl,
+            required String email,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              UserTableCompanion.insert(
+            id: id,
+            username: username,
+            profileImageUrl: profileImageUrl,
+            email: email,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$UserTableTableProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    $UserTableTable,
+    UserTableData,
+    $$UserTableTableFilterComposer,
+    $$UserTableTableOrderingComposer,
+    $$UserTableTableAnnotationComposer,
+    $$UserTableTableCreateCompanionBuilder,
+    $$UserTableTableUpdateCompanionBuilder,
+    (UserTableData, BaseReferences<_$Database, $UserTableTable, UserTableData>),
+    UserTableData,
+    PrefetchHooks Function()>;
 
 class $DatabaseManager {
   final _$Database _db;
@@ -1766,4 +2193,6 @@ class $DatabaseManager {
           _db, _db.emotionalIntensityTable);
   $$MediaTableTableTableManager get mediaTable =>
       $$MediaTableTableTableManager(_db, _db.mediaTable);
+  $$UserTableTableTableManager get userTable =>
+      $$UserTableTableTableManager(_db, _db.userTable);
 }

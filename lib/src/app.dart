@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> {
           create: (context) => getIt<LockCubit>()..loadLockEnabled(),
         ),
         BlocProvider(
-          create: (context) => getIt<UserBloc>()..add(FetchUser()),
+          create: (context) => getIt<UserBloc>()..add(LoadSavedUser()),
         ),
         BlocProvider(
           create: (context) => getIt<RecommendBloc>(),

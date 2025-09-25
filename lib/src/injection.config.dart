@@ -124,8 +124,12 @@ import 'feature/user/application/user_bloc.dart' as _i428;
 import 'feature/user/domain/interfaces/i_user_repository.dart' as _i586;
 import 'feature/user/infrastructure/providers/interfaces/i_superbase_user_external_provider.dart'
     as _i633;
+import 'feature/user/infrastructure/providers/interfaces/i_user_internal_provider.dart'
+    as _i24;
 import 'feature/user/infrastructure/providers/supabase_user_external_provider.dart'
     as _i48;
+import 'feature/user/infrastructure/providers/user_internal_provider.dart'
+    as _i672;
 import 'feature/user/infrastructure/repositories/user_repository.dart' as _i885;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -182,8 +186,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i603.WriteMomentInternalProvider(gh<_i356.HttpClient>()));
     gh.factory<_i740.DeepLinkCubit>(
         () => _i740.DeepLinkCubit(gh<_i735.DeepLinkService>()));
-    gh.lazySingleton<_i586.IUserRepository>(
-        () => _i885.UserRepository(gh<_i633.ISupabaseUserExternalProvider>()));
     gh.factory<_i635.VersionBloc>(
         () => _i635.VersionBloc(gh<_i170.IVersionRepository>()));
     gh.factory<_i47.SignInBloc>(() => _i47.SignInBloc(
@@ -200,8 +202,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i190.ToastBloc>(() => _i190.ToastBloc(gh<_i461.Bus>()));
     gh.lazySingleton<_i27.ILocalLockProvider>(
         () => _i625.LocalLockProvider(hiveClient: gh<_i951.HiveClient>()));
+    gh.lazySingleton<_i24.IUserInternalProvider>(
+        () => _i672.UserInternalProvider(gh<_i407.DriftClient>()));
     gh.factory<_i163.ILocalDataControlProvider>(
         () => _i186.LocalDataControlProvider(gh<_i951.HiveClient>()));
+    gh.lazySingleton<_i586.IUserRepository>(() => _i885.UserRepository(
+          gh<_i633.ISupabaseUserExternalProvider>(),
+          gh<_i24.IUserInternalProvider>(),
+        ));
     gh.singleton<_i428.UserBloc>(() => _i428.UserBloc(
           gh<_i586.IUserRepository>(),
           gh<_i461.Bus>(),

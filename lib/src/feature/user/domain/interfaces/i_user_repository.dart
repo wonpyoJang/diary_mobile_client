@@ -3,5 +3,8 @@ import 'package:diary_mobile_client/src/feature/user/domain/failures/user_failur
 import 'package:fpdart/fpdart.dart';
 
 abstract class IUserRepository {
-  Future<Either<UserFailure, User>> fetchUser();
+  Future<Either<UserFailure, User>> getAndStoreUser();
+  Future<Either<UserFailure, User>> getUserFromLocal();
+  Future<Either<UserFailure, Unit>> deleteUser();
+  Future<Either<UserFailure, Unit>> signOut();
 }

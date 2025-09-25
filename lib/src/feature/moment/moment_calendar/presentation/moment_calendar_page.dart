@@ -89,7 +89,7 @@ class MomentCalendarPageState extends State<MomentCalendarPage> {
                     showYesOrNoDialog(
                       context,
                       title: '데이터 전송을 활성화하시겠습니까?',
-                      message: '데이터 전송을 활성화하면 앱을 사용하기 전에 데이터 전송이 표시됩니다.',
+                      message: '데이터 전송을 활성화하여 크레파스 앱의 기능개발을 도울 수 있습니다.',
                       onConfirm: (bool value) {
                         context.read<LockCubit>().setLockEnabled(true);
                       },

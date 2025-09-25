@@ -1,3 +1,4 @@
+import 'package:diary_mobile_client/src/database/app_database.dart';
 import 'package:diary_mobile_client/src/feature/user/domain/entity/user.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
@@ -50,6 +51,15 @@ final class UserDto {
       id: user.id,
       username: user.userMetadata?['username'],
       profileImageUrl: user.userMetadata?['profileImageUrl'],
+      email: user.email,
+    );
+  }
+
+  factory UserDto.fromUserTable(UserTableData user) {
+    return UserDto(
+      id: user.id,
+      username: user.username,
+      profileImageUrl: user.profileImageUrl,
       email: user.email,
     );
   }
