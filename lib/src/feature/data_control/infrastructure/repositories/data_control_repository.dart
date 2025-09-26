@@ -21,4 +21,9 @@ class DataControlRepository implements IDataControlRepository {
   Future<Either<DataControlFailure, Unit>> unsetSendDataToServer() async {
     return await dataControlProvider.unsetSendDataToServer();
   }
+
+  @override
+  Future<Either<DataControlFailure, bool>> getSendDataToServer() async {
+    return await dataControlProvider.getSendDataToServer();
+  }
 }

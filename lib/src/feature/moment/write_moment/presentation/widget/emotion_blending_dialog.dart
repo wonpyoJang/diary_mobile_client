@@ -1,8 +1,11 @@
 import 'dart:io';
 
+import 'package:diary_mobile_client/src/bus/bus.dart';
 import 'package:diary_mobile_client/src/core/analytics/analytics_manager.dart';
 import 'package:diary_mobile_client/src/core/multi_device/screen_util.dart';
+import 'package:diary_mobile_client/src/feature/moment/write_moment/application/messages.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/mesh_gradient/mesh_gradient_view.dart';
+import 'package:diary_mobile_client/src/injection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -119,7 +122,8 @@ class ContentPanel extends StatelessWidget {
                         return AlertDialog(
                           title:
                               Text(AppLocalizations.of(context)!.notification),
-                          content: Text('${AppLocalizations.of(context)!.webNotSupported}\n${AppLocalizations.of(context)!.appDownloadLink}'),
+                          content: Text(
+                              '${AppLocalizations.of(context)!.webNotSupported}\n${AppLocalizations.of(context)!.appDownloadLink}'),
                           actions: <Widget>[
                             TextButton(
                               child:
@@ -223,6 +227,7 @@ class ContentPanel extends StatelessWidget {
             Expanded(child: Container()),
             InkWell(
               onTap: () {
+                getIt<Bus>().publish(EmotionAnalysisResultDismissed());
                 Navigator.of(context).pop();
               },
               child: Container(

@@ -67,16 +67,13 @@ class MomentListBloc extends Bloc<MomentListEvent, MomentListState> {
     });
 
     on<AddMoment>((event, emit) {
-      final newMoments = state.moments;
+      final newMoments = LinkedHashMap<DateTime, List<Moment>>(
+        equals: isSameDay,
+        hashCode: getHashCode,
+      )..addAll(state.moments);
 
-      if (state.moments.containsKey(event.moment.date)) {
-        newMoments[event.moment.date] = [
-          event.moment,
-          ...state.moments[event.moment.date]!
-        ];
-      } else {
-        newMoments[event.moment.date] = [event.moment];
-      }
+      final existing = newMoments[event.moment.date] ?? const <Moment>[];
+      newMoments[event.moment.date] = [event.moment, ...existing];
 
       // 새로운 moment의 date가 기존 firstDay보다 이른 경우에만 업데이트
       DateTime? firstDay = state.firstDay;

@@ -1,6 +1,6 @@
+import 'package:diary_mobile_client/src/feature/user/domain/entity/user.dart';
 import 'package:diary_mobile_client/src/feature/user/domain/failures/user_failure.dart';
 import 'package:equatable/equatable.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserState extends Equatable {
   final User? user;

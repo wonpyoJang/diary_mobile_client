@@ -5,6 +5,8 @@ import 'package:diary_mobile_client/src/feature/lock/application/lock_cubit.dart
 import 'package:diary_mobile_client/src/feature/settings/application/settings_bloc.dart';
 import 'package:diary_mobile_client/src/feature/settings/configurations/language/presentation/language_setting_page.dart';
 import 'package:diary_mobile_client/src/feature/settings/configurations/version/application/version_bloc.dart';
+import 'package:diary_mobile_client/src/feature/user/application/user_bloc.dart';
+import 'package:diary_mobile_client/src/feature/user/application/user_event.dart';
 import 'package:diary_mobile_client/src/injection.dart';
 import 'package:flutter/material.dart' hide LockState;
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -123,6 +125,14 @@ class SettingsView extends StatelessWidget {
                   ),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {},
+                ),
+                const SizedBox(height: 1),
+                ListTile(
+                  title: const Text("로그아웃"),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () {
+                    context.read<UserBloc>().add(SignOut());
+                  },
                 ),
               ],
             ),

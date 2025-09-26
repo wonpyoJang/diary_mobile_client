@@ -20,7 +20,6 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
           if (result) {
             emit(const Authenticated(
                 userId: 'kakao_user', email: 'kakao@kakao.com'));
-            bus.publish(SignInSuccessMessage());
           } else {
             emit(const AuthError('Failed to sign in with Kakao'));
           }

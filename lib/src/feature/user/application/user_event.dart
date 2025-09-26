@@ -7,3 +7,7 @@ class UserEvent extends Equatable {
 }
 
 class FetchUser extends UserEvent {}
+
+class LoadSavedUser extends UserEvent {}
+
+class SignOut extends UserEvent {}

@@ -1,6 +1,9 @@
+import 'package:diary_mobile_client/src/feature/common/toast/presentatioin/show_toast.dart';
 import 'package:diary_mobile_client/src/feature/lock/domain/failures/local_auth_failure.dart';
 import 'package:diary_mobile_client/src/feature/lock/domain/repositories/interfaces/i_local_authenticator_repository.dart';
+import 'package:diary_mobile_client/src/feature/lock/domain/repositories/interfaces/i_lock_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:fpdart/fpdart.dart';
 
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -38,10 +41,14 @@ class LockState extends Equatable {
 // 인증 관련 인터페이스 정의 (domain/interfaces)
 
 @singleton
-class LockCubit extends HydratedCubit<LockState> {
+class LockCubit extends Cubit<LockState> {
   final IAuthenticatorRepository authenticatorRepository;
+  final ILockRepository lockRepository;
 
-  LockCubit({required this.authenticatorRepository, String? passcode})
+  LockCubit(
+      {required this.authenticatorRepository,
+      required this.lockRepository,
+      String? passcode})
       : super(const LockState());
 
   Future<void> authenticate() async {
@@ -60,27 +67,31 @@ class LockCubit extends HydratedCubit<LockState> {
   }
 
   Future<void> setLockEnabled(bool isLockEnabled) async {
-    final result = await authenticatorRepository.authenticate();
-    result.fold(
-      (failure) =>
-          emit(state.copyWith(status: LockStatus.error, failure: failure)),
-      (didSetLockEnabled) {
-        if (didSetLockEnabled) {
-          emit(state.copyWith(isLockEnabled: true));
-        } else {
-          emit(state.copyWith(status: LockStatus.error));
-        }
+    await _withAuthenticated(
+      action: () => lockRepository.setLockEnabled(),
+      onSuccess: (enabled) {
+        showToast('앱 잠금을 활성화하였습니다.');
+        emit(state.copyWith(isLockEnabled: enabled));
       },
     );
   }
 
   Future<void> setLockDisabled() async {
-    final result = await authenticatorRepository.authenticate();
+    await _withAuthenticated(
+      action: () => lockRepository.setLockDisabled(),
+      onSuccess: (disabled) {
+        showToast('앱 잠금을 비활성화하였습니다.');
+        emit(state.copyWith(isLockEnabled: disabled));
+      },
+    );
+  }
+
+  Future<void> loadLockEnabled() async {
+    final result = await lockRepository.getLockEnabled();
     result.fold(
-      (failure) =>
-          emit(state.copyWith(status: LockStatus.error, failure: failure)),
-      (didSetLockDisabled) {
-        emit(state.copyWith(isLockEnabled: false));
+      (_) => emit(state.copyWith(isLockEnabled: false)),
+      (isEnabled) {
+        emit(state.copyWith(isLockEnabled: isEnabled));
       },
     );
   }
@@ -93,17 +104,25 @@ class LockCubit extends HydratedCubit<LockState> {
     emit(state.copyWith(status: LockStatus.unlocked));
   }
 
-  @override
-  Map<String, dynamic>? toJson(LockState state) {
-    return {
-      'isLockEnabled': state.isLockEnabled,
-    };
-  }
-
-  @override
-  LockState? fromJson(Map<String, dynamic> json) {
-    return LockState(
-      isLockEnabled: json['isLockEnabled'] as bool,
+  Future<void> _withAuthenticated({
+    required Future<Either<dynamic, bool>> Function() action,
+    required void Function(bool) onSuccess,
+  }) async {
+    final authEither = await authenticatorRepository.authenticate();
+    await authEither
+        .flatMap((didAuthenticate) => didAuthenticate
+            ? right(unit)
+            : left(LocalAuthFailure('Authentication failed')))
+        .fold(
+      (failure) async =>
+          emit(state.copyWith(status: LockStatus.error, failure: failure)),
+      (_) async {
+        final repoResult = await action();
+        repoResult.fold(
+          (_) => emit(state.copyWith(status: LockStatus.error)),
+          (value) => onSuccess(value),
+        );
+      },
     );
   }
 }

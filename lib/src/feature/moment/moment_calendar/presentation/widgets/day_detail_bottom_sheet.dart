@@ -2,7 +2,7 @@ import 'package:diary_mobile_client/src/feature/moment/application/moments/momen
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_state.dart';
 import 'package:diary_mobile_client/src/feature/moment/moment_calendar/application/moment_calendar_bloc.dart';
 import 'package:diary_mobile_client/src/feature/moment/moment_calendar/application/moment_calendar_state.dart';
-import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/write_moment_page.dart';
+import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/emotion_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';

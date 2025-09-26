@@ -16,7 +16,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
-        return  Scaffold(
+        return Scaffold(
           appBar: AppBar(
             title: Text(AppLocalizations.of(context)!.profile),
             centerTitle: true,
@@ -39,16 +39,15 @@ class ProfilePage extends StatelessWidget {
                   // const EmotionGrid(),
                   CircleAvatar(
                     radius: 48,
-                    backgroundImage: state.user?.userMetadata?['avatar_url'] !=
-                            null
-                        ? NetworkImage(state.user!.userMetadata!['avatar_url']!)
+                    backgroundImage: state.user?.profileImageUrl != null
+                        ? NetworkImage(state.user!.profileImageUrl!)
                         : const AssetImage(
                             'assets/images/common/background/background.png'), // TODO: 실제 프로필 이미지로 교체
                   ),
 
                   const SizedBox(height: 8),
                   Text(
-                    state.user?.userMetadata?["user_name"] ?? '이름 정보 업음',
+                    state.user?.username ?? '이름 정보 업음',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 8),

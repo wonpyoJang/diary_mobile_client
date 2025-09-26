@@ -23,4 +23,5 @@ class HiveBoxNames {
   static const String notifications = 'notifications';
   static const String analytics = 'analytics';
   static const String security = 'security';
+  static const String lock = 'lock';
 }

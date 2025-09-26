@@ -43,7 +43,7 @@ import 'feature/common/moment/infrastructure/providers/moment_list_local_provide
     as _i209;
 import 'feature/common/moment/infrastructure/repositories/moment_list_repository.dart'
     as _i690;
-import 'feature/common/toast/application/toast_cubit.dart' as _i320;
+import 'feature/common/toast/application/toast_bloc.dart' as _i190;
 import 'feature/data_control/application/data_control_bloc.dart' as _i1;
 import 'feature/data_control/domain/repositories/interfaces/i_data_control_repository.dart'
     as _i1018;
@@ -56,12 +56,19 @@ import 'feature/data_control/infrastructure/repositories/data_control_repository
 import 'feature/lock/application/lock_cubit.dart' as _i600;
 import 'feature/lock/domain/repositories/interfaces/i_local_authenticator_repository.dart'
     as _i828;
+import 'feature/lock/domain/repositories/interfaces/i_lock_repository.dart'
+    as _i554;
 import 'feature/lock/infrastructure/providers/interfaces/i_local_authenticator_provider.dart'
     as _i895;
+import 'feature/lock/infrastructure/providers/interfaces/i_local_lock_provider.dart'
+    as _i27;
 import 'feature/lock/infrastructure/providers/local_authenticator_provider.dart'
     as _i911;
+import 'feature/lock/infrastructure/providers/local_lock_provider.dart'
+    as _i625;
 import 'feature/lock/infrastructure/repositories/local_authenticator_repository.dart'
     as _i845;
+import 'feature/lock/infrastructure/repositories/lock_repository.dart' as _i522;
 import 'feature/moment/application/moments/moment_list_bloc.dart' as _i269;
 import 'feature/moment/moment_calendar/application/moment_calendar_bloc.dart'
     as _i307;
@@ -85,6 +92,11 @@ import 'feature/moment/write_moment/infrastucture/providers/write_moment_local_p
     as _i220;
 import 'feature/moment/write_moment/infrastucture/repositories/write_moment_repository.dart'
     as _i767;
+import 'feature/recommend/application/recommend_bloc.dart' as _i507;
+import 'feature/recommend/domain/repositories/interfaces/i_recommend_repository.dart'
+    as _i142;
+import 'feature/recommend/infrastructure/repositories/recommend_repository.dart'
+    as _i877;
 import 'feature/settings/application/settings_bloc.dart' as _i584;
 import 'feature/settings/configurations/language/application/language_bloc.dart'
     as _i136;
@@ -110,10 +122,14 @@ import 'feature/signin/infrastructure/repositories/auth_repository.dart'
     as _i174;
 import 'feature/user/application/user_bloc.dart' as _i428;
 import 'feature/user/domain/interfaces/i_user_repository.dart' as _i586;
-import 'feature/user/infrastructure/providers/interfaces/i_superbase_user_provider.dart'
-    as _i809;
-import 'feature/user/infrastructure/providers/supabase_user_provider.dart'
-    as _i1015;
+import 'feature/user/infrastructure/providers/interfaces/i_superbase_user_external_provider.dart'
+    as _i633;
+import 'feature/user/infrastructure/providers/interfaces/i_user_internal_provider.dart'
+    as _i24;
+import 'feature/user/infrastructure/providers/supabase_user_external_provider.dart'
+    as _i48;
+import 'feature/user/infrastructure/providers/user_internal_provider.dart'
+    as _i672;
 import 'feature/user/infrastructure/repositories/user_repository.dart' as _i885;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -142,6 +158,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i735.DeepLinkService>(() => _i735.DeepLinkService.new());
     gh.lazySingleton<_i958.AnalyticsManager>(() => _i958.AnalyticsManager());
     gh.lazySingleton<_i461.Bus>(() => _i461.Bus());
+    gh.lazySingleton<_i633.ISupabaseUserExternalProvider>(
+        () => _i48.SupabaseUserExternalProvider(gh<_i454.SupabaseClient>()));
     gh.lazySingleton<_i743.IVersionLocalProvider>(
         () => _i550.VersionLocalProvider());
     gh.lazySingleton<_i1039.IWriteMomentExternalProvider>(
@@ -161,10 +179,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i356.HttpClient>(() => _i356.HttpClient(gh<_i361.Dio>()));
     gh.lazySingleton<_i130.IMeidaInfoLocalProvider>(
         () => _i1061.MediaInfoLocalProvider());
-    gh.lazySingleton<_i809.ISupabaseUserProvider>(
-        () => _i1015.SupabaseUserProvider(gh<_i454.SupabaseClient>()));
-    gh.lazySingleton<_i586.IUserRepository>(
-        () => _i885.UserRepository(gh<_i809.ISupabaseUserProvider>()));
     gh.lazySingleton<_i23.IDeviceInfoLocalProvider>(
         () => _i505.DeviceInfoLocalProvider());
     gh.singleton<_i587.Database>(() => _i587.Database(gh<String>()));
@@ -185,13 +199,17 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i407.DriftClientImpl(gh<_i587.Database>()));
     gh.singleton<_i890.SettingsController>(
         () => _i890.SettingsController(gh<_i778.SettingsService>()));
-    gh.singleton<_i600.LockCubit>(() => _i600.LockCubit(
-          authenticatorRepository: gh<_i828.IAuthenticatorRepository>(),
-          passcode: gh<String>(),
-        ));
-    gh.singleton<_i320.ToastCubit>(() => _i320.ToastCubit(gh<_i461.Bus>()));
+    gh.lazySingleton<_i190.ToastBloc>(() => _i190.ToastBloc(gh<_i461.Bus>()));
+    gh.lazySingleton<_i27.ILocalLockProvider>(
+        () => _i625.LocalLockProvider(hiveClient: gh<_i951.HiveClient>()));
+    gh.lazySingleton<_i24.IUserInternalProvider>(
+        () => _i672.UserInternalProvider(gh<_i407.DriftClient>()));
     gh.factory<_i163.ILocalDataControlProvider>(
         () => _i186.LocalDataControlProvider(gh<_i951.HiveClient>()));
+    gh.lazySingleton<_i586.IUserRepository>(() => _i885.UserRepository(
+          gh<_i633.ISupabaseUserExternalProvider>(),
+          gh<_i24.IUserInternalProvider>(),
+        ));
     gh.singleton<_i428.UserBloc>(() => _i428.UserBloc(
           gh<_i586.IUserRepository>(),
           gh<_i461.Bus>(),
@@ -216,6 +234,13 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i579.IMomentListLocalProvider>(),
           gh<_i407.DriftClient>(),
         ));
+    gh.lazySingleton<_i554.ILockRepository>(() =>
+        _i522.LockRepository(localLockProvider: gh<_i27.ILocalLockProvider>()));
+    gh.lazySingleton<_i142.IRecommendRepository>(
+        () => _i877.RecommendRepository(
+              localLockProvider: gh<_i27.ILocalLockProvider>(),
+              localDataControlProvider: gh<_i163.ILocalDataControlProvider>(),
+            ));
     gh.lazySingleton<_i79.IWriteMomentRepository>(() =>
         _i767.WriteMomentRepository(
           writeMomentExternalProvider:
@@ -236,9 +261,18 @@ extension GetItInjectableX on _i174.GetIt {
           date,
           gh<_i79.IWriteMomentRepository>(),
         ));
+    gh.factory<_i507.RecommendBloc>(() => _i507.RecommendBloc(
+          gh<_i461.Bus>(),
+          gh<_i142.IRecommendRepository>(),
+        ));
     gh.factory<_i269.MomentListBloc>(() => _i269.MomentListBloc(
           gh<_i461.Bus>(),
           gh<_i1053.IMomentListRepository>(),
+        ));
+    gh.singleton<_i600.LockCubit>(() => _i600.LockCubit(
+          authenticatorRepository: gh<_i828.IAuthenticatorRepository>(),
+          lockRepository: gh<_i554.ILockRepository>(),
+          passcode: gh<String>(),
         ));
     return this;
   }

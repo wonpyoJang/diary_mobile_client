@@ -66,17 +66,21 @@ class WriteMomentLocalProvider implements IWriteMomentLocalProvider {
     String momentId,
     List<String> mediaPaths,
   ) async {
+    // 파일 존재 여부를 먼저 확인
+    for (final path in mediaPaths) {
+      final file = File(path);
+      if (!await file.exists()) {
+        return left(LocalFailure(
+          message: '파일을 찾을 수 없습니다.',
+          code: 'FILE_NOT_FOUND',
+          details: {'path': path},
+        ));
+      }
+    }
+
     return await _driftClient.runQuery<Unit>((db) async {
       for (final path in mediaPaths) {
         final file = File(path);
-        if (!await file.exists()) {
-          throw LocalFailure(
-            message: '파일을 찾을 수 없습니다.',
-            code: 'FILE_NOT_FOUND',
-            details: {'path': path},
-          );
-        }
-
         final bytes = await file.readAsBytes();
         final mimeType = _getMimeType(path);
 
@@ -116,6 +120,18 @@ class WriteMomentLocalProvider implements IWriteMomentLocalProvider {
     String momentId,
     List<String> mediaPaths,
   ) async {
+    // 파일 존재 여부를 먼저 확인
+    for (final path in mediaPaths) {
+      final file = File(path);
+      if (!await file.exists()) {
+        return left(LocalFailure(
+          message: '파일을 찾을 수 없습니다.',
+          code: 'FILE_NOT_FOUND',
+          details: {'path': path},
+        ));
+      }
+    }
+
     return await _driftClient.runQuery<Unit>((db) async {
       // 1. Delete existing media files
       await (db.delete(db.mediaTable)
@@ -125,14 +141,6 @@ class WriteMomentLocalProvider implements IWriteMomentLocalProvider {
       // 2. Insert new media files
       for (final path in mediaPaths) {
         final file = File(path);
-        if (!await file.exists()) {
-          throw LocalFailure(
-            message: '파일을 찾을 수 없습니다.',
-            code: 'FILE_NOT_FOUND',
-            details: {'path': path},
-          );
-        }
-
         final bytes = await file.readAsBytes();
         final mimeType = _getMimeType(path);
 

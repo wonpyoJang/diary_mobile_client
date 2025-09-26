@@ -1,4 +1,6 @@
 import 'package:diary_mobile_client/src/core/analytics/analytics_manager.dart';
+import 'package:diary_mobile_client/src/feature/common/yes_or_no_dialog.dart';
+import 'package:diary_mobile_client/src/feature/lock/application/lock_cubit.dart';
 import 'package:diary_mobile_client/src/feature/moment/moment_calendar/application/moment_calendar_bloc.dart';
 import 'package:diary_mobile_client/src/feature/moment/moment_calendar/application/moment_calendar_event.dart';
 import 'package:diary_mobile_client/src/feature/moment/moment_calendar/application/moment_calendar_state.dart';
@@ -6,6 +8,8 @@ import 'package:diary_mobile_client/src/feature/moment/moment_calendar/presentat
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/write_moment_page.dart';
 import 'package:diary_mobile_client/src/feature/profile/presentation/profile_page.dart';
 import 'package:diary_mobile_client/src/core/deep_link/deep_link_cubit.dart';
+import 'package:diary_mobile_client/src/feature/recommend/application/recommend_bloc.dart';
+import 'package:diary_mobile_client/src/feature/recommend/application/recommend_state.dart';
 import 'package:diary_mobile_client/src/feature/signin/presentation/signin_page.dart';
 import 'package:flutter/material.dart' hide LockState;
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,6 +64,38 @@ class MomentCalendarPageState extends State<MomentCalendarPage> {
                     // 오류 발생 시 로그인 페이지로 이동
                     Navigator.of(context)
                         .pushReplacementNamed(SignInPage.routeName);
+                  }
+                },
+              ),
+              BlocListener<RecommendBloc, RecommendState>(
+                listenWhen: (previous, current) {
+                  return previous.recommendResultSet !=
+                      current.recommendResultSet;
+                },
+                listener: (context, state) {
+                  if (state.recommendResultSet.isRecommendLock) {
+                    showYesOrNoDialog(
+                      context,
+                      title: '앱 잠금을 활성화하시겠습니까?',
+                      message: '앱 잠금을 활성화하면 앱을 사용하기 전에 잠금화면이 표시됩니다.',
+                      onConfirm: (bool value) {
+                        context.read<LockCubit>().setLockEnabled(true);
+                      },
+                      yesText: '확인',
+                      noText: '취소',
+                    );
+                  } else if (state
+                      .recommendResultSet.isRecommendSendingDataToServer) {
+                    showYesOrNoDialog(
+                      context,
+                      title: '데이터 전송을 활성화하시겠습니까?',
+                      message: '데이터 전송을 활성화하여 크레파스 앱의 기능개발을 도울 수 있습니다.',
+                      onConfirm: (bool value) {
+                        context.read<LockCubit>().setLockEnabled(true);
+                      },
+                      yesText: '확인',
+                      noText: '취소',
+                    );
                   }
                 },
               ),
@@ -122,6 +158,9 @@ class Calendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<bloc.MomentListBloc, MomentListState>(
+      buildWhen: (previous, current) {
+        return previous.moments != current.moments;
+      },
       builder: (context, listState) {
         return BlocBuilder<MomentCalendarBloc, MomentCalendarState>(
           buildWhen: (previous, current) {

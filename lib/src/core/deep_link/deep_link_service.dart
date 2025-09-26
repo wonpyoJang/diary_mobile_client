@@ -1,9 +1,13 @@
 import 'dart:async';
+import 'package:diary_mobile_client/src/bus/bus.dart';
 import 'package:diary_mobile_client/src/feature/profile/presentation/profile_page.dart';
+import 'package:diary_mobile_client/src/feature/signin/application/messages.dart';
+import 'package:diary_mobile_client/src/injection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:app_links/app_links.dart';
 import 'package:injectable/injectable.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 @lazySingleton
 class DeepLinkService {
@@ -122,7 +126,7 @@ class DeepLinkService {
       if (kDebugMode) {
         debugPrint('로그인 콜백 패턴 감지 - 특별 처리 시작');
       }
-      _handleLoginCallback(link);
+      unawaited(_handleLoginCallback(link));
     } else {
       if (kDebugMode) {
         debugPrint('일반 딥링크 패턴 - 기본 처리만 수행');
@@ -173,7 +177,7 @@ class DeepLinkService {
   }
 
   /// 로그인 콜백 딥링크 처리
-  void _handleLoginCallback(String link) {
+  Future<void> _handleLoginCallback(String link) async {
     if (kDebugMode) {
       debugPrint('=== 로그인 콜백 딥링크 처리 시작 ===');
       debugPrint('처리할 링크: $link');
@@ -207,6 +211,29 @@ class DeepLinkService {
         debugPrint('사파리 닫기 시도');
       }
       _closeSafariIfPossible();
+
+      // Supabase 세션 복구 처리
+      try {
+        final supabase = Supabase.instance.client;
+        if (kDebugMode) {
+          debugPrint('Supabase 세션 복구 시도...');
+        }
+
+        final response = await supabase.auth.getSessionFromUrl(uri);
+        final session = response.session;
+        if (kDebugMode) {
+          debugPrint('✅ 세션 복구 성공: ${session.user.email}');
+        }
+        getIt<Bus>().publish(SignInSuccessMessage());
+      } catch (e, st) {
+        if (kDebugMode) {
+          debugPrint('세션 복구 중 오류: $e');
+          debugPrint('$st');
+        }
+        if (kDebugMode) {
+          debugPrint('❌ 세션 복구 실패');
+        }
+      }
 
       // 여기서 인증 코드를 처리하는 로직 추가
       if (kDebugMode) {

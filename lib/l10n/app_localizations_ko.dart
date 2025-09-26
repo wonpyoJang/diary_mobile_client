@@ -405,6 +405,72 @@ class AppLocalizationsKo extends AppLocalizations {
   String get emotion_depression_explanation => '마음이 아프고 우울한 상태로, 상실이나 실망을 경험할 때 느끼는 감정입니다.\n\n우울은 감정의 깊이를 이해하고 공감을 높이는 데 도움을 줍니다.';
 
   @override
+  String get emotion_passion_name => '열정';
+
+  @override
+  String get emotion_passion_explanation => '행동을 불러일으키는 강한 열의와 추진력입니다.\n\n창의성과 끈기를 북돋웁니다.';
+
+  @override
+  String get emotion_cheerfulness_name => '명랑';
+
+  @override
+  String get emotion_cheerfulness_explanation => '가볍고 밝은 기분으로 일상을 생기 있게 만드는 상태입니다.\n\n주변에 긍정 에너지를 전파합니다.';
+
+  @override
+  String get emotion_peace_name => '평화';
+
+  @override
+  String get emotion_peace_explanation => '갈등이 없고 조화로운 안정감입니다.\n\n균형과 맑은 마음을 가져옵니다.';
+
+  @override
+  String get emotion_composure_name => '침착';
+
+  @override
+  String get emotion_composure_explanation => '압박 속에서도 흔들리지 않는 차분한 상태입니다.\n\n냉정하고 이성적인 판단을 돕습니다.';
+
+  @override
+  String get emotion_indifference_name => '무관심';
+
+  @override
+  String get emotion_indifference_explanation => '사건에 대해 한발 물러선, 관심이 덜한 태도입니다.\n\n정서적 피로의 신호일 수 있습니다.';
+
+  @override
+  String get emotion_compassion_name => '연민';
+
+  @override
+  String get emotion_compassion_explanation => '타인의 고통에 따뜻하게 공감하고 돕고자 하는 마음입니다.\n\n연결과 친절을 깊게 합니다.';
+
+  @override
+  String get emotion_grief_name => '비탄';
+
+  @override
+  String get emotion_grief_explanation => '상실 이후 찾아오는 깊은 슬픔입니다.\n\n치유에는 시간과 보살핌이 필요합니다.';
+
+  @override
+  String get emotion_despair_name => '절망';
+
+  @override
+  String get emotion_despair_explanation => '해결책이 남지 않았다고 느끼는 상태입니다.\n\n도움과 온화한 돌봄이 필요합니다.';
+
+  @override
+  String get emotion_emptiness_name => '허무';
+
+  @override
+  String get emotion_emptiness_explanation => '삶의 색이 빠진 듯 공허하고 의미 없는 느낌입니다.\n\n성찰과 재정비가 도움이 됩니다.';
+
+  @override
+  String get emotion_apathy_name => '무기력';
+
+  @override
+  String get emotion_apathy_explanation => '예전에 관심을 두던 일에도 의욕과 에너지가 없는 상태입니다.\n\n휴식과 회복이 필요합니다.';
+
+  @override
+  String get emotion_purity_name => '순수';
+
+  @override
+  String get emotion_purity_explanation => '마음과 의도가 맑고 때묻지 않은 상태입니다.\n\n정직함과 단순함을 불러옵니다.';
+
+  @override
   String get version => '버전';
 
   @override

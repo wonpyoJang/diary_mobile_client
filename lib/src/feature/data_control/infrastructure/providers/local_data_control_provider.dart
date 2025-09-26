@@ -30,4 +30,13 @@ class LocalDataControlProvider implements ILocalDataControlProvider {
       (_) => right(unit),
     );
   }
+
+  @override
+  Future<Either<DataControlFailure, bool>> getSendDataToServer() async {
+    final result = await hiveClient.getUserSetting<bool>(_kSendDataKey);
+    return result.fold(
+      (failure) => left(DataControlFailure(failure.message)),
+      (isAllowed) => right(isAllowed ?? false),
+    );
+  }
 }

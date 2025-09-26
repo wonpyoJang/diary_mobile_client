@@ -405,6 +405,72 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emotion_depression_explanation => 'A state of pain and depression, felt after loss or disappointment.\n\nHelps deepen empathy and understanding.';
 
   @override
+  String get emotion_passion_name => 'Passion';
+
+  @override
+  String get emotion_passion_explanation => 'Strong enthusiasm and drive that ignite action.\n\nFuels creativity and perseverance.';
+
+  @override
+  String get emotion_cheerfulness_name => 'Cheerfulness';
+
+  @override
+  String get emotion_cheerfulness_explanation => 'A light and bright mood that makes everyday moments lively.\n\nSpreads positive energy to others.';
+
+  @override
+  String get emotion_peace_name => 'Peace';
+
+  @override
+  String get emotion_peace_explanation => 'A deep sense of harmony and safety, free from conflict.\n\nBrings balance and clarity.';
+
+  @override
+  String get emotion_composure_name => 'Composure';
+
+  @override
+  String get emotion_composure_explanation => 'A steady, unshaken state under pressure.\n\nHelps calm and rational decisions.';
+
+  @override
+  String get emotion_indifference_name => 'Indifference';
+
+  @override
+  String get emotion_indifference_explanation => 'A detached, uninterested attitude toward events.\n\nMay signal emotional fatigue.';
+
+  @override
+  String get emotion_compassion_name => 'Compassion';
+
+  @override
+  String get emotion_compassion_explanation => 'Warm concern for others’ suffering and a wish to help.\n\nDeepens connection and kindness.';
+
+  @override
+  String get emotion_grief_name => 'Grief';
+
+  @override
+  String get emotion_grief_explanation => 'Profound sorrow after loss.\n\nHealing takes time and care.';
+
+  @override
+  String get emotion_despair_name => 'Despair';
+
+  @override
+  String get emotion_despair_explanation => 'A feeling that no solution remains.\n\nCalls for support and gentle self-care.';
+
+  @override
+  String get emotion_emptiness_name => 'Emptiness';
+
+  @override
+  String get emotion_emptiness_explanation => 'A hollow, meaningless feeling as if life has lost its color.\n\nInvites reflection and re-grounding.';
+
+  @override
+  String get emotion_apathy_name => 'Apathy';
+
+  @override
+  String get emotion_apathy_explanation => 'Lack of motivation or energy for things once cared about.\n\nRest and recovery are often needed.';
+
+  @override
+  String get emotion_purity_name => 'Purity';
+
+  @override
+  String get emotion_purity_explanation => 'A clear and untainted state of mind and intention.\n\nBrings honesty and simplicity.';
+
+  @override
   String get version => 'Version';
 
   @override

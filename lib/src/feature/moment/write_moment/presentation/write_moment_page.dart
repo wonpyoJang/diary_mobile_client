@@ -1,33 +1,27 @@
 // ignore_for_file: use_build_context_synchronously, prefer_interpolation_to_compose_strings
 
-import 'package:diary_mobile_client/src/core/analytics/analytics_manager.dart';
 import 'package:diary_mobile_client/src/feature/common/image_viewer.dart';
 import 'package:diary_mobile_client/src/feature/common/loading_indicator.dart';
 import 'package:diary_mobile_client/src/feature/common/yes_or_no_dialog.dart';
-import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_bloc.dart';
-import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_event.dart';
-import 'package:diary_mobile_client/src/feature/common/moment/domain/entity/emotional_intensity.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/application/write_moment_event.dart';
+import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/date_box.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/emotion_blending_dialog.dart';
-import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/emotion_palette.dart';
+import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/emotion_list.dart';
+import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/image_buttons.dart';
+import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/more_button.dart';
+import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/next_button.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/title.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/verification_dialog.dart';
-import 'package:flutter/foundation.dart';
+import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/write_page_menus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:pull_down_button/pull_down_button.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'dart:io';
 
 import '../../../../injection.dart';
 import '../../../common/moment/domain/entity/moment.dart';
 import '../application/write_moment_bloc.dart';
 import '../application/write_moment_state.dart';
-import 'widget/extract_emotion_button.dart';
 import 'widget/moment_writing_area.dart';
 import 'package:diary_mobile_client/l10n/app_localizations.dart';
 
@@ -117,12 +111,6 @@ class WriteMomentPageState extends State<WriteMomentPage> {
           child: Material(
             child: Stack(
               children: [
-                // Image.asset(
-                //   "assets/images/common/background/background.png",
-                //   width: MediaQuery.of(context).size.width,
-                //   height: MediaQuery.of(context).size.height,
-                //   fit: BoxFit.cover,
-                // ),
                 Positioned.fill(
                     child: Container(color: const Color(0xFFF6F6F6))),
                 Positioned.fill(
@@ -137,10 +125,6 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                     ),
                   ),
                 ),
-                // 오버레이용 blend 효과 레이어
-
-                // const Align(
-                //     alignment: Alignment.topCenter, child: PaperTextureOverlay()),
                 SafeArea(
                   child: MultiBlocListener(
                     listeners: [
@@ -321,60 +305,15 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                                     },
                                   ),
                                   const SizedBox(height: 104),
-                                  // BlocBuilder<WriteMomentBloc, WriteMomentState>(
-                                  //   builder: (context, state) {
-                                  //     if (state
-                                  //         .moment.emotionalIntensities.isEmpty) {
-                                  //       return const SizedBox(height: 23);
-                                  //     } else {
-                                  //       return Padding(
-                                  //         padding: const EdgeInsets.only(
-                                  //             top: 15.0, bottom: 29),
-                                  //         child: Screenshot(
-                                  //           controller: _screenshotController,
-                                  //           child: EmotionPalette(
-                                  //               emotionalIntensities: state
-                                  //                   .moment.emotionalIntensities),
-                                  //         ),
-                                  //       );
-                                  //     }
-                                  //   },
-                                  // ),
                                 ],
                               ),
                             ),
                             BlocBuilder<WriteMomentBloc, WriteMomentState>(
                               builder: (context, state) {
                                 if (state.mode == WriteMode.view) {
-                                  return Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          bottom: 30, right: 27),
-                                      child: InkWell(
-                                        onTap: () async {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Container(
-                                          height: 44,
-                                          width: 44,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xFFFF956C),
-                                            borderRadius:
-                                                BorderRadius.circular(22.0),
-                                          ),
-                                          child: Center(
-                                              child: SvgPicture.asset(
-                                                  "assets/images/feature/moment/write_moment/next.svg")),
-                                        ),
-                                      ),
-                                    ),
-                                  );
+                                  return const NextButton();
                                 } else {
-                                  return const Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: ExtractEmotionButon(),
-                                  );
+                                  return const ImageButtons();
                                 }
                               },
                             ),
@@ -446,21 +385,7 @@ class HeaderArea extends StatelessWidget {
                                   onTap: () async {
                                     await verificationDialog(context);
                                   },
-                                  child: const Padding(
-                                    padding: EdgeInsets.only(bottom: 8),
-                                    child: SizedBox(
-                                        child: Text(
-                                      "more +",
-                                      style: TextStyle(
-                                        fontFamily: "Pretendard",
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w700,
-                                        color: Color(0xFF959490),
-                                        height: 2,
-                                        letterSpacing: -0.24,
-                                      ),
-                                    )),
-                                  ),
+                                  child: const MoreButton(),
                                 )
                               ]
                             ],
@@ -470,7 +395,7 @@ class HeaderArea extends StatelessWidget {
                         }
                       },
                     ),
-                    Menus(screenshotController: screenshotController)
+                    WritePageMenus(screenshotController: screenshotController)
                   ],
                 ),
                 const SizedBox(height: 10),
@@ -486,254 +411,3 @@ class HeaderArea extends StatelessWidget {
     );
   }
 }
-
-class Menus extends StatelessWidget {
-  const Menus({
-    super.key,
-    required this.screenshotController,
-  });
-
-  final ScreenshotController screenshotController;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<WriteMomentBloc, WriteMomentState>(
-      builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(top: 9.0),
-          child: PullDownButton(
-              itemBuilder: (context) => [
-                    if (state.mode == WriteMode.view)
-                      PullDownMenuItem(
-                        title: AppLocalizations.of(context)!.edit,
-                        onTap: () {
-                          context
-                              .read<WriteMomentBloc>()
-                              .add(const ChangeToEdit());
-                        },
-                      ),
-                    PullDownMenuItem(
-                      title: AppLocalizations.of(context)!.addPhoto,
-                      onTap: () async {
-                        context.read<WriteMomentBloc>().add(const AddMedias());
-                      },
-                    ),
-                    PullDownMenuItem(
-                      title: AppLocalizations.of(context)!.delete,
-                      onTap: () {
-                        showYesOrNoDialog(context,
-                            title: AppLocalizations.of(context)!.deleteConfirm,
-                            onConfirm: (value) {
-                          context
-                              .read<MomentListBloc>()
-                              .add(DeleteMoment(state.moment));
-                          Navigator.of(context).pop();
-                        });
-                      },
-                    ),
-                    PullDownMenuItem(
-                      title: AppLocalizations.of(context)!.share,
-                      onTap: () async {
-                        AnalyticsManager.logEvent('editor_share_emotion');
-                        if (kIsWeb) {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text(
-                                    AppLocalizations.of(context)!.notification),
-                                content: Text(
-                                    "${AppLocalizations.of(context)!.webNotSupported}\n${AppLocalizations.of(context)!.appDownloadLink}"),
-                                actions: <Widget>[
-                                  TextButton(
-                                    child: Text(
-                                        AppLocalizations.of(context)!.confirm),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                  TextButton(
-                                    child: Text(
-                                        AppLocalizations.of(context)!.download),
-                                    onPressed: () {
-                                      launchUrl(
-                                        Uri.parse(AppLocalizations.of(context)!
-                                            .appDownloadLink),
-                                        mode: LaunchMode.externalApplication,
-                                      );
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        } else {
-                          final image = await screenshotController.capture();
-                          if (image != null) {
-                            final directory =
-                                await getApplicationDocumentsDirectory();
-                            final timestamp =
-                                DateTime.now().millisecondsSinceEpoch;
-                            final imagePath = File(
-                                '${directory.path}/emotion_palette_$timestamp.png');
-                            await imagePath.writeAsBytes(image);
-                            await Share.shareXFiles(
-                              [XFile(imagePath.path)],
-                              text: AppLocalizations.of(context)!.shareEmotion +
-                                  '\n\n' +
-                                  '${AppLocalizations.of(context)!.diaryReflection}${DateTime.now().month}월 ${DateTime.now().day}일\n${state.moment.reflection}',
-                            );
-                          }
-                        }
-                      },
-                    ),
-                  ],
-              buttonBuilder: (context, showMenu) {
-                return MenuButton(
-                  onTap: showMenu,
-                );
-              }),
-        );
-      },
-    );
-  }
-}
-
-class MenuButton extends StatelessWidget {
-  final Function onTap;
-  const MenuButton({super.key, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => onTap(),
-      child: Container(
-          width: 24,
-          height: 24,
-          decoration: BoxDecoration(
-            color: const Color(0xFFF3E9E5),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Center(
-              child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 2,
-            children: [
-              ...[1, 2, 3].map((e) => Container(
-                    width: 4,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFF956C),
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ))
-            ],
-          ))),
-    );
-  }
-}
-
-class EmotionList extends StatelessWidget {
-  final List<EmotionalIntensity> emotionalIntensies;
-  final MainAxisAlignment mainAxisAlignment;
-  const EmotionList(
-      {super.key,
-      required this.emotionalIntensies,
-      this.mainAxisAlignment = MainAxisAlignment.start});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      spacing: 13,
-      mainAxisAlignment: mainAxisAlignment,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        ...emotionalIntensies.take(4).map((e) => EmotionItem(
-              size: EmotionItemSize.small,
-              emotionalIntensity: e,
-            ))
-      ],
-    );
-  }
-}
-
-class DateBox extends StatelessWidget {
-  final DateTime date;
-  const DateBox({super.key, required this.date});
-
-  @override
-  Widget build(BuildContext context) {
-    final month = date.month;
-    final day = date.day;
-
-    final monthStr = month.toString().padLeft(2, '0');
-    final monthFirstDigit = monthStr[0];
-    final monthSecondDigit = monthStr[1];
-
-    final dayStr = day.toString().padLeft(2, '0');
-    final dayFirstDigit = dayStr[0];
-    final daySecondDigit = dayStr[1];
-
-    return SizedBox(
-      width: 59,
-      height: 56,
-      child: Center(
-        child: Text(
-            "$monthFirstDigit $monthSecondDigit\n$dayFirstDigit $daySecondDigit",
-            style: const TextStyle(
-              color: Color(0xFF53545B),
-              fontSize: 28,
-              fontWeight: FontWeight.w400,
-              height: 1.0,
-              letterSpacing: -0.24,
-              fontFamily: "SpoqaHanSansNeo",
-            )),
-      ),
-    );
-  }
-}
-
-// class PaperTextureOverlay extends StatelessWidget {
-//   const PaperTextureOverlay({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Center(
-//       child: SizedBox(
-//         width: 360,
-//         height: 640,
-//         child: RotatedBox(
-//           quarterTurns: 3, // -90도 회전
-//           child: Stack(
-//             children: [
-//               Container(color: Colors.grey[300]), // lightgray 배경
-
-//               // 종이 질감 레이어
-//               Positioned.fill(
-//                 child: FractionallySizedBox(
-//                   widthFactor: 1.01121, // 101.121%
-//                   heightFactor: 1.0,
-//                   alignment: const Alignment(-0.0085 * 2, 0), // -1.523px 위치 조정
-//                   child: ColorFiltered(
-//                     colorFilter: const ColorFilter.mode(
-//                       Colors.white,
-//                       BlendMode.overlay, // CSS의 mix-blend-mode: overlay 대체
-//                     ),
-//                     child: ImageFiltered(
-//                       imageFilter:
-//                           ImageFilter.blur(sigmaX: 0.2, sigmaY: 0.2), // 부드러운 처리
-//                       child: Image.asset(
-//                         "assets/images/common/background/background.png",
-//                         fit: BoxFit.cover,
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
