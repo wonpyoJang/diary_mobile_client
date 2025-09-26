@@ -53,6 +53,14 @@ import 'feature/data_control/infrastructure/providers/local_data_control_provide
     as _i186;
 import 'feature/data_control/infrastructure/repositories/data_control_repository.dart'
     as _i489;
+import 'feature/emotion_statistics/domain/repositories/interfaces/i_emotion_statistics_repository.dart'
+    as _i535;
+import 'feature/emotion_statistics/infrastructure/providers/emotion_statistics_provider.dart'
+    as _i9;
+import 'feature/emotion_statistics/infrastructure/providers/interfaces/i_emotion_statistics_provider.dart'
+    as _i696;
+import 'feature/emotion_statistics/infrastructure/repositories/emotion_statistics_repository.dart'
+    as _i446;
 import 'feature/lock/application/lock_cubit.dart' as _i600;
 import 'feature/lock/domain/repositories/interfaces/i_local_authenticator_repository.dart'
     as _i828;
@@ -206,19 +214,17 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i672.UserInternalProvider(gh<_i407.DriftClient>()));
     gh.factory<_i163.ILocalDataControlProvider>(
         () => _i186.LocalDataControlProvider(gh<_i951.HiveClient>()));
-    gh.lazySingleton<_i586.IUserRepository>(() => _i885.UserRepository(
-          gh<_i633.ISupabaseUserExternalProvider>(),
-          gh<_i24.IUserInternalProvider>(),
-        ));
-    gh.singleton<_i428.UserBloc>(() => _i428.UserBloc(
-          gh<_i586.IUserRepository>(),
-          gh<_i461.Bus>(),
-        ));
     gh.lazySingleton<_i1018.IDataControlRepository>(() =>
         _i489.DataControlRepository(
             dataControlProvider: gh<_i163.ILocalDataControlProvider>()));
     gh.factory<_i468.IWriteMomentLocalProvider>(
         () => _i220.WriteMomentLocalProvider(gh<_i407.DriftClient>()));
+    gh.lazySingleton<_i586.IUserRepository>(() => _i885.UserRepository(
+          gh<_i633.ISupabaseUserExternalProvider>(),
+          gh<_i24.IUserInternalProvider>(),
+        ));
+    gh.lazySingleton<_i696.IEmotionStatisticsProvider>(
+        () => _i9.EmotionStatisticsProvider(gh<_i407.DriftClient>()));
     gh.lazySingleton<_i1.DataControlBloc>(() => _i1.DataControlBloc(
           dataControlRepository: gh<_i1018.IDataControlRepository>(),
           authenticatorRepository: gh<_i828.IAuthenticatorRepository>(),
@@ -241,6 +247,9 @@ extension GetItInjectableX on _i174.GetIt {
               localLockProvider: gh<_i27.ILocalLockProvider>(),
               localDataControlProvider: gh<_i163.ILocalDataControlProvider>(),
             ));
+    gh.lazySingleton<_i535.IEmotionStatisticsRepository>(() =>
+        _i446.EmotionStatisticsRepository(
+            gh<_i696.IEmotionStatisticsProvider>()));
     gh.lazySingleton<_i79.IWriteMomentRepository>(() =>
         _i767.WriteMomentRepository(
           writeMomentExternalProvider:
@@ -260,6 +269,10 @@ extension GetItInjectableX on _i174.GetIt {
           moment,
           date,
           gh<_i79.IWriteMomentRepository>(),
+        ));
+    gh.singleton<_i428.UserBloc>(() => _i428.UserBloc(
+          gh<_i586.IUserRepository>(),
+          gh<_i461.Bus>(),
         ));
     gh.factory<_i507.RecommendBloc>(() => _i507.RecommendBloc(
           gh<_i461.Bus>(),

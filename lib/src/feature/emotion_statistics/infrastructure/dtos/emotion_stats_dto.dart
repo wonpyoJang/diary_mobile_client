@@ -1,5 +1,5 @@
+import 'package:diary_mobile_client/src/feature/common/moment/domain/enums/emotion.dart';
 import 'package:diary_mobile_client/src/feature/emotion_statistics/domain/value_objects/emotion_stats.dart';
-import 'package:diary_mobile_client/src/feature/moment/domain/enums/emotion.dart';
 
 class EmotionStatsDto {
   final String emotion;
