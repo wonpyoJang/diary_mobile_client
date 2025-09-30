@@ -22,7 +22,7 @@ extension FeatureFlagKeyExt on FeatureFlagKey {
   }
 }
 
-@lazySingleton
+@singleton
 class RemoteConfigClient {
   final FirebaseRemoteConfig _remoteConfig;
 

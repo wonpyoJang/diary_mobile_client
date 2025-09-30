@@ -10,6 +10,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:dio/dio.dart' as _i361;
+import 'package:firebase_remote_config/firebase_remote_config.dart' as _i627;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
@@ -23,6 +24,7 @@ import 'core/device/infrastructure/interfaces/i_device_info_local_provider.dart'
 import 'core/device/infrastructure/providers/device_info_local_provider.dart'
     as _i505;
 import 'core/drift/drift_client.dart' as _i407;
+import 'core/feature_mager/feature_manager.dart' as _i694;
 import 'core/file/file_manager.dart' as _i891;
 import 'core/firebase/firebase_client.dart' as _i248;
 import 'core/hive_client/hive_client.dart' as _i951;
@@ -34,6 +36,8 @@ import 'core/media/infrastructure/interfaces/i_media_info_local_provider.dart'
     as _i130;
 import 'core/media/infrastructure/providers/media_info_local_provider.dart'
     as _i1061;
+import 'core/remote_config_client/di_injection.dart' as _i407;
+import 'core/remote_config_client/remote_config_client.dart' as _i297;
 import 'core/supabase/supabase_module.dart' as _i850;
 import 'database/app_database.dart' as _i587;
 import 'feature/common/moment/domain/entity/moment.dart' as _i517;
@@ -152,6 +156,7 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final dioModule = _$DioModule();
+    final remoteConfigModule = _$RemoteConfigModule();
     final supabaseModule = _$SupabaseModule();
     gh.factory<_i584.SettingsBloc>(() => _i584.SettingsBloc());
     gh.factory<_i307.MomentCalendarBloc>(() => _i307.MomentCalendarBloc());
@@ -160,12 +165,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i917.ImagePickerClient>(() => _i917.ImagePickerClient());
     gh.singleton<_i248.FirebaseClient>(() => _i248.FirebaseClient());
     gh.singleton<_i778.SettingsService>(() => _i778.SettingsService());
+    gh.lazySingleton<_i694.FeatureManager>(() => _i694.FeatureManager());
     gh.lazySingleton<_i361.Dio>(() => dioModule.dio());
+    gh.lazySingleton<_i627.FirebaseRemoteConfig>(
+        () => remoteConfigModule.firebaseRemoteConfig);
     gh.lazySingleton<_i454.SupabaseClient>(
         () => supabaseModule.supabaseClient());
     gh.lazySingleton<_i735.DeepLinkService>(() => _i735.DeepLinkService.new());
     gh.lazySingleton<_i958.AnalyticsManager>(() => _i958.AnalyticsManager());
     gh.lazySingleton<_i461.Bus>(() => _i461.Bus());
+    gh.singleton<_i297.RemoteConfigClient>(
+        () => _i297.RemoteConfigClient(gh<_i627.FirebaseRemoteConfig>()));
     gh.lazySingleton<_i633.ISupabaseUserExternalProvider>(
         () => _i48.SupabaseUserExternalProvider(gh<_i454.SupabaseClient>()));
     gh.lazySingleton<_i743.IVersionLocalProvider>(
@@ -292,5 +302,7 @@ extension GetItInjectableX on _i174.GetIt {
 }
 
 class _$DioModule extends _i871.DioModule {}
+
+class _$RemoteConfigModule extends _i407.RemoteConfigModule {}
 
 class _$SupabaseModule extends _i850.SupabaseModule {}

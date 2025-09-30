@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:diary_mobile_client/firebase_options.dart';
 import 'package:diary_mobile_client/src/core/hive_client/hive_client.dart';
-import 'package:diary_mobile_client/src/core/remote_config_client/remote_config_client.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -37,6 +36,11 @@ void main() async {
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFucG9seXh5Z3FuaXNtcnp2a2x6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MzAzNzIsImV4cCI6MjA3MTAwNjM3Mn0.1qmqNbZmxhmRa5AJ-b6D7OmuUXuXSWyNnL8c9VmKJwo',
   );
 
+  // Firebase는 DI에서 RemoteConfig를 주입하기 전에 반드시 초기화되어야 함
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   // 의존성 주입 설정
   await configureDependencies();
 
@@ -54,10 +58,6 @@ void main() async {
       options.profilesSampleRate = 1.0;
     },
     appRunner: () async {
-      await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      );
-
       FlutterError.onError = (errorDetails) {
         FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
       };
@@ -103,8 +103,6 @@ void main() async {
       // Run the app and pass in the SettingsController. The app listens to the
       // SettingsController for changes, then passes it further down to the
       // SettingsView.
-
-      await getIt<RemoteConfigClient>().initialize();
 
       runApp(const MyApp());
     },
