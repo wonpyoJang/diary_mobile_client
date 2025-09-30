@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 
-class FeatureFlagState extends Equatable {
+class RuntimeFeatureFlagState extends Equatable {
   final bool isRecommendV2Enabled;
   final bool isExperimentalStatisticsEnabled;
 
-  const FeatureFlagState({
+  const RuntimeFeatureFlagState({
     required this.isRecommendV2Enabled,
     required this.isExperimentalStatisticsEnabled,
   });
@@ -13,18 +13,18 @@ class FeatureFlagState extends Equatable {
   List<Object?> get props =>
       [isRecommendV2Enabled, isExperimentalStatisticsEnabled];
 
-  FeatureFlagState copyWith({
+  RuntimeFeatureFlagState copyWith({
     bool? isRecommendV2Enabled,
     bool? isExperimentalStatisticsEnabled,
   }) {
-    return FeatureFlagState(
+    return RuntimeFeatureFlagState(
       isRecommendV2Enabled: isRecommendV2Enabled ?? this.isRecommendV2Enabled,
       isExperimentalStatisticsEnabled: isExperimentalStatisticsEnabled ??
           this.isExperimentalStatisticsEnabled,
     );
   }
 
-  factory FeatureFlagState.initial() => const FeatureFlagState(
+  factory RuntimeFeatureFlagState.initial() => const RuntimeFeatureFlagState(
         isRecommendV2Enabled: false,
         isExperimentalStatisticsEnabled: false,
       );
