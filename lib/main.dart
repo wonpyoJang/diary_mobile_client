@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:diary_mobile_client/firebase_options.dart';
 import 'package:diary_mobile_client/src/core/hive_client/hive_client.dart';
+import 'package:diary_mobile_client/src/core/remote_config_client/remote_config_client.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -102,6 +103,9 @@ void main() async {
       // Run the app and pass in the SettingsController. The app listens to the
       // SettingsController for changes, then passes it further down to the
       // SettingsView.
+
+      await getIt<RemoteConfigClient>().initialize();
+
       runApp(const MyApp());
     },
   );
