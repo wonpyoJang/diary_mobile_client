@@ -229,7 +229,7 @@ void main() {
             MediaTableCompanion.insert(
               id: 'join_media',
               momentId: momentId,
-              data: Uint8List.fromList([1, 2, 3]),
+              path: '/tmp/join_test.jpg',
               mimeType: 'image/jpeg',
               createdAt: DateTime.now(),
             ),

@@ -12,6 +12,7 @@ import 'package:diary_mobile_client/src/feature/moment/write_moment/infrastuctur
 import 'package:drift/drift.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
+import 'package:path_provider/path_provider.dart';
 
 @Injectable(as: IWriteMomentLocalProvider)
 class WriteMomentLocalProvider implements IWriteMomentLocalProvider {
@@ -80,15 +81,13 @@ class WriteMomentLocalProvider implements IWriteMomentLocalProvider {
 
     return await _driftClient.runQuery<Unit>((db) async {
       for (final path in mediaPaths) {
-        final file = File(path);
-        final bytes = await file.readAsBytes();
         final mimeType = _getMimeType(path);
 
         await db.into(db.mediaTable).insert(
               MediaTableCompanion.insert(
                 id: '${momentId}_${DateTime.now().millisecondsSinceEpoch}',
                 momentId: momentId,
-                data: bytes,
+                path: path,
                 mimeType: mimeType,
                 createdAt: DateTime.now(),
               ),
@@ -140,15 +139,13 @@ class WriteMomentLocalProvider implements IWriteMomentLocalProvider {
 
       // 2. Insert new media files
       for (final path in mediaPaths) {
-        final file = File(path);
-        final bytes = await file.readAsBytes();
         final mimeType = _getMimeType(path);
 
         await db.into(db.mediaTable).insert(
               MediaTableCompanion.insert(
                 id: '${momentId}_${DateTime.now().millisecondsSinceEpoch}',
                 momentId: momentId,
-                data: bytes,
+                path: path,
                 mimeType: mimeType,
                 createdAt: DateTime.now(),
               ),
@@ -181,11 +178,55 @@ class WriteMomentLocalProvider implements IWriteMomentLocalProvider {
             ..where((tbl) => tbl.momentId.equals(momentId))
             ..orderBy([(tbl) => OrderingTerm.asc(tbl.createdAt)]))
           .get();
-      return mediaList.map((e) => MediaInfoDto.fromTableData(e)).toList();
+
+      // 현재 컨테이너의 Documents 경로 기준으로 리매핑 (테스트 환경 안전)
+      String? currentDocsPath;
+      try {
+        final documentsDir = await getApplicationDocumentsDirectory();
+        currentDocsPath = documentsDir.path;
+      } catch (_) {
+        // 테스트 환경(vm) 등 바인딩 미초기화 시 리매핑을 생략
+        currentDocsPath = null;
+      }
+
+      return mediaList.map((e) {
+        final dto = MediaInfoDto.fromTableData(e);
+        final remappedPath = currentDocsPath == null
+            ? dto.path
+            : _remapToCurrentDocumentsPath(
+                storedPath: dto.path,
+                currentDocumentsPath: currentDocsPath,
+              );
+        return MediaInfoDto(
+          id: dto.id,
+          momentId: dto.momentId,
+          path: remappedPath,
+          mimeType: dto.mimeType,
+          createdAt: dto.createdAt,
+        );
+      }).toList();
     }, description: 'fetchMediaByMomentId');
   }
 
   String _getMimeType(String path) {
     return MimeType.getMimeTypeFromPath(path);
+  }
+}
+
+String _remapToCurrentDocumentsPath({
+  required String storedPath,
+  required String currentDocumentsPath,
+}) {
+  try {
+    if (storedPath.isEmpty) return storedPath;
+    const documentsSegment = '/Documents/';
+    final idx = storedPath.indexOf(documentsSegment);
+    if (idx == -1) {
+      return storedPath;
+    }
+    final relative = storedPath.substring(idx + documentsSegment.length);
+    return '$currentDocumentsPath/$relative';
+  } catch (_) {
+    return storedPath;
   }
 }

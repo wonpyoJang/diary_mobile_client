@@ -582,11 +582,11 @@ class $MediaTableTable extends MediaTable
       requiredDuringInsert: true,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('REFERENCES moment_table (id)'));
-  static const VerificationMeta _dataMeta = const VerificationMeta('data');
+  static const VerificationMeta _pathMeta = const VerificationMeta('path');
   @override
-  late final GeneratedColumn<Uint8List> data = GeneratedColumn<Uint8List>(
-      'data', aliasedName, false,
-      type: DriftSqlType.blob, requiredDuringInsert: true);
+  late final GeneratedColumn<String> path = GeneratedColumn<String>(
+      'path', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _mimeTypeMeta =
       const VerificationMeta('mimeType');
   @override
@@ -601,7 +601,7 @@ class $MediaTableTable extends MediaTable
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, momentId, data, mimeType, createdAt];
+      [id, momentId, path, mimeType, createdAt];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -623,11 +623,11 @@ class $MediaTableTable extends MediaTable
     } else if (isInserting) {
       context.missing(_momentIdMeta);
     }
-    if (data.containsKey('data')) {
+    if (data.containsKey('path')) {
       context.handle(
-          _dataMeta, this.data.isAcceptableOrUnknown(data['data']!, _dataMeta));
+          _pathMeta, path.isAcceptableOrUnknown(data['path']!, _pathMeta));
     } else if (isInserting) {
-      context.missing(_dataMeta);
+      context.missing(_pathMeta);
     }
     if (data.containsKey('mime_type')) {
       context.handle(_mimeTypeMeta,
@@ -654,8 +654,8 @@ class $MediaTableTable extends MediaTable
           .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
       momentId: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}moment_id'])!,
-      data: attachedDatabase.typeMapping
-          .read(DriftSqlType.blob, data['${effectivePrefix}data'])!,
+      path: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}path'])!,
       mimeType: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}mime_type'])!,
       createdAt: attachedDatabase.typeMapping
@@ -672,13 +672,13 @@ class $MediaTableTable extends MediaTable
 class MediaTableData extends DataClass implements Insertable<MediaTableData> {
   final String id;
   final String momentId;
-  final Uint8List data;
+  final String path;
   final String mimeType;
   final DateTime createdAt;
   const MediaTableData(
       {required this.id,
       required this.momentId,
-      required this.data,
+      required this.path,
       required this.mimeType,
       required this.createdAt});
   @override
@@ -686,7 +686,7 @@ class MediaTableData extends DataClass implements Insertable<MediaTableData> {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['moment_id'] = Variable<String>(momentId);
-    map['data'] = Variable<Uint8List>(data);
+    map['path'] = Variable<String>(path);
     map['mime_type'] = Variable<String>(mimeType);
     map['created_at'] = Variable<DateTime>(createdAt);
     return map;
@@ -696,7 +696,7 @@ class MediaTableData extends DataClass implements Insertable<MediaTableData> {
     return MediaTableCompanion(
       id: Value(id),
       momentId: Value(momentId),
-      data: Value(data),
+      path: Value(path),
       mimeType: Value(mimeType),
       createdAt: Value(createdAt),
     );
@@ -708,7 +708,7 @@ class MediaTableData extends DataClass implements Insertable<MediaTableData> {
     return MediaTableData(
       id: serializer.fromJson<String>(json['id']),
       momentId: serializer.fromJson<String>(json['momentId']),
-      data: serializer.fromJson<Uint8List>(json['data']),
+      path: serializer.fromJson<String>(json['path']),
       mimeType: serializer.fromJson<String>(json['mimeType']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
@@ -719,7 +719,7 @@ class MediaTableData extends DataClass implements Insertable<MediaTableData> {
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'momentId': serializer.toJson<String>(momentId),
-      'data': serializer.toJson<Uint8List>(data),
+      'path': serializer.toJson<String>(path),
       'mimeType': serializer.toJson<String>(mimeType),
       'createdAt': serializer.toJson<DateTime>(createdAt),
     };
@@ -728,13 +728,13 @@ class MediaTableData extends DataClass implements Insertable<MediaTableData> {
   MediaTableData copyWith(
           {String? id,
           String? momentId,
-          Uint8List? data,
+          String? path,
           String? mimeType,
           DateTime? createdAt}) =>
       MediaTableData(
         id: id ?? this.id,
         momentId: momentId ?? this.momentId,
-        data: data ?? this.data,
+        path: path ?? this.path,
         mimeType: mimeType ?? this.mimeType,
         createdAt: createdAt ?? this.createdAt,
       );
@@ -742,7 +742,7 @@ class MediaTableData extends DataClass implements Insertable<MediaTableData> {
     return MediaTableData(
       id: data.id.present ? data.id.value : this.id,
       momentId: data.momentId.present ? data.momentId.value : this.momentId,
-      data: data.data.present ? data.data.value : this.data,
+      path: data.path.present ? data.path.value : this.path,
       mimeType: data.mimeType.present ? data.mimeType.value : this.mimeType,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
@@ -753,7 +753,7 @@ class MediaTableData extends DataClass implements Insertable<MediaTableData> {
     return (StringBuffer('MediaTableData(')
           ..write('id: $id, ')
           ..write('momentId: $momentId, ')
-          ..write('data: $data, ')
+          ..write('path: $path, ')
           ..write('mimeType: $mimeType, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
@@ -761,15 +761,14 @@ class MediaTableData extends DataClass implements Insertable<MediaTableData> {
   }
 
   @override
-  int get hashCode => Object.hash(
-      id, momentId, $driftBlobEquality.hash(data), mimeType, createdAt);
+  int get hashCode => Object.hash(id, momentId, path, mimeType, createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is MediaTableData &&
           other.id == this.id &&
           other.momentId == this.momentId &&
-          $driftBlobEquality.equals(other.data, this.data) &&
+          other.path == this.path &&
           other.mimeType == this.mimeType &&
           other.createdAt == this.createdAt);
 }
@@ -777,14 +776,14 @@ class MediaTableData extends DataClass implements Insertable<MediaTableData> {
 class MediaTableCompanion extends UpdateCompanion<MediaTableData> {
   final Value<String> id;
   final Value<String> momentId;
-  final Value<Uint8List> data;
+  final Value<String> path;
   final Value<String> mimeType;
   final Value<DateTime> createdAt;
   final Value<int> rowid;
   const MediaTableCompanion({
     this.id = const Value.absent(),
     this.momentId = const Value.absent(),
-    this.data = const Value.absent(),
+    this.path = const Value.absent(),
     this.mimeType = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
@@ -792,19 +791,19 @@ class MediaTableCompanion extends UpdateCompanion<MediaTableData> {
   MediaTableCompanion.insert({
     required String id,
     required String momentId,
-    required Uint8List data,
+    required String path,
     required String mimeType,
     required DateTime createdAt,
     this.rowid = const Value.absent(),
   })  : id = Value(id),
         momentId = Value(momentId),
-        data = Value(data),
+        path = Value(path),
         mimeType = Value(mimeType),
         createdAt = Value(createdAt);
   static Insertable<MediaTableData> custom({
     Expression<String>? id,
     Expression<String>? momentId,
-    Expression<Uint8List>? data,
+    Expression<String>? path,
     Expression<String>? mimeType,
     Expression<DateTime>? createdAt,
     Expression<int>? rowid,
@@ -812,7 +811,7 @@ class MediaTableCompanion extends UpdateCompanion<MediaTableData> {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (momentId != null) 'moment_id': momentId,
-      if (data != null) 'data': data,
+      if (path != null) 'path': path,
       if (mimeType != null) 'mime_type': mimeType,
       if (createdAt != null) 'created_at': createdAt,
       if (rowid != null) 'rowid': rowid,
@@ -822,14 +821,14 @@ class MediaTableCompanion extends UpdateCompanion<MediaTableData> {
   MediaTableCompanion copyWith(
       {Value<String>? id,
       Value<String>? momentId,
-      Value<Uint8List>? data,
+      Value<String>? path,
       Value<String>? mimeType,
       Value<DateTime>? createdAt,
       Value<int>? rowid}) {
     return MediaTableCompanion(
       id: id ?? this.id,
       momentId: momentId ?? this.momentId,
-      data: data ?? this.data,
+      path: path ?? this.path,
       mimeType: mimeType ?? this.mimeType,
       createdAt: createdAt ?? this.createdAt,
       rowid: rowid ?? this.rowid,
@@ -845,8 +844,8 @@ class MediaTableCompanion extends UpdateCompanion<MediaTableData> {
     if (momentId.present) {
       map['moment_id'] = Variable<String>(momentId.value);
     }
-    if (data.present) {
-      map['data'] = Variable<Uint8List>(data.value);
+    if (path.present) {
+      map['path'] = Variable<String>(path.value);
     }
     if (mimeType.present) {
       map['mime_type'] = Variable<String>(mimeType.value);
@@ -865,7 +864,7 @@ class MediaTableCompanion extends UpdateCompanion<MediaTableData> {
     return (StringBuffer('MediaTableCompanion(')
           ..write('id: $id, ')
           ..write('momentId: $momentId, ')
-          ..write('data: $data, ')
+          ..write('path: $path, ')
           ..write('mimeType: $mimeType, ')
           ..write('createdAt: $createdAt, ')
           ..write('rowid: $rowid')
@@ -1760,7 +1759,7 @@ typedef $$EmotionalIntensityTableTableProcessedTableManager
 typedef $$MediaTableTableCreateCompanionBuilder = MediaTableCompanion Function({
   required String id,
   required String momentId,
-  required Uint8List data,
+  required String path,
   required String mimeType,
   required DateTime createdAt,
   Value<int> rowid,
@@ -1768,7 +1767,7 @@ typedef $$MediaTableTableCreateCompanionBuilder = MediaTableCompanion Function({
 typedef $$MediaTableTableUpdateCompanionBuilder = MediaTableCompanion Function({
   Value<String> id,
   Value<String> momentId,
-  Value<Uint8List> data,
+  Value<String> path,
   Value<String> mimeType,
   Value<DateTime> createdAt,
   Value<int> rowid,
@@ -1806,8 +1805,8 @@ class $$MediaTableTableFilterComposer
   ColumnFilters<String> get id => $composableBuilder(
       column: $table.id, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<Uint8List> get data => $composableBuilder(
-      column: $table.data, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get path => $composableBuilder(
+      column: $table.path, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get mimeType => $composableBuilder(
       column: $table.mimeType, builder: (column) => ColumnFilters(column));
@@ -1848,8 +1847,8 @@ class $$MediaTableTableOrderingComposer
   ColumnOrderings<String> get id => $composableBuilder(
       column: $table.id, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<Uint8List> get data => $composableBuilder(
-      column: $table.data, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get path => $composableBuilder(
+      column: $table.path, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get mimeType => $composableBuilder(
       column: $table.mimeType, builder: (column) => ColumnOrderings(column));
@@ -1890,8 +1889,8 @@ class $$MediaTableTableAnnotationComposer
   GeneratedColumn<String> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<Uint8List> get data =>
-      $composableBuilder(column: $table.data, builder: (column) => column);
+  GeneratedColumn<String> get path =>
+      $composableBuilder(column: $table.path, builder: (column) => column);
 
   GeneratedColumn<String> get mimeType =>
       $composableBuilder(column: $table.mimeType, builder: (column) => column);
@@ -1945,7 +1944,7 @@ class $$MediaTableTableTableManager extends RootTableManager<
           updateCompanionCallback: ({
             Value<String> id = const Value.absent(),
             Value<String> momentId = const Value.absent(),
-            Value<Uint8List> data = const Value.absent(),
+            Value<String> path = const Value.absent(),
             Value<String> mimeType = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
             Value<int> rowid = const Value.absent(),
@@ -1953,7 +1952,7 @@ class $$MediaTableTableTableManager extends RootTableManager<
               MediaTableCompanion(
             id: id,
             momentId: momentId,
-            data: data,
+            path: path,
             mimeType: mimeType,
             createdAt: createdAt,
             rowid: rowid,
@@ -1961,7 +1960,7 @@ class $$MediaTableTableTableManager extends RootTableManager<
           createCompanionCallback: ({
             required String id,
             required String momentId,
-            required Uint8List data,
+            required String path,
             required String mimeType,
             required DateTime createdAt,
             Value<int> rowid = const Value.absent(),
@@ -1969,7 +1968,7 @@ class $$MediaTableTableTableManager extends RootTableManager<
               MediaTableCompanion.insert(
             id: id,
             momentId: momentId,
-            data: data,
+            path: path,
             mimeType: mimeType,
             createdAt: createdAt,
             rowid: rowid,

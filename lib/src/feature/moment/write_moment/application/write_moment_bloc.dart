@@ -155,7 +155,10 @@ class WriteMomentBloc extends Bloc<WriteMomentEvent, WriteMomentState> {
     final response = await writeMomentRepository.describeImage(state.moment);
 
     emit(response.fold(
-      (failure) => state.copyWith(failure: failure),
+      (failure) => state.copyWith(
+        failure: failure,
+        isLoading: false,
+      ),
       (reflection) => state.copyWith(
         isLoading: false,
         moment: state.moment.copyWith(reflection: reflection),

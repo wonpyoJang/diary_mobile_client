@@ -49,8 +49,8 @@ final class UserDto {
   factory UserDto.fromSupabaseUser(supabase.User user) {
     return UserDto(
       id: user.id,
-      username: user.userMetadata?['username'],
-      profileImageUrl: user.userMetadata?['profileImageUrl'],
+      username: user.userMetadata?['full_name'],
+      profileImageUrl: user.userMetadata?['avatar_url'],
       email: user.email,
     );
   }

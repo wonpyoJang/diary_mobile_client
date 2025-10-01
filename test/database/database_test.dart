@@ -15,7 +15,7 @@ void main() {
       const dbName = 'test_db_main_1755240809684730.sqlite';
       final database = Database(dbName);
       await database.customStatement('PRAGMA foreign_keys = ON;');
-      expect(database.schemaVersion, equals(1));
+      expect(database.schemaVersion, equals(2));
       await database.close();
       final file = File(dbName);
       if (await file.exists()) await file.delete();
@@ -143,14 +143,14 @@ void main() {
             ),
           );
       const mediaId = 'test_media_1';
-      final testData = Uint8List.fromList([1, 2, 3, 4, 5]);
+      final testPath = '/tmp/test_image.jpg';
       const testMimeType = 'image/jpeg';
       final testCreatedAt = DateTime.now();
       await database.into(database.mediaTable).insert(
             MediaTableCompanion.insert(
               id: mediaId,
               momentId: momentId,
-              data: testData,
+              path: testPath,
               mimeType: testMimeType,
               createdAt: testCreatedAt,
             ),
@@ -158,7 +158,7 @@ void main() {
       final insertedMedia =
           await database.select(database.mediaTable).getSingle();
       expect(insertedMedia.id, equals(mediaId));
-      expect(insertedMedia.data, equals(testData));
+      expect(insertedMedia.path, equals(testPath));
       expect(insertedMedia.mimeType, equals(testMimeType));
       expect(insertedMedia.momentId, equals(momentId));
       const updatedMimeType = 'image/png';

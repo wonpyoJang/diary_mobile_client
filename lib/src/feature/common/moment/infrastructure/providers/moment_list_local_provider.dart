@@ -7,6 +7,7 @@ import 'package:diary_mobile_client/src/feature/common/moment/domain/entity/emot
 import 'package:diary_mobile_client/src/feature/common/moment/domain/entity/moment.dart';
 import 'package:diary_mobile_client/src/feature/common/moment/infrastructure/providers/interfaces/i_moment_list_local_provider.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:injectable/injectable.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:diary_mobile_client/src/core/drift/drift_client.dart';
@@ -48,7 +49,17 @@ class MomentListLocalProvider implements IMomentListLocalProvider {
             .toList();
 
         // 미디어 데이터를 가져옵니다
-        final medias = <File>[];
+        final mediasData = await (_database.select(_database.mediaTable)
+              ..where((tbl) => tbl.momentId.equals(momentData.id)))
+            .get();
+        final documentsDir = await getApplicationDocumentsDirectory();
+        final currentDocsPath = documentsDir.path;
+        final medias = mediasData
+            .map((data) => File(_remapToCurrentDocumentsPath(
+                  storedPath: data.path,
+                  currentDocumentsPath: currentDocsPath,
+                )))
+            .toList();
 
         // Moment 엔티티를 생성합니다
         final moment = Moment(
@@ -101,7 +112,17 @@ class MomentListLocalProvider implements IMomentListLocalProvider {
             .toList();
 
         // 미디어 데이터를 가져옵니다
-        final medias = <File>[];
+        final mediasData = await (_database.select(_database.mediaTable)
+              ..where((tbl) => tbl.momentId.equals(momentData.id)))
+            .get();
+        final documentsDir = await getApplicationDocumentsDirectory();
+        final currentDocsPath = documentsDir.path;
+        final medias = mediasData
+            .map((data) => File(_remapToCurrentDocumentsPath(
+                  storedPath: data.path,
+                  currentDocumentsPath: currentDocsPath,
+                )))
+            .toList();
 
         // Moment 엔티티를 생성합니다
         final moment = Moment(
@@ -191,4 +212,24 @@ class MomentListLocalProvider implements IMomentListLocalProvider {
 
 int getHashCode(DateTime key) {
   return key.day * 1000000 + key.month * 10000 + key.year;
+}
+
+String _remapToCurrentDocumentsPath({
+  required String storedPath,
+  required String currentDocumentsPath,
+}) {
+  try {
+    if (storedPath.isEmpty) return storedPath;
+    // iOS: /var/mobile/Containers/Data/Application/<UUID>/Documents/...
+    // Android: 보통 앱별 디렉토리의 접두가 다를 수 있으나, Documents 중간 세그먼트를 기준으로 교체
+    const documentsSegment = '/Documents/';
+    final idx = storedPath.indexOf(documentsSegment);
+    if (idx == -1) {
+      return storedPath;
+    }
+    final relative = storedPath.substring(idx + documentsSegment.length);
+    return '$currentDocumentsPath/$relative';
+  } catch (_) {
+    return storedPath;
+  }
 }

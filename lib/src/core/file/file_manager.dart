@@ -60,10 +60,10 @@ class FileManager {
       _logger.d('이미지 저장 시작: ${tmpFile.path}');
 
       final imageBytes = await tmpFile.readAsBytes();
-      await targetFile.writeAsBytes(imageBytes);
+      final saveFile = await targetFile.writeAsBytes(imageBytes);
 
-      _logger.d('이미지 저장 완료: ${targetFile.path}');
-      return right(targetFile);
+      _logger.d('이미지 저장 완료: ${saveFile.path}');
+      return right(saveFile);
     } on FileSystemException catch (e) {
       _logger.e('FileSystemException 발생: ${e.message}');
       return left(LocalFailure(message: "파일 시스템 오류가 발생했습니다. (${e.message})"));

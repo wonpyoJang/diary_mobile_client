@@ -30,7 +30,7 @@ void main() {
           'test_db_migration_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       try {
-        expect(database.schemaVersion, equals(1));
+        expect(database.schemaVersion, equals(2));
       } finally {
         await database.close();
         final file = File(dbPath);
@@ -68,7 +68,7 @@ void main() {
             tables.firstWhere((t) => t is MediaTable) as MediaTable;
         expect(mediaTable.id.name, equals('id'));
         expect(mediaTable.momentId.name, equals('moment_id'));
-        expect(mediaTable.data.name, equals('data'));
+        expect(mediaTable.path.name, equals('path'));
         expect(mediaTable.mimeType.name, equals('mime_type'));
         expect(mediaTable.createdAt.name, equals('created_at'));
       } finally {

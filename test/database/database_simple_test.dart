@@ -17,7 +17,7 @@ void main() {
 
     test('데이터베이스 생성 테스트', () {
       expect(database, isNotNull);
-      expect(database.schemaVersion, equals(1));
+      expect(database.schemaVersion, equals(2));
     });
 
     test('MomentTable 기본 테스트', () async {
