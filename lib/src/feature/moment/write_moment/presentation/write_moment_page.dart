@@ -166,6 +166,10 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                             if (context.mounted) {
                               await showEmotionBlending(context, state.moment);
                             }
+
+                            // if (context.mounted) {
+
+                            // }
                           },
                         ),
                       BlocListener<WriteMomentBloc, WriteMomentState>(

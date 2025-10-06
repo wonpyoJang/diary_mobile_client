@@ -49,11 +49,14 @@ class EmotionBlendingDialog extends StatefulWidget {
 }
 
 class _EmotionBlendingDialogState extends State<EmotionBlendingDialog> {
+  final ScreenshotController onlyGradientCaptureController =
+      ScreenshotController();
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      widget.screenshotController.capture().then((image) async {
+      onlyGradientCaptureController.capture().then((image) async {
         if (image != null) {
           final directory = await getApplicationDocumentsDirectory();
           final timestamp = DateTime.now().millisecondsSinceEpoch;
@@ -110,13 +113,19 @@ class _EmotionBlendingDialogState extends State<EmotionBlendingDialog> {
                           if (ScreenUtil.isLandscape(context) == true)
                             AspectRatio(
                               aspectRatio: 1,
-                              child: MeshGradientView(moment: widget.moment),
+                              child: Screenshot(
+                                  controller: onlyGradientCaptureController,
+                                  child:
+                                      MeshGradientView(moment: widget.moment)),
                             )
                           else
                             SizedBox(
                                 width: 240,
                                 height: 288,
-                                child: MeshGradientView(moment: widget.moment)),
+                                child: Screenshot(
+                                    controller: onlyGradientCaptureController,
+                                    child: MeshGradientView(
+                                        moment: widget.moment))),
                           if (ScreenUtil.isLandscape(context) == true) ...[
                             const SizedBox(width: 16),
                             Expanded(

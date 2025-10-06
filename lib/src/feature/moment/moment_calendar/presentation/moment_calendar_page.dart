@@ -248,7 +248,7 @@ class Calendar extends StatelessWidget {
                     // firstDay: listState.firstDay ??
                     firstDay: DateTime(1970),
                     lastDay: DateTime(DateTime.now().year + 100),
-                    focusedDay: DateTime.now(),
+                    focusedDay: calendarState.selectedPage ?? DateTime.now(),
                     // onDaySelected: (selectedDay, focusedDay) {
                     //   Navigator.of(context).push(MaterialPageRoute(
                     //   builder: (context) => WriteMomentPage(
