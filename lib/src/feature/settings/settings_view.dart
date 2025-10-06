@@ -38,8 +38,17 @@ class SettingsView extends StatelessWidget {
       ],
       child: Builder(builder: (context) {
         return Scaffold(
+          backgroundColor: Colors.white,
           appBar: AppBar(
-            title: Text(AppLocalizations.of(context)!.settings),
+            title: Text(AppLocalizations.of(context)!.settings,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontFamily: 'Pretendard',
+                  fontWeight: FontWeight.w700,
+                  height: 1.25,
+                  letterSpacing: -0.8,
+                  color: Color(0xFF53545B),
+                )),
           ),
           body: Padding(
             padding: const EdgeInsets.all(16),
@@ -51,7 +60,17 @@ class SettingsView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ListTile(
-                  title: Text(AppLocalizations.of(context)!.languageSetting),
+                  title: Text(
+                    AppLocalizations.of(context)!.languageSetting,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w400,
+                      height: 1.5,
+                      letterSpacing: -0.4,
+                      color: Color(0xFF53545B),
+                    ),
+                  ),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {
                     Navigator.push(
@@ -65,7 +84,17 @@ class SettingsView extends StatelessWidget {
                 BlocBuilder<LockCubit, LockState>(
                   builder: (context, state) {
                     return ListTile(
-                      title: const Text('잠금화면 설정'),
+                      title: const Text(
+                        '잠금화면 설정',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'Pretendard',
+                          fontWeight: FontWeight.w400,
+                          height: 1.5,
+                          letterSpacing: -0.4,
+                          color: Color(0xFF53545B),
+                        ),
+                      ),
                       trailing: Switch(
                         value: state.isLockEnabled,
                         onChanged: (bool value) {
@@ -83,7 +112,17 @@ class SettingsView extends StatelessWidget {
                 BlocBuilder<DataControlBloc, DataControlState>(
                   builder: (context, state) {
                     return ListTile(
-                      title: const Text('데이터 서버 전송 여부'),
+                      title: const Text(
+                        '데이터 서버 전송 여부',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'Pretendard',
+                          fontWeight: FontWeight.w400,
+                          height: 1.5,
+                          letterSpacing: -0.4,
+                          color: Color(0xFF53545B),
+                        ),
+                      ),
                       trailing: Switch(
                         value: state.allowedSendDataToServer,
                         onChanged: (bool value) {
@@ -102,7 +141,17 @@ class SettingsView extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  title: Text(AppLocalizations.of(context)!.termsAndPrivacy),
+                  title: Text(
+                    AppLocalizations.of(context)!.termsAndPrivacy,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w400,
+                      height: 1.5,
+                      letterSpacing: -0.4,
+                      color: Color(0xFF53545B),
+                    ),
+                  ),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {
                     // TODO: 약관 페이지로 이동
@@ -110,7 +159,17 @@ class SettingsView extends StatelessWidget {
                 ),
                 const SizedBox(height: 1),
                 ListTile(
-                  title: Text(AppLocalizations.of(context)!.version),
+                  title: Text(
+                    AppLocalizations.of(context)!.version,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w400,
+                      height: 1.5,
+                      letterSpacing: -0.4,
+                      color: Color(0xFF53545B),
+                    ),
+                  ),
                   subtitle: BlocBuilder<VersionBloc, VersionState>(
                     builder: (context, state) {
                       if (state is VersionLoaded) {
@@ -128,7 +187,17 @@ class SettingsView extends StatelessWidget {
                 ),
                 const SizedBox(height: 1),
                 ListTile(
-                  title: const Text("로그아웃"),
+                  title: const Text(
+                    "로그아웃",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w400,
+                      height: 1.5,
+                      letterSpacing: -0.4,
+                      color: Color(0xFF53545B),
+                    ),
+                  ),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {
                     context.read<UserBloc>().add(SignOut());
