@@ -15,7 +15,7 @@ void main() {
       const dbName = 'test_db_main_1755240809684730.sqlite';
       final database = Database(dbName);
       await database.customStatement('PRAGMA foreign_keys = ON;');
-      expect(database.schemaVersion, equals(2));
+      expect(database.schemaVersion, equals(3));
       await database.close();
       final file = File(dbName);
       if (await file.exists()) await file.delete();

@@ -4,7 +4,7 @@ import 'package:diary_mobile_client/src/core/failure/local_failure.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:image_picker/image_picker.dart';
 
-abstract class IMeidaInfoLocalProvider {
+abstract class IMediaInfoLocalProvider {
   Future<Either<LocalFailure, List<XFile>>> selectMedias();
 
   /// 미디어 파일을 저장하는 메소드

@@ -1,3 +1,4 @@
+import 'package:diary_mobile_client/src/database/tables/generated_image_table.dart';
 import 'package:diary_mobile_client/src/database/tables/media_table.dart';
 import 'package:diary_mobile_client/src/database/tables/user_table.dart';
 import 'package:diary_mobile_client/src/feature/common/moment/domain/enums/emotion.dart';
@@ -11,14 +12,19 @@ import 'package:injectable/injectable.dart';
 
 part 'app_database.g.dart';
 
-@DriftDatabase(
-    tables: [MomentTable, EmotionalIntensityTable, MediaTable, UserTable])
+@DriftDatabase(tables: [
+  MomentTable,
+  EmotionalIntensityTable,
+  MediaTable,
+  UserTable,
+  GeneratedImageTable
+])
 @singleton
 class Database extends _$Database {
   Database(String dbPath) : super(_openConnection(dbPath));
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -51,6 +57,10 @@ class Database extends _$Database {
             await customStatement('DROP TABLE media_table;');
             await customStatement(
                 'ALTER TABLE media_table_new RENAME TO media_table;');
+          }
+          if (from < 3) {
+            // v2 -> v3: GeneratedImageTable 추가
+            await m.createTable(generatedImageTable);
           }
         },
       );

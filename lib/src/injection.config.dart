@@ -32,10 +32,13 @@ import 'core/http_client/dio_module.dart' as _i871;
 import 'core/http_client/http_client.dart' as _i356;
 import 'core/image_picker/image_picker_client.dart' as _i917;
 import 'core/llm/llm_service.dart' as _i681;
-import 'core/media/infrastructure/interfaces/i_media_info_local_provider.dart'
-    as _i130;
+import 'core/media/domain/repositories/i_mieda_info_repository.dart' as _i1057;
+import 'core/media/infrastructure/providers/interfaces/i_media_info_local_provider.dart'
+    as _i579;
 import 'core/media/infrastructure/providers/media_info_local_provider.dart'
     as _i1061;
+import 'core/media/infrastructure/repositories/media_info_repository.dart'
+    as _i1047;
 import 'core/remote_config_client/di_injection.dart' as _i407;
 import 'core/remote_config_client/remote_config_client.dart' as _i297;
 import 'core/supabase/supabase_module.dart' as _i850;
@@ -65,6 +68,15 @@ import 'feature/emotion_statistics/infrastructure/providers/interfaces/i_emotion
     as _i696;
 import 'feature/emotion_statistics/infrastructure/repositories/emotion_statistics_repository.dart'
     as _i446;
+import 'feature/generated_image/application/generated_image_bloc.dart' as _i618;
+import 'feature/generated_image/domain/repositories/interfaces/i_generated_image_repository.dart'
+    as _i894;
+import 'feature/generated_image/infrastructure/providers/generated_image_local_provider.dart'
+    as _i707;
+import 'feature/generated_image/infrastructure/providers/interfaces/i_generated_image_local_provider.dart'
+    as _i1046;
+import 'feature/generated_image/infrastructure/repositories/generate_image_repository.dart'
+    as _i880;
 import 'feature/lock/application/lock_cubit.dart' as _i600;
 import 'feature/lock/domain/repositories/interfaces/i_local_authenticator_repository.dart'
     as _i828;
@@ -192,11 +204,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i951.HiveClient>(() => const _i951.HiveClientImpl());
     gh.factory<_i895.IAuthenticatorProvider>(
         () => _i911.LocalAuthenticatorProvider());
+    gh.lazySingleton<_i579.IMediaInfoLocalProvider>(
+        () => _i1061.MediaInfoLocalProvider());
     gh.lazySingleton<_i738.IAuthRepository>(
         () => _i174.AuthRepository(gh<_i42.ISupabaseAuthProvider>()));
     gh.singleton<_i356.HttpClient>(() => _i356.HttpClient(gh<_i361.Dio>()));
-    gh.lazySingleton<_i130.IMeidaInfoLocalProvider>(
-        () => _i1061.MediaInfoLocalProvider());
     gh.lazySingleton<_i23.IDeviceInfoLocalProvider>(
         () => _i505.DeviceInfoLocalProvider());
     gh.singleton<_i587.Database>(() => _i587.Database(gh<String>()));
@@ -210,6 +222,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i738.IAuthRepository>(),
           gh<_i461.Bus>(),
         ));
+    gh.lazySingleton<_i1057.IMediaInfoRepository>(
+        () => _i1047.MediaInfoRepository(gh<_i579.IMediaInfoLocalProvider>()));
     gh.lazySingleton<_i828.IAuthenticatorRepository>(() =>
         _i845.LocalAuthenticatorRepository(
             authenticatorProvider: gh<_i895.IAuthenticatorProvider>()));
@@ -235,6 +249,8 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.lazySingleton<_i696.IEmotionStatisticsProvider>(
         () => _i9.EmotionStatisticsProvider(gh<_i407.DriftClient>()));
+    gh.lazySingleton<_i1046.IGeneratedImageLocalProvider>(
+        () => _i707.GeneratedImageLocalProvider(gh<_i407.DriftClient>()));
     gh.lazySingleton<_i1.DataControlBloc>(() => _i1.DataControlBloc(
           dataControlRepository: gh<_i1018.IDataControlRepository>(),
           authenticatorRepository: gh<_i828.IAuthenticatorRepository>(),
@@ -246,6 +262,16 @@ extension GetItInjectableX on _i174.GetIt {
             ));
     gh.factory<_i136.LanguageCubit>(
         () => _i136.LanguageCubit(gh<_i890.SettingsController>()));
+    gh.lazySingleton<_i79.IWriteMomentRepository>(() =>
+        _i767.WriteMomentRepository(
+          writeMomentExternalProvider:
+              gh<_i1039.IWriteMomentExternalProvider>(),
+          writeMomentInternalProvider: gh<_i772.IWriteMomentInternalProvider>(),
+          writeMomentLocalProvider: gh<_i468.IWriteMomentLocalProvider>(),
+          deviceInfoLocalProvider: gh<_i23.IDeviceInfoLocalProvider>(),
+          mediaInfoLocalProvider: gh<_i579.IMediaInfoLocalProvider>(),
+          driftClient: gh<_i407.DriftClient>(),
+        ));
     gh.factory<_i1053.IMomentListRepository>(() => _i690.MomentListRepository(
           gh<_i579.IMomentListLocalProvider>(),
           gh<_i407.DriftClient>(),
@@ -260,16 +286,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i535.IEmotionStatisticsRepository>(() =>
         _i446.EmotionStatisticsRepository(
             gh<_i696.IEmotionStatisticsProvider>()));
-    gh.lazySingleton<_i79.IWriteMomentRepository>(() =>
-        _i767.WriteMomentRepository(
-          writeMomentExternalProvider:
-              gh<_i1039.IWriteMomentExternalProvider>(),
-          writeMomentInternalProvider: gh<_i772.IWriteMomentInternalProvider>(),
-          writeMomentLocalProvider: gh<_i468.IWriteMomentLocalProvider>(),
-          deviceInfoLocalProvider: gh<_i23.IDeviceInfoLocalProvider>(),
-          mediaInfoLocalProvider: gh<_i130.IMeidaInfoLocalProvider>(),
-          driftClient: gh<_i407.DriftClient>(),
-        ));
     gh.factoryParam<_i812.WriteMomentBloc, _i517.Moment?, DateTime>((
       moment,
       date,
@@ -284,9 +300,24 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i586.IUserRepository>(),
           gh<_i461.Bus>(),
         ));
+    gh.lazySingleton<_i894.IGeneratedImageRepository>(
+        () => _i880.GenerateImageRepository(
+              gh<_i1046.IGeneratedImageLocalProvider>(),
+              gh<_i579.IMediaInfoLocalProvider>(),
+            ));
     gh.factory<_i507.RecommendBloc>(() => _i507.RecommendBloc(
           gh<_i461.Bus>(),
           gh<_i142.IRecommendRepository>(),
+        ));
+    gh.factoryParam<_i618.GeneratedImageBloc, _i517.Moment?, dynamic>((
+      moment,
+      _,
+    ) =>
+        _i618.GeneratedImageBloc(
+          gh<_i894.IGeneratedImageRepository>(),
+          gh<_i1057.IMediaInfoRepository>(),
+          moment,
+          gh<_i461.Bus>(),
         ));
     gh.factory<_i269.MomentListBloc>(() => _i269.MomentListBloc(
           gh<_i461.Bus>(),
