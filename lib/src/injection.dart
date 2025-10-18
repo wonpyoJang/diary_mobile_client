@@ -1,4 +1,5 @@
 // Package imports:
+import 'package:diary_mobile_client/src/database/app_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -19,7 +20,7 @@ Future<void> configureDependencies() async {
   debugPrint('의존성 주입 설정을 시작합니다...');
 
   final dir = await getApplicationDocumentsDirectory();
-  final dbPath = '${dir.path}/crepas.sqlite';
+  final dbPath = '${dir.path}/$dbName';
   getIt.registerSingleton<String>(dbPath);
   debugPrint('데이터베이스 경로가 등록되었습니다: $dbPath');
 

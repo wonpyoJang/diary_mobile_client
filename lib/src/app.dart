@@ -1,7 +1,10 @@
 import 'package:diary_mobile_client/l10n/app_localizations.dart';
+import 'package:diary_mobile_client/src/feature/common/loading_indicator.dart';
 import 'package:diary_mobile_client/src/feature/common/toast/application/toast_bloc.dart';
 import 'package:diary_mobile_client/src/feature/common/toast/application/toast_state.dart';
 import 'package:diary_mobile_client/src/feature/data_control/application/data_control_bloc.dart';
+import 'package:diary_mobile_client/src/feature/global_loading/application/global_loading_bloc.dart';
+import 'package:diary_mobile_client/src/feature/global_loading/application/global_loading_state.dart';
 import 'package:diary_mobile_client/src/feature/lock/application/lock_cubit.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_bloc.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_event.dart';
@@ -72,6 +75,7 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(create: (context) => getIt<DeepLinkCubit>()),
         BlocProvider(create: (context) => getIt<DataControlBloc>()),
+        BlocProvider(create: (context) => getIt<GlobalLoadingBloc>()),
       ],
       child: Builder(builder: (context) {
         return ListenableBuilder(
@@ -323,39 +327,66 @@ class _MyAppState extends State<MyApp> {
                   deepLinkCubit.processInitialDeepLink();
                 });
 
-                return MultiBlocListener(
-                  listeners: [
-                    BlocListener<ToastBloc, ToastState>(
-                      listenWhen: (previous, current) {
-                        return previous.currentToast != current.currentToast &&
-                            current.currentToast != null;
-                      },
-                      listener: (context, state) {
-                        final toast = state.currentToast;
-                        if (toast == null) return;
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(toast.message),
-                            backgroundColor: toast.type == ToastType.success
-                                ? Colors.green
-                                : toast.type == ToastType.error
-                                    ? Colors.red
-                                    : toast.type == ToastType.warning
-                                        ? Colors.orange
-                                        : Colors.blue,
-                            duration: toast.duration,
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                  child: child ?? const SizedBox.shrink(),
+                return GlobalAppWrapper(
+                  child: MultiBlocListener(
+                    listeners: [
+                      BlocListener<ToastBloc, ToastState>(
+                        listenWhen: (previous, current) {
+                          return previous.currentToast !=
+                                  current.currentToast &&
+                              current.currentToast != null;
+                        },
+                        listener: (context, state) {
+                          final toast = state.currentToast;
+                          if (toast == null) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(toast.message),
+                              backgroundColor: toast.type == ToastType.success
+                                  ? Colors.green
+                                  : toast.type == ToastType.error
+                                      ? Colors.red
+                                      : toast.type == ToastType.warning
+                                          ? Colors.orange
+                                          : Colors.blue,
+                              duration: toast.duration,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                    child: child ?? const SizedBox.shrink(),
+                  ),
                 );
               },
             );
           },
         );
       }),
+    );
+  }
+}
+
+class GlobalAppWrapper extends StatelessWidget {
+  final Widget child;
+  const GlobalAppWrapper({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        child,
+        BlocBuilder<GlobalLoadingBloc, GlobalLoadingState>(
+          builder: (context, state) {
+            return state.isLoading
+                ? const Align(
+                    alignment: Alignment.center,
+                    child: CommonLoadingIndicator(),
+                  )
+                : const SizedBox.shrink();
+          },
+        ),
+      ],
     );
   }
 }

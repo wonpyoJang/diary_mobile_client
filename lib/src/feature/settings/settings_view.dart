@@ -3,6 +3,7 @@ import 'package:diary_mobile_client/src/feature/data_control/application/data_co
 import 'package:diary_mobile_client/src/feature/data_control/application/data_control_state.dart';
 import 'package:diary_mobile_client/src/feature/lock/application/lock_cubit.dart';
 import 'package:diary_mobile_client/src/feature/settings/application/settings_bloc.dart';
+import 'package:diary_mobile_client/src/feature/settings/configurations/backup/presentation/backup_page.dart';
 import 'package:diary_mobile_client/src/feature/settings/configurations/language/presentation/language_setting_page.dart';
 import 'package:diary_mobile_client/src/feature/settings/configurations/version/application/version_bloc.dart';
 import 'package:diary_mobile_client/src/feature/user/application/user_bloc.dart';
@@ -138,6 +139,17 @@ class SettingsView extends StatelessWidget {
                         },
                       ),
                     );
+                  },
+                ),
+                const SizedBox(height: 1),
+                ListTile(
+                  title: const Text("백업 설정"),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const BackupPage()));
                   },
                 ),
                 ListTile(

@@ -12,6 +12,8 @@ import 'package:injectable/injectable.dart';
 
 part 'app_database.g.dart';
 
+const dbName = "crepas.sqlite";
+
 @DriftDatabase(tables: [
   MomentTable,
   EmotionalIntensityTable,
