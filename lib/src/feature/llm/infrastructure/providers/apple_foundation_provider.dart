@@ -34,6 +34,15 @@ class AppleFoundationProvider implements ILlmProvider {
 
   @override
   Future<Either<LlmFailure, String>> generateText(LlmRequest request) async {
+    if (request.images != null && request.images!.isNotEmpty) {
+      return left(
+        const LlmFailure(
+          kind: LlmFailureKind.deviceNotSupported,
+          message: 'Apple Foundation Models는 텍스트 전용입니다',
+        ),
+      );
+    }
+
     if (!Platform.isIOS) {
       return left(
         const LlmFailure(

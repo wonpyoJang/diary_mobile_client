@@ -34,6 +34,11 @@ class GeminiRemoteProvider implements ILlmProvider {
       parts.add(TextPart(request.systemInstruction!));
     }
     parts.add(TextPart(request.prompt));
+    if (request.images != null && request.images!.isNotEmpty) {
+      for (final img in request.images!) {
+        parts.add(InlineDataPart(img.mimeType, img.bytes));
+      }
+    }
 
     final content = [Content.multi(parts)];
 
