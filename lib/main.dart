@@ -13,8 +13,9 @@ import 'package:crypto/crypto.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'src/injection.dart';
+import 'src/injection.dart' show configureDependencies, getIt, kScreenshotMode;
 import 'src/feature/settings/settings_controller.dart';
+import 'src/feature/settings/configurations/backup/infrastructure/backup_notifier.dart';
 import 'src/database/app_database.dart';
 
 import 'src/app.dart';
@@ -43,6 +44,14 @@ void main() async {
 
   // 의존성 주입 설정
   await configureDependencies();
+
+  // 자동 백업 알림(local notifications) 초기화.
+  // 실패해도 앱은 계속 켜져야 하므로 try/catch로 감싼다.
+  try {
+    await getIt<BackupNotifier>().initialize();
+  } catch (e) {
+    logger.e('BackupNotifier 초기화 실패: $e');
+  }
 
   await getIt<HiveClient>().initialize();
 
@@ -77,6 +86,11 @@ void main() async {
                 (await getApplicationDocumentsDirectory()).path),
         encryptionCipher: HydratedAesCipher(byteskey),
       );
+
+      if (kScreenshotMode) {
+        await HydratedBloc.storage.clear();
+        logger.i('SCREENSHOT_MODE: HydratedBloc storage cleared');
+      }
 
       // 데이터베이스 인스턴스 가져오기 (의존성 주입 후)
       final database = getIt<Database>();
