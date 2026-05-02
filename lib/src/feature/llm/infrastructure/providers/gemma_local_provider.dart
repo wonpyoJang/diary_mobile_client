@@ -45,6 +45,15 @@ class GemmaLocalProvider implements ILlmProvider {
 
   @override
   Future<Either<LlmFailure, String>> generateText(LlmRequest request) async {
+    if (request.images != null && request.images!.isNotEmpty) {
+      return const Left(
+        LlmFailure(
+          kind: LlmFailureKind.deviceNotSupported,
+          message: '온디바이스 모델은 이미지를 지원하지 않습니다',
+        ),
+      );
+    }
+
     try {
       await _ensureModelInitialized();
       final output = await _runInference(request);
