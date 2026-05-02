@@ -128,18 +128,42 @@ import 'feature/recommend/infrastructure/repositories/recommend_repository.dart'
 import 'feature/settings/application/settings_bloc.dart' as _i584;
 import 'feature/settings/configurations/backup/application/backup_bloc.dart'
     as _i186;
+import 'feature/settings/configurations/backup/application/restore/restore_bloc.dart'
+    as _i136;
+import 'feature/settings/configurations/backup/application/schedule/schedule_bloc.dart'
+    as _i825;
 import 'feature/settings/configurations/backup/domain/repositories/interfaces/i_backup_repository.dart'
     as _i955;
+import 'feature/settings/configurations/backup/domain/repositories/interfaces/i_restore_repository.dart'
+    as _i69;
+import 'feature/settings/configurations/backup/infrastructure/backup_notifier.dart'
+    as _i970;
+import 'feature/settings/configurations/backup/infrastructure/destinations/destination_registry.dart'
+    as _i521;
+import 'feature/settings/configurations/backup/infrastructure/destinations/icloud_destination.dart'
+    as _i1073;
+import 'feature/settings/configurations/backup/infrastructure/destinations/local_folder_destination.dart'
+    as _i348;
+import 'feature/settings/configurations/backup/infrastructure/destinations/share_sheet_destination.dart'
+    as _i693;
 import 'feature/settings/configurations/backup/infrastructure/providers/backup_local_provider.dart'
     as _i754;
 import 'feature/settings/configurations/backup/infrastructure/providers/backup_remote_provider.dart'
     as _i93;
+import 'feature/settings/configurations/backup/infrastructure/providers/backup_restore_provider.dart'
+    as _i216;
 import 'feature/settings/configurations/backup/infrastructure/providers/interfaces/i_backup_local_provider.dart'
     as _i1020;
 import 'feature/settings/configurations/backup/infrastructure/providers/interfaces/i_backup_remote_provider.dart'
     as _i359;
+import 'feature/settings/configurations/backup/infrastructure/providers/interfaces/i_backup_restore_provider.dart'
+    as _i319;
 import 'feature/settings/configurations/backup/infrastructure/repositories/backup_repository.dart'
     as _i35;
+import 'feature/settings/configurations/backup/infrastructure/repositories/restore_repository.dart'
+    as _i656;
+import 'feature/settings/configurations/backup/presentation/destination_action_cubit.dart'
+    as _i834;
 import 'feature/settings/configurations/language/application/language_bloc.dart'
     as _i136;
 import 'feature/settings/configurations/version/application/version_bloc.dart'
@@ -189,6 +213,10 @@ extension GetItInjectableX on _i174.GetIt {
     final dioModule = _$DioModule();
     final remoteConfigModule = _$RemoteConfigModule();
     final supabaseModule = _$SupabaseModule();
+    gh.factory<_i693.ShareSheetDestination>(
+        () => _i693.ShareSheetDestination());
+    gh.factory<_i348.LocalFolderDestination>(
+        () => _i348.LocalFolderDestination());
     gh.factory<_i584.SettingsBloc>(() => _i584.SettingsBloc());
     gh.factory<_i307.MomentCalendarBloc>(() => _i307.MomentCalendarBloc());
     gh.singleton<_i681.Gemini>(() => _i681.Gemini());
@@ -206,6 +234,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i735.DeepLinkService>(() => _i735.DeepLinkService.new());
     gh.lazySingleton<_i958.AnalyticsManager>(() => _i958.AnalyticsManager());
     gh.lazySingleton<_i461.Bus>(() => _i461.Bus());
+    gh.lazySingleton<_i970.BackupNotifier>(() => _i970.BackupNotifier());
     gh.singleton<_i297.RemoteConfigClient>(
         () => _i297.RemoteConfigClient(gh<_i627.FirebaseRemoteConfig>()));
     gh.lazySingleton<_i633.ISupabaseUserExternalProvider>(
@@ -231,6 +260,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i356.HttpClient>(() => _i356.HttpClient(gh<_i361.Dio>()));
     gh.lazySingleton<_i359.IBackupRemoteProvider>(
         () => _i93.BackupRemoteProvider(gh<_i178.ICloudService>()));
+    gh.factory<_i1073.ICloudDestination>(
+        () => _i1073.ICloudDestination(gh<_i178.ICloudService>()));
     gh.lazySingleton<_i23.IDeviceInfoLocalProvider>(
         () => _i505.DeviceInfoLocalProvider());
     gh.singleton<_i587.Database>(() => _i587.Database(gh<String>()));
@@ -244,6 +275,12 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i738.IAuthRepository>(),
           gh<_i461.Bus>(),
         ));
+    gh.lazySingleton<_i521.BackupDestinationRegistry>(
+        () => _i521.BackupDestinationRegistry(
+              gh<_i1073.ICloudDestination>(),
+              gh<_i348.LocalFolderDestination>(),
+              gh<_i693.ShareSheetDestination>(),
+            ));
     gh.lazySingleton<_i1057.IMediaInfoRepository>(
         () => _i1047.MediaInfoRepository(gh<_i579.IMediaInfoLocalProvider>()));
     gh.lazySingleton<_i828.IAuthenticatorRepository>(() =>
@@ -256,6 +293,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i147.GlobalLoadingBloc>(
         () => _i147.GlobalLoadingBloc(gh<_i461.Bus>()));
     gh.lazySingleton<_i190.ToastBloc>(() => _i190.ToastBloc(gh<_i461.Bus>()));
+    gh.lazySingleton<_i319.IBackupRestoreProvider>(
+        () => _i216.BackupRestoreProvider(gh<_i587.Database>()));
     gh.lazySingleton<_i27.ILocalLockProvider>(
         () => _i625.LocalLockProvider(hiveClient: gh<_i951.HiveClient>()));
     gh.lazySingleton<_i1020.IBackupLocalProvider>(
@@ -270,6 +309,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1018.IDataControlRepository>(() =>
         _i489.DataControlRepository(
             dataControlProvider: gh<_i163.ILocalDataControlProvider>()));
+    gh.factory<_i834.DestinationActionCubit>(() => _i834.DestinationActionCubit(
+          gh<_i1020.IBackupLocalProvider>(),
+          gh<_i521.BackupDestinationRegistry>(),
+        ));
     gh.factory<_i468.IWriteMomentLocalProvider>(
         () => _i220.WriteMomentLocalProvider(gh<_i407.DriftClient>()));
     gh.lazySingleton<_i586.IUserRepository>(() => _i885.UserRepository(
@@ -278,6 +321,8 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.lazySingleton<_i696.IEmotionStatisticsProvider>(
         () => _i9.EmotionStatisticsProvider(gh<_i407.DriftClient>()));
+    gh.lazySingleton<_i69.IRestoreRepository>(
+        () => _i656.RestoreRepository(gh<_i319.IBackupRestoreProvider>()));
     gh.lazySingleton<_i1046.IGeneratedImageLocalProvider>(
         () => _i707.GeneratedImageLocalProvider(gh<_i407.DriftClient>()));
     gh.lazySingleton<_i67.MomentSeeder>(
@@ -307,10 +352,16 @@ extension GetItInjectableX on _i174.GetIt {
           mediaInfoLocalProvider: gh<_i579.IMediaInfoLocalProvider>(),
           driftClient: gh<_i407.DriftClient>(),
         ));
+    gh.factory<_i825.ScheduleBloc>(() => _i825.ScheduleBloc(
+          gh<_i955.IBackupRepository>(),
+          gh<_i970.BackupNotifier>(),
+        ));
     gh.factory<_i1053.IMomentListRepository>(() => _i690.MomentListRepository(
           gh<_i579.IMomentListLocalProvider>(),
           gh<_i407.DriftClient>(),
         ));
+    gh.factory<_i136.RestoreBloc>(
+        () => _i136.RestoreBloc(gh<_i69.IRestoreRepository>()));
     gh.lazySingleton<_i554.ILockRepository>(() =>
         _i522.LockRepository(localLockProvider: gh<_i27.ILocalLockProvider>()));
     gh.lazySingleton<_i142.IRecommendRepository>(

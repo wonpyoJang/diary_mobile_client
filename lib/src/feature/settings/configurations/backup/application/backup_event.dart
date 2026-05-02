@@ -16,3 +16,5 @@ class ExportBackupToUserICloud extends BackupEvent {}
 class ExportMomentsCsvToUserICloud extends BackupEvent {}
 
 class ExportMomentsCsvWithMediaZipToUserICloud extends BackupEvent {}
+
+class ClearBackupMessage extends BackupEvent {}
