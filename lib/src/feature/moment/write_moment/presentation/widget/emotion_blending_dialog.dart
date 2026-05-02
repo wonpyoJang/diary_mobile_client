@@ -3,11 +3,14 @@ import 'dart:io';
 import 'package:diary_mobile_client/src/bus/bus.dart';
 import 'package:diary_mobile_client/src/core/analytics/analytics_manager.dart';
 import 'package:diary_mobile_client/src/core/multi_device/screen_util.dart';
+import 'package:diary_mobile_client/src/feature/generated_image/application/generated_image_bloc.dart';
+import 'package:diary_mobile_client/src/feature/generated_image/application/generated_image_event.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/application/messages.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/mesh_gradient/mesh_gradient_view.dart';
 import 'package:diary_mobile_client/src/injection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:path_provider/path_provider.dart';
@@ -20,10 +23,56 @@ import '../../../../common/moment/domain/entity/moment.dart';
 
 Future<dynamic> showEmotionBlending(BuildContext context, Moment moment) {
   final screenshotController = ScreenshotController();
+  final generatedImageBloc = context.read<GeneratedImageBloc>();
 
   return showDialog(
     context: context,
-    builder: (context) => Dialog(
+    builder: (_) => BlocProvider.value(
+      value: generatedImageBloc,
+      child: EmotionBlendingDialog(
+          screenshotController: screenshotController, moment: moment),
+    ),
+  );
+}
+
+class EmotionBlendingDialog extends StatefulWidget {
+  const EmotionBlendingDialog({
+    super.key,
+    required this.screenshotController,
+    required this.moment,
+  });
+
+  final ScreenshotController screenshotController;
+  final Moment moment;
+  @override
+  State<EmotionBlendingDialog> createState() => _EmotionBlendingDialogState();
+}
+
+class _EmotionBlendingDialogState extends State<EmotionBlendingDialog> {
+  final ScreenshotController onlyGradientCaptureController =
+      ScreenshotController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      onlyGradientCaptureController.capture().then((image) async {
+        if (image != null) {
+          final directory = await getApplicationDocumentsDirectory();
+          final timestamp = DateTime.now().millisecondsSinceEpoch;
+          final file = File('${directory.path}/image_$timestamp.png');
+          await file.writeAsBytes(image);
+          if (!mounted) return;
+          if (!context.mounted) return;
+          context.read<GeneratedImageBloc>().add(SaveGeneratedImage(file));
+        }
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
       backgroundColor: const Color(0xFFF6F6F6),
       insetPadding: ScreenUtil.isLandscape(context)
           ? const EdgeInsets.symmetric(horizontal: 24, vertical: 24)
@@ -36,7 +85,7 @@ Future<dynamic> showEmotionBlending(BuildContext context, Moment moment) {
             phone: 272, tablet: null, desktop: null),
         height: 428,
         child: Screenshot(
-          controller: screenshotController,
+          controller: widget.screenshotController,
           child: Padding(
             padding: const EdgeInsets.only(
                 top: 20.0, left: 16.0, right: 16.0, bottom: 16.0),
@@ -64,24 +113,32 @@ Future<dynamic> showEmotionBlending(BuildContext context, Moment moment) {
                           if (ScreenUtil.isLandscape(context) == true)
                             AspectRatio(
                               aspectRatio: 1,
-                              child: MeshGradientView(moment: moment),
+                              child: Screenshot(
+                                  controller: onlyGradientCaptureController,
+                                  child:
+                                      MeshGradientView(moment: widget.moment)),
                             )
                           else
                             SizedBox(
                                 width: 240,
                                 height: 288,
-                                child: MeshGradientView(moment: moment)),
+                                child: Screenshot(
+                                    controller: onlyGradientCaptureController,
+                                    child: MeshGradientView(
+                                        moment: widget.moment))),
                           if (ScreenUtil.isLandscape(context) == true) ...[
                             const SizedBox(width: 16),
                             Expanded(
                                 child: ContentPanel(
-                                    screenshotController: screenshotController))
+                                    screenshotController:
+                                        widget.screenshotController))
                           ]
                         ],
                       ),
                       if (ScreenUtil.isLandscape(context) == false) ...[
                         const SizedBox(height: 16),
-                        ContentPanel(screenshotController: screenshotController)
+                        ContentPanel(
+                            screenshotController: widget.screenshotController)
                       ]
                     ],
                   ),
@@ -91,8 +148,8 @@ Future<dynamic> showEmotionBlending(BuildContext context, Moment moment) {
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 class ContentPanel extends StatelessWidget {

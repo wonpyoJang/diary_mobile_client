@@ -13,6 +13,7 @@ help:
 clean:
 	@echo "🧹 Flutter generated 파일들 삭제 중..."
 	@rm -rf lib/src/database/*.g.dart
+	@rm -rf lib/src/injection.config.dart
 	@rm -rf ios/Flutter/Generated.xcconfig
 	@rm -rf ios/Flutter/flutter_export_environment.sh
 	@rm -rf ios/Runner/GeneratedPluginRegistrant.*

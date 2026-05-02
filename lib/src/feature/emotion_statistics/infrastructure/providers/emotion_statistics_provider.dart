@@ -49,4 +49,36 @@ class EmotionStatisticsProvider implements IEmotionStatisticsProvider {
       return stats;
     }, description: 'getEmotionStatistics');
   }
+
+  @override
+  Future<Either<LocalFailure, int>> getTotalMomentCount() async {
+    return await _driftClient.runQuery<int>((db) async {
+      final countExpr = db.momentTable.id.count();
+      final query = db.selectOnly(db.momentTable)..addColumns([countExpr]);
+      final row = await query.getSingle();
+      return row.read(countExpr) ?? 0;
+    }, description: 'getTotalMomentCount');
+  }
+
+  @override
+  Future<Either<LocalFailure, Map<DateTime, int>>> getDailyMomentCounts(
+    int days,
+  ) async {
+    return await _driftClient.runQuery<Map<DateTime, int>>((db) async {
+      final now = DateTime.now();
+      final cutoff = DateTime(now.year, now.month, now.day)
+          .subtract(Duration(days: days - 1));
+
+      final rows = await (db.select(db.momentTable)
+            ..where((tbl) => tbl.date.isBiggerOrEqualValue(cutoff)))
+          .get();
+
+      final counts = <DateTime, int>{};
+      for (final row in rows) {
+        final d = DateTime(row.date.year, row.date.month, row.date.day);
+        counts[d] = (counts[d] ?? 0) + 1;
+      }
+      return counts;
+    }, description: 'getDailyMomentCounts');
+  }
 }

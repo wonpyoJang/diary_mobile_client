@@ -36,6 +36,18 @@
 		<string>사진일기와 동영상일기를 작성하고, 사진이나 동영상을 불러오거나 저장할 수 있습니다.</string>
 		<key>NSFaceIDUsageDescription</key>
 		<string>일기를 안전하게 보호하기 위해 얼굴 인식 권한이 필요합니다.</string>
+		<key>NSUbiquitousContainers</key>
+		<dict>
+		<key>iCloud.com.crepas.diary</key>
+		<dict>
+			<key>NSUbiquitousContainerIsDocumentScopePublic</key>
+			<true/>
+			<key>NSUbiquitousContainerName</key>
+			<string>Crepas Diary Backup</string>
+			<key>NSUbiquitousContainerSupportedFolderLevels</key>
+			<string>Any</string>
+		</dict>
+		</dict>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>		
 		<key>UILaunchStoryboardName</key>
@@ -79,5 +91,18 @@
 		<array>
 			<string>applinks:your-domain.com</string>
 		</array>
+		<key>iCloud</key>
+		<dict>
+		<key>com.apple.developer.icloud-container-identifiers</key>
+		<array>
+			<string>iCloud.com.crepas.diary</string>
+		</array>
+		<key>com.apple.developer.ubiquity-container-identifiers</key>
+		<array>
+			<string>iCloud.com.crepas.diary</string>
+		</array>
+		<key>com.apple.developer.ubiquity-kvstore-identifier</key>
+		<string>$(TeamIdentifierPrefix)com.crepas.diary</string>
+		</dict>
 	</dict>
 </plist>

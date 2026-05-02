@@ -30,7 +30,7 @@ void main() {
           'test_db_migration_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       try {
-        expect(database.schemaVersion, equals(2));
+        expect(database.schemaVersion, equals(3));
       } finally {
         await database.close();
         final file = File(dbPath);

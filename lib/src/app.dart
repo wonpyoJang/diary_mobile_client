@@ -1,10 +1,15 @@
 import 'package:diary_mobile_client/l10n/app_localizations.dart';
+import 'package:diary_mobile_client/src/feature/common/loading_indicator.dart';
 import 'package:diary_mobile_client/src/feature/common/toast/application/toast_bloc.dart';
 import 'package:diary_mobile_client/src/feature/common/toast/application/toast_state.dart';
 import 'package:diary_mobile_client/src/feature/data_control/application/data_control_bloc.dart';
+import 'package:diary_mobile_client/src/feature/global_loading/application/global_loading_bloc.dart';
+import 'package:diary_mobile_client/src/feature/global_loading/application/global_loading_state.dart';
 import 'package:diary_mobile_client/src/feature/lock/application/lock_cubit.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_bloc.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_event.dart';
+import 'package:diary_mobile_client/src/feature/dev_tools/presentation/dev_tools_page.dart';
+import 'package:diary_mobile_client/src/feature/emotion_statistics/presentation/emotion_statistics_page.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/write_moment_page.dart';
 import 'package:diary_mobile_client/src/feature/profile/presentation/profile_page.dart';
 import 'package:diary_mobile_client/src/feature/recommend/application/recommend_bloc.dart';
@@ -72,6 +77,7 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(create: (context) => getIt<DeepLinkCubit>()),
         BlocProvider(create: (context) => getIt<DataControlBloc>()),
+        BlocProvider(create: (context) => getIt<GlobalLoadingBloc>()),
       ],
       child: Builder(builder: (context) {
         return ListenableBuilder(
@@ -278,6 +284,17 @@ class _MyAppState extends State<MyApp> {
                           debugPrint('프로필 페이지로 라우팅');
                         }
                         return const ProfilePage();
+                      case EmotionStatisticsPage.routeName:
+                        if (kDebugMode) {
+                          debugPrint('감정 통계 페이지로 라우팅');
+                        }
+                        return const EmotionStatisticsPage();
+                      case DevToolsPage.routeName:
+                        if (kDebugMode) {
+                          debugPrint('개발자 도구 페이지로 라우팅');
+                        }
+                        // kDebugMode가 아니면 페이지 자체에서 안내 화면을 표시한다.
+                        return const DevToolsPage();
                       case SignInPage.routeName:
                         if (kDebugMode) {
                           debugPrint('로그인 페이지로 라우팅');
@@ -323,39 +340,66 @@ class _MyAppState extends State<MyApp> {
                   deepLinkCubit.processInitialDeepLink();
                 });
 
-                return MultiBlocListener(
-                  listeners: [
-                    BlocListener<ToastBloc, ToastState>(
-                      listenWhen: (previous, current) {
-                        return previous.currentToast != current.currentToast &&
-                            current.currentToast != null;
-                      },
-                      listener: (context, state) {
-                        final toast = state.currentToast;
-                        if (toast == null) return;
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(toast.message),
-                            backgroundColor: toast.type == ToastType.success
-                                ? Colors.green
-                                : toast.type == ToastType.error
-                                    ? Colors.red
-                                    : toast.type == ToastType.warning
-                                        ? Colors.orange
-                                        : Colors.blue,
-                            duration: toast.duration,
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                  child: child ?? const SizedBox.shrink(),
+                return GlobalAppWrapper(
+                  child: MultiBlocListener(
+                    listeners: [
+                      BlocListener<ToastBloc, ToastState>(
+                        listenWhen: (previous, current) {
+                          return previous.currentToast !=
+                                  current.currentToast &&
+                              current.currentToast != null;
+                        },
+                        listener: (context, state) {
+                          final toast = state.currentToast;
+                          if (toast == null) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(toast.message),
+                              backgroundColor: toast.type == ToastType.success
+                                  ? Colors.green
+                                  : toast.type == ToastType.error
+                                      ? Colors.red
+                                      : toast.type == ToastType.warning
+                                          ? Colors.orange
+                                          : Colors.blue,
+                              duration: toast.duration,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                    child: child ?? const SizedBox.shrink(),
+                  ),
                 );
               },
             );
           },
         );
       }),
+    );
+  }
+}
+
+class GlobalAppWrapper extends StatelessWidget {
+  final Widget child;
+  const GlobalAppWrapper({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        child,
+        BlocBuilder<GlobalLoadingBloc, GlobalLoadingState>(
+          builder: (context, state) {
+            return state.isLoading
+                ? const Align(
+                    alignment: Alignment.center,
+                    child: CommonLoadingIndicator(),
+                  )
+                : const SizedBox.shrink();
+          },
+        ),
+      ],
     );
   }
 }

@@ -19,6 +19,7 @@ import 'bus/bus.dart' as _i461;
 import 'core/analytics/analytics_manager.dart' as _i958;
 import 'core/deep_link/deep_link_cubit.dart' as _i740;
 import 'core/deep_link/deep_link_service.dart' as _i735;
+import 'core/dev/moment_seeder.dart' as _i67;
 import 'core/device/infrastructure/interfaces/i_device_info_local_provider.dart'
     as _i23;
 import 'core/device/infrastructure/providers/device_info_local_provider.dart'
@@ -32,10 +33,13 @@ import 'core/http_client/dio_module.dart' as _i871;
 import 'core/http_client/http_client.dart' as _i356;
 import 'core/image_picker/image_picker_client.dart' as _i917;
 import 'core/llm/llm_service.dart' as _i681;
-import 'core/media/infrastructure/interfaces/i_media_info_local_provider.dart'
-    as _i130;
+import 'core/media/domain/repositories/i_mieda_info_repository.dart' as _i1057;
+import 'core/media/infrastructure/providers/interfaces/i_media_info_local_provider.dart'
+    as _i579;
 import 'core/media/infrastructure/providers/media_info_local_provider.dart'
     as _i1061;
+import 'core/media/infrastructure/repositories/media_info_repository.dart'
+    as _i1047;
 import 'core/remote_config_client/di_injection.dart' as _i407;
 import 'core/remote_config_client/remote_config_client.dart' as _i297;
 import 'core/supabase/supabase_module.dart' as _i850;
@@ -57,6 +61,8 @@ import 'feature/data_control/infrastructure/providers/local_data_control_provide
     as _i186;
 import 'feature/data_control/infrastructure/repositories/data_control_repository.dart'
     as _i489;
+import 'feature/emotion_statistics/application/emotional_statistics_bloc.dart'
+    as _i383;
 import 'feature/emotion_statistics/domain/repositories/interfaces/i_emotion_statistics_repository.dart'
     as _i535;
 import 'feature/emotion_statistics/infrastructure/providers/emotion_statistics_provider.dart'
@@ -65,6 +71,16 @@ import 'feature/emotion_statistics/infrastructure/providers/interfaces/i_emotion
     as _i696;
 import 'feature/emotion_statistics/infrastructure/repositories/emotion_statistics_repository.dart'
     as _i446;
+import 'feature/generated_image/application/generated_image_bloc.dart' as _i618;
+import 'feature/generated_image/domain/repositories/interfaces/i_generated_image_repository.dart'
+    as _i894;
+import 'feature/generated_image/infrastructure/providers/generated_image_local_provider.dart'
+    as _i707;
+import 'feature/generated_image/infrastructure/providers/interfaces/i_generated_image_local_provider.dart'
+    as _i1046;
+import 'feature/generated_image/infrastructure/repositories/generate_image_repository.dart'
+    as _i880;
+import 'feature/global_loading/application/global_loading_bloc.dart' as _i147;
 import 'feature/lock/application/lock_cubit.dart' as _i600;
 import 'feature/lock/domain/repositories/interfaces/i_local_authenticator_repository.dart'
     as _i828;
@@ -110,6 +126,20 @@ import 'feature/recommend/domain/repositories/interfaces/i_recommend_repository.
 import 'feature/recommend/infrastructure/repositories/recommend_repository.dart'
     as _i877;
 import 'feature/settings/application/settings_bloc.dart' as _i584;
+import 'feature/settings/configurations/backup/application/backup_bloc.dart'
+    as _i186;
+import 'feature/settings/configurations/backup/domain/repositories/interfaces/i_backup_repository.dart'
+    as _i955;
+import 'feature/settings/configurations/backup/infrastructure/providers/backup_local_provider.dart'
+    as _i754;
+import 'feature/settings/configurations/backup/infrastructure/providers/backup_remote_provider.dart'
+    as _i93;
+import 'feature/settings/configurations/backup/infrastructure/providers/interfaces/i_backup_local_provider.dart'
+    as _i1020;
+import 'feature/settings/configurations/backup/infrastructure/providers/interfaces/i_backup_remote_provider.dart'
+    as _i359;
+import 'feature/settings/configurations/backup/infrastructure/repositories/backup_repository.dart'
+    as _i35;
 import 'feature/settings/configurations/language/application/language_bloc.dart'
     as _i136;
 import 'feature/settings/configurations/version/application/version_bloc.dart'
@@ -143,6 +173,7 @@ import 'feature/user/infrastructure/providers/supabase_user_external_provider.da
 import 'feature/user/infrastructure/providers/user_internal_provider.dart'
     as _i672;
 import 'feature/user/infrastructure/repositories/user_repository.dart' as _i885;
+import 'native/icloud/icloud_service.dart' as _i178;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -164,6 +195,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i891.FileManager>(() => _i891.FileManager());
     gh.singleton<_i917.ImagePickerClient>(() => _i917.ImagePickerClient());
     gh.singleton<_i248.FirebaseClient>(() => _i248.FirebaseClient());
+    gh.singleton<_i178.ICloudService>(() => _i178.ICloudService());
     gh.singleton<_i778.SettingsService>(() => _i778.SettingsService());
     gh.lazySingleton<_i694.FeatureManager>(() => _i694.FeatureManager());
     gh.lazySingleton<_i361.Dio>(() => dioModule.dio());
@@ -192,11 +224,13 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i951.HiveClient>(() => const _i951.HiveClientImpl());
     gh.factory<_i895.IAuthenticatorProvider>(
         () => _i911.LocalAuthenticatorProvider());
+    gh.lazySingleton<_i579.IMediaInfoLocalProvider>(
+        () => _i1061.MediaInfoLocalProvider());
     gh.lazySingleton<_i738.IAuthRepository>(
         () => _i174.AuthRepository(gh<_i42.ISupabaseAuthProvider>()));
     gh.singleton<_i356.HttpClient>(() => _i356.HttpClient(gh<_i361.Dio>()));
-    gh.lazySingleton<_i130.IMeidaInfoLocalProvider>(
-        () => _i1061.MediaInfoLocalProvider());
+    gh.lazySingleton<_i359.IBackupRemoteProvider>(
+        () => _i93.BackupRemoteProvider(gh<_i178.ICloudService>()));
     gh.lazySingleton<_i23.IDeviceInfoLocalProvider>(
         () => _i505.DeviceInfoLocalProvider());
     gh.singleton<_i587.Database>(() => _i587.Database(gh<String>()));
@@ -210,6 +244,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i738.IAuthRepository>(),
           gh<_i461.Bus>(),
         ));
+    gh.lazySingleton<_i1057.IMediaInfoRepository>(
+        () => _i1047.MediaInfoRepository(gh<_i579.IMediaInfoLocalProvider>()));
     gh.lazySingleton<_i828.IAuthenticatorRepository>(() =>
         _i845.LocalAuthenticatorRepository(
             authenticatorProvider: gh<_i895.IAuthenticatorProvider>()));
@@ -217,9 +253,16 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i407.DriftClientImpl(gh<_i587.Database>()));
     gh.singleton<_i890.SettingsController>(
         () => _i890.SettingsController(gh<_i778.SettingsService>()));
+    gh.factory<_i147.GlobalLoadingBloc>(
+        () => _i147.GlobalLoadingBloc(gh<_i461.Bus>()));
     gh.lazySingleton<_i190.ToastBloc>(() => _i190.ToastBloc(gh<_i461.Bus>()));
     gh.lazySingleton<_i27.ILocalLockProvider>(
         () => _i625.LocalLockProvider(hiveClient: gh<_i951.HiveClient>()));
+    gh.lazySingleton<_i1020.IBackupLocalProvider>(
+        () => _i754.BackupLocalProvider(
+              gh<_i587.Database>(),
+              gh<_i407.DriftClient>(),
+            ));
     gh.lazySingleton<_i24.IUserInternalProvider>(
         () => _i672.UserInternalProvider(gh<_i407.DriftClient>()));
     gh.factory<_i163.ILocalDataControlProvider>(
@@ -235,6 +278,14 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.lazySingleton<_i696.IEmotionStatisticsProvider>(
         () => _i9.EmotionStatisticsProvider(gh<_i407.DriftClient>()));
+    gh.lazySingleton<_i1046.IGeneratedImageLocalProvider>(
+        () => _i707.GeneratedImageLocalProvider(gh<_i407.DriftClient>()));
+    gh.lazySingleton<_i67.MomentSeeder>(
+        () => _i67.MomentSeeder(gh<_i407.DriftClient>()));
+    gh.lazySingleton<_i955.IBackupRepository>(() => _i35.BackupRepository(
+          remoteProvider: gh<_i359.IBackupRemoteProvider>(),
+          localProvider: gh<_i1020.IBackupLocalProvider>(),
+        ));
     gh.lazySingleton<_i1.DataControlBloc>(() => _i1.DataControlBloc(
           dataControlRepository: gh<_i1018.IDataControlRepository>(),
           authenticatorRepository: gh<_i828.IAuthenticatorRepository>(),
@@ -246,6 +297,16 @@ extension GetItInjectableX on _i174.GetIt {
             ));
     gh.factory<_i136.LanguageCubit>(
         () => _i136.LanguageCubit(gh<_i890.SettingsController>()));
+    gh.lazySingleton<_i79.IWriteMomentRepository>(() =>
+        _i767.WriteMomentRepository(
+          writeMomentExternalProvider:
+              gh<_i1039.IWriteMomentExternalProvider>(),
+          writeMomentInternalProvider: gh<_i772.IWriteMomentInternalProvider>(),
+          writeMomentLocalProvider: gh<_i468.IWriteMomentLocalProvider>(),
+          deviceInfoLocalProvider: gh<_i23.IDeviceInfoLocalProvider>(),
+          mediaInfoLocalProvider: gh<_i579.IMediaInfoLocalProvider>(),
+          driftClient: gh<_i407.DriftClient>(),
+        ));
     gh.factory<_i1053.IMomentListRepository>(() => _i690.MomentListRepository(
           gh<_i579.IMomentListLocalProvider>(),
           gh<_i407.DriftClient>(),
@@ -260,16 +321,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i535.IEmotionStatisticsRepository>(() =>
         _i446.EmotionStatisticsRepository(
             gh<_i696.IEmotionStatisticsProvider>()));
-    gh.lazySingleton<_i79.IWriteMomentRepository>(() =>
-        _i767.WriteMomentRepository(
-          writeMomentExternalProvider:
-              gh<_i1039.IWriteMomentExternalProvider>(),
-          writeMomentInternalProvider: gh<_i772.IWriteMomentInternalProvider>(),
-          writeMomentLocalProvider: gh<_i468.IWriteMomentLocalProvider>(),
-          deviceInfoLocalProvider: gh<_i23.IDeviceInfoLocalProvider>(),
-          mediaInfoLocalProvider: gh<_i130.IMeidaInfoLocalProvider>(),
-          driftClient: gh<_i407.DriftClient>(),
-        ));
+    gh.factory<_i186.BackupBloc>(
+        () => _i186.BackupBloc(gh<_i955.IBackupRepository>()));
     gh.factoryParam<_i812.WriteMomentBloc, _i517.Moment?, DateTime>((
       moment,
       date,
@@ -284,9 +337,27 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i586.IUserRepository>(),
           gh<_i461.Bus>(),
         ));
+    gh.lazySingleton<_i894.IGeneratedImageRepository>(
+        () => _i880.GenerateImageRepository(
+              gh<_i1046.IGeneratedImageLocalProvider>(),
+              gh<_i579.IMediaInfoLocalProvider>(),
+            ));
     gh.factory<_i507.RecommendBloc>(() => _i507.RecommendBloc(
           gh<_i461.Bus>(),
           gh<_i142.IRecommendRepository>(),
+        ));
+    gh.factory<_i383.EmotionalStatisticsBloc>(() =>
+        _i383.EmotionalStatisticsBloc(
+            gh<_i535.IEmotionStatisticsRepository>()));
+    gh.factoryParam<_i618.GeneratedImageBloc, _i517.Moment?, dynamic>((
+      moment,
+      _,
+    ) =>
+        _i618.GeneratedImageBloc(
+          gh<_i894.IGeneratedImageRepository>(),
+          gh<_i1057.IMediaInfoRepository>(),
+          moment,
+          gh<_i461.Bus>(),
         ));
     gh.factory<_i269.MomentListBloc>(() => _i269.MomentListBloc(
           gh<_i461.Bus>(),

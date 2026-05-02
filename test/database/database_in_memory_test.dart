@@ -11,7 +11,7 @@ void main() {
           'test_db_inmemory_${DateTime.now().microsecondsSinceEpoch}.sqlite';
       final database = Database(dbPath);
       expect(database, isNotNull);
-      expect(database.schemaVersion, equals(2));
+      expect(database.schemaVersion, equals(3));
       await database.close();
       final file = File(dbPath);
       if (await file.exists()) await file.delete();
