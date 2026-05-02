@@ -1,5 +1,6 @@
 import 'package:diary_mobile_client/src/feature/common/moment/domain/enums/emotion.dart';
 import 'package:diary_mobile_client/src/feature/emotion_statistics/domain/value_objects/emotion_stats.dart';
+import 'package:diary_mobile_client/src/feature/emotion_statistics/domain/value_objects/trigger_stat.dart';
 
 class DiaryStatistics {
   /// 총 작성된 일기(moment) 개수.
@@ -11,16 +12,22 @@ class DiaryStatistics {
   /// 최근 N일 일별 작성 수 (날짜 → count). 일기가 0인 날도 0으로 포함.
   final Map<DateTime, int> dailyMomentCounts;
 
+  /// 본문에서 추출한 키워드별 감정 분포. 표본 수가 부족하거나
+  /// 분석할 일기가 없으면 빈 리스트.
+  final List<TriggerStat> triggerStats;
+
   const DiaryStatistics({
     required this.totalMoments,
     required this.emotionStats,
     required this.dailyMomentCounts,
+    this.triggerStats = const [],
   });
 
   static const empty = DiaryStatistics(
     totalMoments: 0,
     emotionStats: [],
     dailyMomentCounts: {},
+    triggerStats: [],
   );
 
   bool get isEmpty => totalMoments == 0;
