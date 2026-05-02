@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_quick_emotion_label">빠른 감정</string>
+    <string name="widget_stats_label">감정 요약</string>
+    <string name="widget_quick_emotion_description">감정 한 번에 기록</string>
+    <string name="widget_stats_description">연속 기록·오늘·이번 주 감정 요약</string>
+</resources>

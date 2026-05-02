@@ -67,6 +67,7 @@ dependencies:
   hive_flutter: ^1.1.0
   supabase_flutter: ^2.9.1
   app_links: ^3.4.5
+  home_widget: ^0.9.1
   webview_flutter: ^4.7.0
   firebase_remote_config: ^5.4.7
   archive: ^4.0.5
