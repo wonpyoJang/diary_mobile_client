@@ -1,4 +1,5 @@
 import 'package:diary_mobile_client/src/feature/common/moment/domain/entity/emotional_intensity.dart';
+import 'package:diary_mobile_client/src/feature/emotion_statistics/presentation/emotion_statistics_page.dart';
 import 'package:diary_mobile_client/src/feature/settings/settings_view.dart';
 import 'package:diary_mobile_client/src/feature/signin/presentation/signin_page.dart';
 import 'package:diary_mobile_client/src/feature/user/application/user_bloc.dart';
@@ -69,7 +70,44 @@ class ProfilePage extends StatelessWidget {
                     },
                     child: Text(AppLocalizations.of(context)!.signin),
                   ),
-                ]
+                ],
+
+                const SizedBox(height: 16),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: const Text(
+                    '감정 통계',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w400,
+                      height: 1.5,
+                      letterSpacing: -0.4,
+                      color: Color(0xFF53545B),
+                    ),
+                  ),
+                  subtitle: const Text(
+                    '지금까지의 일기를 한눈에 보기',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w400,
+                      height: 1.4,
+                      letterSpacing: -0.3,
+                      color: Color(0xFF959490),
+                    ),
+                  ),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16,
+                    color: Color(0xFF959490),
+                  ),
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed(EmotionStatisticsPage.routeName);
+                  },
+                ),
+                const SizedBox(height: 16),
               ],
             ),
           ),

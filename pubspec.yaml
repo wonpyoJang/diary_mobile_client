@@ -68,10 +68,13 @@ dependencies:
   supabase_flutter: ^2.9.1
   app_links: ^3.4.5
   webview_flutter: ^4.7.0
-  uni_links: ^0.5.1
   firebase_remote_config: ^5.4.7
   flutter_gemma: ^0.11.16
   archive: ^4.0.5
+  fl_chart: ^1.1.1
+  file_picker: ^8.1.4
+  flutter_local_notifications: ^17.2.4
+  timezone: ^0.9.4
 
 dev_dependencies:
   flutter_test:
