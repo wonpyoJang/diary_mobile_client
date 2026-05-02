@@ -8,7 +8,9 @@ import 'package:diary_mobile_client/src/feature/settings/configurations/language
 import 'package:diary_mobile_client/src/feature/settings/configurations/version/application/version_bloc.dart';
 import 'package:diary_mobile_client/src/feature/user/application/user_bloc.dart';
 import 'package:diary_mobile_client/src/feature/user/application/user_event.dart';
+import 'package:diary_mobile_client/src/feature/dev_tools/presentation/dev_tools_page.dart';
 import 'package:diary_mobile_client/src/injection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide LockState;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:diary_mobile_client/l10n/app_localizations.dart';
@@ -215,6 +217,43 @@ class SettingsView extends StatelessWidget {
                     context.read<UserBloc>().add(SignOut());
                   },
                 ),
+                if (kDebugMode) ...[
+                  const Divider(height: 32, color: Color(0xFFEDEDED)),
+                  ListTile(
+                    leading: const Icon(
+                      Icons.developer_mode,
+                      size: 20,
+                      color: Color(0xFFEC7D61),
+                    ),
+                    title: const Text(
+                      '개발자 도구',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w500,
+                        height: 1.5,
+                        letterSpacing: -0.4,
+                        color: Color(0xFF53545B),
+                      ),
+                    ),
+                    subtitle: const Text(
+                      '디버그 빌드 전용',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w400,
+                        height: 1.4,
+                        letterSpacing: -0.3,
+                        color: Color(0xFF959490),
+                      ),
+                    ),
+                    trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushNamed(DevToolsPage.routeName);
+                    },
+                  ),
+                ],
               ],
             ),
           ),

@@ -19,6 +19,7 @@ import 'bus/bus.dart' as _i461;
 import 'core/analytics/analytics_manager.dart' as _i958;
 import 'core/deep_link/deep_link_cubit.dart' as _i740;
 import 'core/deep_link/deep_link_service.dart' as _i735;
+import 'core/dev/moment_seeder.dart' as _i67;
 import 'core/device/infrastructure/interfaces/i_device_info_local_provider.dart'
     as _i23;
 import 'core/device/infrastructure/providers/device_info_local_provider.dart'
@@ -60,6 +61,8 @@ import 'feature/data_control/infrastructure/providers/local_data_control_provide
     as _i186;
 import 'feature/data_control/infrastructure/repositories/data_control_repository.dart'
     as _i489;
+import 'feature/emotion_statistics/application/emotional_statistics_bloc.dart'
+    as _i383;
 import 'feature/emotion_statistics/domain/repositories/interfaces/i_emotion_statistics_repository.dart'
     as _i535;
 import 'feature/emotion_statistics/infrastructure/providers/emotion_statistics_provider.dart'
@@ -192,8 +195,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i891.FileManager>(() => _i891.FileManager());
     gh.singleton<_i917.ImagePickerClient>(() => _i917.ImagePickerClient());
     gh.singleton<_i248.FirebaseClient>(() => _i248.FirebaseClient());
-    gh.singleton<_i778.SettingsService>(() => _i778.SettingsService());
     gh.singleton<_i178.ICloudService>(() => _i178.ICloudService());
+    gh.singleton<_i778.SettingsService>(() => _i778.SettingsService());
     gh.lazySingleton<_i694.FeatureManager>(() => _i694.FeatureManager());
     gh.lazySingleton<_i361.Dio>(() => dioModule.dio());
     gh.lazySingleton<_i627.FirebaseRemoteConfig>(
@@ -277,6 +280,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i9.EmotionStatisticsProvider(gh<_i407.DriftClient>()));
     gh.lazySingleton<_i1046.IGeneratedImageLocalProvider>(
         () => _i707.GeneratedImageLocalProvider(gh<_i407.DriftClient>()));
+    gh.lazySingleton<_i67.MomentSeeder>(
+        () => _i67.MomentSeeder(gh<_i407.DriftClient>()));
     gh.lazySingleton<_i955.IBackupRepository>(() => _i35.BackupRepository(
           remoteProvider: gh<_i359.IBackupRemoteProvider>(),
           localProvider: gh<_i1020.IBackupLocalProvider>(),
@@ -341,6 +346,9 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i461.Bus>(),
           gh<_i142.IRecommendRepository>(),
         ));
+    gh.factory<_i383.EmotionalStatisticsBloc>(() =>
+        _i383.EmotionalStatisticsBloc(
+            gh<_i535.IEmotionStatisticsRepository>()));
     gh.factoryParam<_i618.GeneratedImageBloc, _i517.Moment?, dynamic>((
       moment,
       _,

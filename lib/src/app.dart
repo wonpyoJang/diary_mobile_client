@@ -8,6 +8,8 @@ import 'package:diary_mobile_client/src/feature/global_loading/application/globa
 import 'package:diary_mobile_client/src/feature/lock/application/lock_cubit.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_bloc.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moments/moment_list_event.dart';
+import 'package:diary_mobile_client/src/feature/dev_tools/presentation/dev_tools_page.dart';
+import 'package:diary_mobile_client/src/feature/emotion_statistics/presentation/emotion_statistics_page.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/write_moment_page.dart';
 import 'package:diary_mobile_client/src/feature/profile/presentation/profile_page.dart';
 import 'package:diary_mobile_client/src/feature/recommend/application/recommend_bloc.dart';
@@ -282,6 +284,17 @@ class _MyAppState extends State<MyApp> {
                           debugPrint('프로필 페이지로 라우팅');
                         }
                         return const ProfilePage();
+                      case EmotionStatisticsPage.routeName:
+                        if (kDebugMode) {
+                          debugPrint('감정 통계 페이지로 라우팅');
+                        }
+                        return const EmotionStatisticsPage();
+                      case DevToolsPage.routeName:
+                        if (kDebugMode) {
+                          debugPrint('개발자 도구 페이지로 라우팅');
+                        }
+                        // kDebugMode가 아니면 페이지 자체에서 안내 화면을 표시한다.
+                        return const DevToolsPage();
                       case SignInPage.routeName:
                         if (kDebugMode) {
                           debugPrint('로그인 페이지로 라우팅');
