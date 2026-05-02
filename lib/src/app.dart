@@ -25,6 +25,7 @@ import 'feature/settings/settings_view.dart';
 import 'feature/signin/presentation/signin_page.dart';
 import 'feature/auth/login_callback_page.dart';
 import 'feature/auth/deep_link_test_page.dart';
+import 'feature/llm/presentation/gemma_download_page.dart';
 import 'feature/llm/presentation/llm_settings_page.dart';
 
 /// The Widget that configures your application.
@@ -299,6 +300,11 @@ class _MyAppState extends State<MyApp> {
                           debugPrint('LLM 설정 페이지로 라우팅');
                         }
                         return const LlmSettingsPage();
+                      case GemmaDownloadPage.routeName:
+                        if (kDebugMode) {
+                          debugPrint('Gemma 다운로드 페이지로 라우팅');
+                        }
+                        return const GemmaDownloadPage();
                       default:
                         if (kDebugMode) {
                           debugPrint('알 수 없는 경로: $path');
