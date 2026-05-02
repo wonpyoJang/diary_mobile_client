@@ -65,6 +65,13 @@ import 'feature/emotion_statistics/infrastructure/providers/interfaces/i_emotion
     as _i696;
 import 'feature/emotion_statistics/infrastructure/repositories/emotion_statistics_repository.dart'
     as _i446;
+import 'feature/llm/application/llm_router.dart' as _i795;
+import 'feature/llm/domain/i_llm_provider.dart' as _i952;
+import 'feature/llm/domain/i_llm_settings_repository.dart' as _i419;
+import 'feature/llm/infrastructure/providers/gemini_remote_provider.dart'
+    as _i1038;
+import 'feature/llm/infrastructure/repositories/default_llm_settings_repository.dart'
+    as _i950;
 import 'feature/lock/application/lock_cubit.dart' as _i600;
 import 'feature/lock/domain/repositories/interfaces/i_local_authenticator_repository.dart'
     as _i828;
@@ -180,23 +187,28 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i48.SupabaseUserExternalProvider(gh<_i454.SupabaseClient>()));
     gh.lazySingleton<_i743.IVersionLocalProvider>(
         () => _i550.VersionLocalProvider());
-    gh.lazySingleton<_i1039.IWriteMomentExternalProvider>(
-        () => _i550.WriteMomentExternalProvider(
-              gh<_i681.Gemini>(),
-              gh<_i248.FirebaseClient>(),
-            ));
     gh.lazySingleton<_i42.ISupabaseAuthProvider>(
         () => _i65.SupabaseAuthProvider(gh<_i454.SupabaseClient>()));
     gh.lazySingleton<_i170.IVersionRepository>(
         () => _i191.VersionRepository(gh<_i743.IVersionLocalProvider>()));
+    gh.lazySingleton<_i952.ILlmProvider>(
+      () => _i1038.GeminiRemoteProvider(),
+      instanceName: 'gemini_remote',
+    );
     gh.lazySingleton<_i951.HiveClient>(() => const _i951.HiveClientImpl());
     gh.factory<_i895.IAuthenticatorProvider>(
         () => _i911.LocalAuthenticatorProvider());
+    gh.lazySingleton<_i419.ILlmSettingsRepository>(
+        () => _i950.DefaultLlmSettingsRepository());
     gh.lazySingleton<_i738.IAuthRepository>(
         () => _i174.AuthRepository(gh<_i42.ISupabaseAuthProvider>()));
     gh.singleton<_i356.HttpClient>(() => _i356.HttpClient(gh<_i361.Dio>()));
     gh.lazySingleton<_i130.IMeidaInfoLocalProvider>(
         () => _i1061.MediaInfoLocalProvider());
+    gh.lazySingleton<_i795.LlmRouter>(() => _i795.LlmRouter(
+          gh<_i952.ILlmProvider>(instanceName: 'gemini_remote'),
+          gh<_i419.ILlmSettingsRepository>(),
+        ));
     gh.lazySingleton<_i23.IDeviceInfoLocalProvider>(
         () => _i505.DeviceInfoLocalProvider());
     gh.singleton<_i587.Database>(() => _i587.Database(gh<String>()));
@@ -215,6 +227,11 @@ extension GetItInjectableX on _i174.GetIt {
             authenticatorProvider: gh<_i895.IAuthenticatorProvider>()));
     gh.singleton<_i407.DriftClient>(
         () => _i407.DriftClientImpl(gh<_i587.Database>()));
+    gh.lazySingleton<_i1039.IWriteMomentExternalProvider>(
+        () => _i550.WriteMomentExternalProvider(
+              gh<_i795.LlmRouter>(),
+              gh<_i248.FirebaseClient>(),
+            ));
     gh.singleton<_i890.SettingsController>(
         () => _i890.SettingsController(gh<_i778.SettingsService>()));
     gh.lazySingleton<_i190.ToastBloc>(() => _i190.ToastBloc(gh<_i461.Bus>()));
