@@ -6,27 +6,48 @@ on:
   pull_request:
     branches: [ main, develop ]
 
+permissions:
+  contents: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
-    
+      with:
+        ref: ${{ github.head_ref || github.ref }}
+
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.38.5'
         channel: 'stable'
-    
+
     - name: Install dependencies
       run: flutter pub get
-    
-    - name: Verify formatting
+
+    # 동일 레포 PR: dart format을 적용한 뒤 마지막 단계에서 PR 브랜치로 commit-back
+    - name: Auto-format (same-repo PR)
+      if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+      run: dart format .
+
+    # main/develop 직접 push 또는 fork PR: 변경 없이 strict 검증만
+    - name: Verify formatting (push or fork PR)
+      if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository)
       run: dart format --output=none --set-exit-if-changed .
-    
+
     - name: Analyze project source
       run: flutter analyze --no-fatal-infos
-    
+
     - name: Run tests
       run: flutter test
+
+    # analyze + test가 통과한 뒤에만 포맷 변경분을 PR 브랜치로 푸시
+    - name: Commit auto-format changes
+      if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && success()
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: "chore: dart format (auto)"
+        commit_user_name: github-actions[bot]
+        commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
