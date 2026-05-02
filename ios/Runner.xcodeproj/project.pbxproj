@@ -10,16 +10,18 @@
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
+		52AE08F3FF9BC15F43ACDC55 /* DiaryWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = ED8734F84658E301BFA9D468 /* DiaryWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		9CD10DF42DA025F000EE59F5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9CD10DF32DA025F000EE59F5 /* GoogleService-Info.plist */; };
+		A0B1C2D3E4F5A6B7C8D9E0F2 /* AppleLlmBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B1C2D3E4F5A6B7C8D9E0F1 /* AppleLlmBridge.swift */; };
 		B12D5726C08E5B86CA5A6105 /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D71D2CECD9FB24CFC845ED8 /* Pods_RunnerTests.framework */; };
 		B1C2D3E4F5A60123456789AB /* ICloudChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60123456789AB /* ICloudChannel.swift */; };
+		B78517119A162778C662EF2A /* DiaryWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272CC03B97A21C264A1DA515 /* DiaryWidgets.swift */; };
 		C7B6A5F4E3D2C1B0A9F8E7D6 /* DeepLinkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E9D8C7B6A5F4E3D2C1B0A9 /* DeepLinkHandler.swift */; };
 		D2E4F6A8B0C1D2E3F4A5B6C7 /* WebViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F2A3B4C5D6E7F8090A1B2C /* WebViewManager.swift */; };
-		A0B1C2D3E4F5A6B7C8D9E0F2 /* AppleLlmBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B1C2D3E4F5A6B7C8D9E0F1 /* AppleLlmBridge.swift */; };
 		F21EB314072306424BC0B407 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B633E889F2894D17A312FE8 /* Pods_Runner.framework */; };
 /* End PBXBuildFile section */
 
@@ -31,9 +33,27 @@
 			remoteGlobalIDString = 97C146ED1CF9000F007C117D;
 			remoteInfo = Runner;
 		};
+		77E25050E1E13227A98DA32D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 316C17A2D840254AEB2B59CF;
+			remoteInfo = DiaryWidgetsExtension;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		92EE4A5FA97920B6051E8AE0 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				52AE08F3FF9BC15F43ACDC55 /* DiaryWidgets.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9705A1C41CF9048500538489 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -51,12 +71,14 @@
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
 		197B3D117071EF5DC46FFD84 /* Pods-RunnerTests.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.profile.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.profile.xcconfig"; sourceTree = "<group>"; };
+		272CC03B97A21C264A1DA515 /* DiaryWidgets.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DiaryWidgets.swift; sourceTree = "<group>"; };
 		2D71D2CECD9FB24CFC845ED8 /* Pods_RunnerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunnerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
 		331C8081294A63A400263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		353A1F262A72B1BA7F820747 /* Pods-RunnerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.release.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.release.xcconfig"; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
 		4E74E68754EED75EAD979E5E /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
+		58390FA2A571B526639D5723 /* DiaryWidgets.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = DiaryWidgets.entitlements; sourceTree = "<group>"; };
 		5B633E889F2894D17A312FE8 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -71,14 +93,23 @@
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9CC470BF2E95455A00FAEC12 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		9CD10DF32DA025F000EE59F5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A0B1C2D3E4F5A6B7C8D9E0F1 /* AppleLlmBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLlmBridge.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F60123456789AB /* ICloudChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICloudChannel.swift; sourceTree = "<group>"; };
 		CB276171FCFC6132694D276B /* Pods-RunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		CDDE3BBD5728B849C746625D /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E1F2A3B4C5D6E7F8090A1B2C /* WebViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewManager.swift; sourceTree = "<group>"; };
+		ED8734F84658E301BFA9D468 /* DiaryWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = DiaryWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0E9D8C7B6A5F4E3D2C1B0A9 /* DeepLinkHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkHandler.swift; sourceTree = "<group>"; };
-		A0B1C2D3E4F5A6B7C8D9E0F1 /* AppleLlmBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLlmBridge.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		157E9AA963E7E2AFAF8951EB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		97C146EB1CF9000F007C117D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,6 +146,17 @@
 			path = RunnerTests;
 			sourceTree = "<group>";
 		};
+		7E5F0C9D63EE405F3A7FD7E0 /* DiaryWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				272CC03B97A21C264A1DA515 /* DiaryWidgets.swift */,
+				CDDE3BBD5728B849C746625D /* Info.plist */,
+				58390FA2A571B526639D5723 /* DiaryWidgets.entitlements */,
+			);
+			name = DiaryWidgets;
+			path = DiaryWidgets;
+			sourceTree = "<group>";
+		};
 		9740EEB11CF90186004384FC /* Flutter */ = {
 			isa = PBXGroup;
 			children = (
@@ -135,6 +177,7 @@
 				331C8082294A63A400263BE5 /* RunnerTests */,
 				F0627E6D043DFBB3BDE9BBAB /* Pods */,
 				0C75177511F4893E3C7ECD14 /* Frameworks */,
+				7E5F0C9D63EE405F3A7FD7E0 /* DiaryWidgets */,
 			);
 			sourceTree = "<group>";
 		};
@@ -143,6 +186,7 @@
 			children = (
 				97C146EE1CF9000F007C117D /* Runner.app */,
 				331C8081294A63A400263BE5 /* RunnerTests.xctest */,
+				ED8734F84658E301BFA9D468 /* DiaryWidgets.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -184,6 +228,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		316C17A2D840254AEB2B59CF /* DiaryWidgetsExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 379EA6A8027AB50F7CF9C37D /* Build configuration list for PBXNativeTarget "DiaryWidgetsExtension" */;
+			buildPhases = (
+				952DE004FDF95A2231AF5CF1 /* Sources */,
+				157E9AA963E7E2AFAF8951EB /* Frameworks */,
+				D2CCB5DA376D9373A5BAC978 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DiaryWidgetsExtension;
+			productName = DiaryWidgets;
+			productReference = ED8734F84658E301BFA9D468 /* DiaryWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		331C8080294A63A400263BE5 /* RunnerTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 331C8087294A63A400263BE5 /* Build configuration list for PBXNativeTarget "RunnerTests" */;
@@ -216,10 +277,12 @@
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				83EFA8AE0B42947C9CCCD5AF /* [CP] Copy Pods Resources */,
 				D01B71FEAD4A2B56074FCBD7 /* FlutterFire: "flutterfire upload-crashlytics-symbols" */,
+				92EE4A5FA97920B6051E8AE0 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				19D82A40597C74F304671731 /* PBXTargetDependency */,
 			);
 			name = Runner;
 			productName = Runner;
@@ -261,6 +324,7 @@
 			targets = (
 				97C146ED1CF9000F007C117D /* Runner */,
 				331C8080294A63A400263BE5 /* RunnerTests */,
+				316C17A2D840254AEB2B59CF /* DiaryWidgetsExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -282,6 +346,13 @@
 				9CD10DF42DA025F000EE59F5 /* GoogleService-Info.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2CCB5DA376D9373A5BAC978 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,6 +480,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		952DE004FDF95A2231AF5CF1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B78517119A162778C662EF2A /* DiaryWidgets.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		97C146EA1CF9000F007C117D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -425,6 +504,12 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		19D82A40597C74F304671731 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = DiaryWidgetsExtension;
+			target = 316C17A2D840254AEB2B59CF /* DiaryWidgetsExtension */;
+			targetProxy = 77E25050E1E13227A98DA32D /* PBXContainerItemProxy */;
+		};
 		331C8086294A63A400263BE5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 97C146ED1CF9000F007C117D /* Runner */;
@@ -578,6 +663,81 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Runner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Runner";
+			};
+			name = Profile;
+		};
+		650CDD0BDF299E8147802890 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = DiaryWidgets/DiaryWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = ND9M95MRVM;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = DiaryWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DiaryWidgets;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.crepas.diary.DiaryWidgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7CF97FEEA3065081A72E359D /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = DiaryWidgets/DiaryWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = ND9M95MRVM;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = DiaryWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DiaryWidgets;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.crepas.diary.DiaryWidgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Profile;
 		};
@@ -747,6 +907,43 @@
 			};
 			name = Release;
 		};
+		ABE35496DA078334FA536D8B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = DiaryWidgets/DiaryWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = ND9M95MRVM;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = DiaryWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DiaryWidgets;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.crepas.diary.DiaryWidgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -756,6 +953,16 @@
 				331C8088294A63A400263BE5 /* Debug */,
 				331C8089294A63A400263BE5 /* Release */,
 				331C808A294A63A400263BE5 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		379EA6A8027AB50F7CF9C37D /* Build configuration list for PBXNativeTarget "DiaryWidgetsExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				650CDD0BDF299E8147802890 /* Debug */,
+				ABE35496DA078334FA536D8B /* Release */,
+				7CF97FEEA3065081A72E359D /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
