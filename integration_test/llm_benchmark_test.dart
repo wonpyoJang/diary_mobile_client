@@ -138,7 +138,7 @@ const List<String> _triggerEntries = <String>[
   '동료와의 갈등으로 스트레스를 받아 밤에 잠들기 힘들었다.',
 ];
 
-const List<BenchmarkScenario> _scenarios = <BenchmarkScenario>[
+final List<BenchmarkScenario> _scenarios = <BenchmarkScenario>[
   BenchmarkScenario(
     name: 'emotion_classify_short',
     prompt: '''
@@ -196,8 +196,8 @@ const List<String> _providerNames = <String>[
 // --- Bootstrap (mirrors the existing backup_and_stats_e2e_test.dart). ---
 
 Future<void> _bootstrap() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
+  // IntegrationTestWidgetsFlutterBinding.ensureInitialized() is already
+  // called in main() before setUpAll runs.
   await Supabase.initialize(
     url: 'https://qnpolyxygqnismrzvklz.supabase.co',
     anonKey:
