@@ -13,7 +13,7 @@ import 'package:crypto/crypto.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'src/injection.dart' show configureDependencies, getIt, kScreenshotMode;
+import 'src/injection.dart';
 import 'src/feature/settings/settings_controller.dart';
 import 'src/feature/settings/configurations/backup/infrastructure/backup_notifier.dart';
 import 'src/database/app_database.dart';
@@ -86,11 +86,6 @@ void main() async {
                 (await getApplicationDocumentsDirectory()).path),
         encryptionCipher: HydratedAesCipher(byteskey),
       );
-
-      if (kScreenshotMode) {
-        await HydratedBloc.storage.clear();
-        logger.i('SCREENSHOT_MODE: HydratedBloc storage cleared');
-      }
 
       // 데이터베이스 인스턴스 가져오기 (의존성 주입 후)
       final database = getIt<Database>();
