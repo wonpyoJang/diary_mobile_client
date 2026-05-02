@@ -24,7 +24,7 @@ Flutter 모바일 앱. BLoC + injectable + hydrated_bloc 기반.
 | **Cursor 서브에이전트** | `.cursor/agents/*.md` | 프로젝트 전용 서브에이전트. |
 | **Claude Code 서브에이전트** | `.claude/agents/*.md` | Cursor와 **동일 역할**을 두 도구에서 쓰도록 내용을 맞춘다. |
 
-- 역할 인덱스: [`.claude/agents/business-team.md`](.claude/agents/business-team.md) — marketer, business-strategist 요약 및 관련 이슈 링크.
+- 역할 인덱스: [`.claude/agents/business-team.md`](.claude/agents/business-team.md) — marketer, business-strategist, product-planner 요약 및 관련 이슈 링크.
 - GitHub 직군 소통(이슈 템플릿·`role/*` 라벨): [`.github/COMMUNICATION.md`](.github/COMMUNICATION.md)
 - **제외**: `.claude/worktrees/`는 Claude Code 로컬 워크트리로, 저장소에 넣지 않음.
 

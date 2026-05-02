@@ -8,8 +8,9 @@
 |----------|------|---------|
 | **marketer** | [marketer.md](./marketer.md) | 그로스, ASO·스토어, 온보딩/알림 카피, 퍼널·실험, 캠페인 브리프 |
 | **business-strategist** | [business-strategist.md](./business-strategist.md) | 비즈니스 전략, ICP·포지셔닝, 수익·티어, 원가·지표, 로드맵 정렬, B2B·제휴, 리스크 |
+| **product-planner** | [product-planner.md](./product-planner.md) | PRD·유저 스토리·수용 기준, 플로우·엣지 케이스, 백로그·기능 스펙, 이슈 초안 |
 
-**협업**: 포지셔닝·North Star처럼 경계가 있으면, 전략가가 프레임을 잡고 마케터가 메시지·채널로 내린다.
+**협업**: 전략가가 방향·프레임을 잡고, 기획자가 기능·릴리즈 단위 스펙으로 내리며, 마케터가 메시지·채널로 내린다. 포지셔닝·North Star는 전략가·마케터가 맞추고, 화면 동작·범위는 기획자와 개발이 맞춘다.
 
 **관련 저장소 문서**
 
