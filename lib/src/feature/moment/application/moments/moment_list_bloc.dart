@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:diary_mobile_client/src/core/home_widget/diary_home_widget_sync.dart';
 import 'package:diary_mobile_client/src/feature/moment/application/moment_messages.dart';
 import 'package:diary_mobile_client/src/feature/common/moment/domain/entity/moment.dart';
 import 'package:diary_mobile_client/src/feature/moment/moment_list/domain/interface/i_moment_list_repository.dart';
@@ -18,6 +19,7 @@ import 'moment_list_state.dart';
 class MomentListBloc extends Bloc<MomentListEvent, MomentListState> {
   final Bus bus;
   final IMomentListRepository momentListRepository;
+  final DiaryHomeWidgetSync _homeWidgetSync;
   late StreamSubscription<BusMessage> busSubscription;
 
   @override
@@ -26,7 +28,7 @@ class MomentListBloc extends Bloc<MomentListEvent, MomentListState> {
     return super.close();
   }
 
-  MomentListBloc(this.bus, this.momentListRepository)
+  MomentListBloc(this.bus, this.momentListRepository, this._homeWidgetSync)
       : super(MomentListState(
             moments: LinkedHashMap(
           equals: isSameDay,
@@ -64,6 +66,7 @@ class MomentListBloc extends Bloc<MomentListEvent, MomentListState> {
           return MomentListState(moments: moments, firstDay: firstDay);
         },
       ));
+      await _homeWidgetSync.refresh();
     });
 
     on<AddMoment>((event, emit) {
@@ -82,6 +85,7 @@ class MomentListBloc extends Bloc<MomentListEvent, MomentListState> {
       }
 
       emit(state.copyWith(moments: newMoments, firstDay: firstDay));
+      unawaited(_homeWidgetSync.refresh());
     });
 
     on<UpdateMoment>(
@@ -100,6 +104,7 @@ class MomentListBloc extends Bloc<MomentListEvent, MomentListState> {
         }
 
         emit(MomentListState(moments: updatedMoments, firstDay: firstDay));
+        unawaited(_homeWidgetSync.refresh());
       },
       transformer: (events, mapper) => events
           .debounceTime(const Duration(milliseconds: 500))
@@ -121,6 +126,7 @@ class MomentListBloc extends Bloc<MomentListEvent, MomentListState> {
         }
         return MomentListState(moments: updatedMoments, firstDay: firstDay);
       }));
+      await _homeWidgetSync.refresh();
     });
   }
 

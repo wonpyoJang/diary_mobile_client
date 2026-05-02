@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:diary_mobile_client/l10n/app_localizations.dart';
 import 'package:diary_mobile_client/src/feature/common/loading_indicator.dart';
 import 'package:diary_mobile_client/src/feature/common/toast/application/toast_bloc.dart';
@@ -21,6 +23,7 @@ import 'package:diary_mobile_client/src/feature/settings/configurations/backup/p
 import 'package:diary_mobile_client/src/feature/splash/splash_page.dart';
 import 'package:diary_mobile_client/src/feature/user/application/user_bloc.dart';
 import 'package:diary_mobile_client/src/feature/user/application/user_event.dart';
+import 'package:diary_mobile_client/src/core/home_widget/diary_home_widget_sync.dart';
 import 'package:diary_mobile_client/src/injection.dart';
 import 'package:diary_mobile_client/src/core/deep_link/deep_link_service.dart';
 import 'package:diary_mobile_client/src/core/deep_link/deep_link_cubit.dart';
@@ -54,7 +57,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     // 딥링크 서비스 초기화
-    DeepLinkService().initialize();
+    getIt<DeepLinkService>().initialize();
 
     // 앱이 foreground로 올라올 때 자동 백업 due 체크를 트리거하기 위해
     // 앱 전역에서 살아있는 ScheduleBloc 인스턴스를 보유한다.
@@ -79,6 +82,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
       _scheduleBloc.add(const RunDueCheck());
+      unawaited(getIt<DiaryHomeWidgetSync>().refresh());
     }
   }
 

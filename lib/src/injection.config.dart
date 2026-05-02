@@ -29,6 +29,7 @@ import 'core/feature_mager/feature_manager.dart' as _i694;
 import 'core/file/file_manager.dart' as _i891;
 import 'core/firebase/firebase_client.dart' as _i248;
 import 'core/hive_client/hive_client.dart' as _i951;
+import 'core/home_widget/diary_home_widget_sync.dart' as _i160;
 import 'core/http_client/dio_module.dart' as _i871;
 import 'core/http_client/http_client.dart' as _i356;
 import 'core/image_picker/image_picker_client.dart' as _i917;
@@ -250,7 +251,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => remoteConfigModule.firebaseRemoteConfig);
     gh.lazySingleton<_i454.SupabaseClient>(
         () => supabaseModule.supabaseClient());
-    gh.lazySingleton<_i735.DeepLinkService>(() => _i735.DeepLinkService.new());
     gh.lazySingleton<_i958.AnalyticsManager>(() => _i958.AnalyticsManager());
     gh.lazySingleton<_i461.Bus>(() => _i461.Bus());
     gh.lazySingleton<_i970.BackupNotifier>(() => _i970.BackupNotifier());
@@ -295,8 +295,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i587.Database>(() => _i587.Database(gh<String>()));
     gh.lazySingleton<_i772.IWriteMomentInternalProvider>(
         () => _i603.WriteMomentInternalProvider(gh<_i356.HttpClient>()));
-    gh.factory<_i740.DeepLinkCubit>(
-        () => _i740.DeepLinkCubit(gh<_i735.DeepLinkService>()));
     gh.factory<_i635.VersionBloc>(
         () => _i635.VersionBloc(gh<_i170.IVersionRepository>()));
     gh.factory<_i47.SignInBloc>(() => _i47.SignInBloc(
@@ -370,6 +368,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i656.RestoreRepository(gh<_i319.IBackupRestoreProvider>()));
     gh.lazySingleton<_i1046.IGeneratedImageLocalProvider>(
         () => _i707.GeneratedImageLocalProvider(gh<_i407.DriftClient>()));
+    gh.lazySingleton<_i160.DiaryHomeWidgetSync>(
+        () => _i160.DiaryHomeWidgetSync(gh<_i407.DriftClient>()));
     gh.lazySingleton<_i67.MomentSeeder>(
         () => _i67.MomentSeeder(gh<_i407.DriftClient>()));
     gh.lazySingleton<_i955.IBackupRepository>(() => _i35.BackupRepository(
@@ -414,6 +414,11 @@ extension GetItInjectableX on _i174.GetIt {
             gh<_i696.IEmotionStatisticsProvider>()));
     gh.factory<_i186.BackupBloc>(
         () => _i186.BackupBloc(gh<_i955.IBackupRepository>()));
+    gh.factory<_i269.MomentListBloc>(() => _i269.MomentListBloc(
+          gh<_i461.Bus>(),
+          gh<_i1053.IMomentListRepository>(),
+          gh<_i160.DiaryHomeWidgetSync>(),
+        ));
     gh.singleton<_i428.UserBloc>(() => _i428.UserBloc(
           gh<_i586.IUserRepository>(),
           gh<_i461.Bus>(),
@@ -440,10 +445,6 @@ extension GetItInjectableX on _i174.GetIt {
           moment,
           gh<_i461.Bus>(),
         ));
-    gh.factory<_i269.MomentListBloc>(() => _i269.MomentListBloc(
-          gh<_i461.Bus>(),
-          gh<_i1053.IMomentListRepository>(),
-        ));
     gh.singleton<_i600.LockCubit>(() => _i600.LockCubit(
           authenticatorRepository: gh<_i828.IAuthenticatorRepository>(),
           lockRepository: gh<_i554.ILockRepository>(),
@@ -469,6 +470,13 @@ extension GetItInjectableX on _i174.GetIt {
           date,
           gh<_i79.IWriteMomentRepository>(),
         ));
+    gh.lazySingleton<_i735.DeepLinkService>(() => _i735.DeepLinkService(
+          gh<_i79.IWriteMomentRepository>(),
+          gh<_i160.DiaryHomeWidgetSync>(),
+          gh<_i461.Bus>(),
+        ));
+    gh.factory<_i740.DeepLinkCubit>(
+        () => _i740.DeepLinkCubit(gh<_i735.DeepLinkService>()));
     return this;
   }
 }

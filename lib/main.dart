@@ -14,6 +14,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'src/injection.dart';
+import 'src/core/home_widget/diary_home_widget_sync.dart';
 import 'src/feature/settings/settings_controller.dart';
 import 'src/feature/settings/configurations/backup/infrastructure/backup_notifier.dart';
 import 'src/database/app_database.dart';
@@ -44,6 +45,8 @@ void main() async {
 
   // 의존성 주입 설정
   await configureDependencies();
+
+  await getIt<DiaryHomeWidgetSync>().initPlugin();
 
   // 자동 백업 알림(local notifications) 초기화.
   // 실패해도 앱은 계속 켜져야 하므로 try/catch로 감싼다.
