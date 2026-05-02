@@ -3,6 +3,7 @@ import 'package:diary_mobile_client/src/feature/emotion_statistics/application/e
 import 'package:diary_mobile_client/src/feature/emotion_statistics/application/emotional_statistics_bloc.dart';
 import 'package:diary_mobile_client/src/feature/emotion_statistics/domain/value_objects/diary_statistics.dart';
 import 'package:diary_mobile_client/src/feature/emotion_statistics/domain/value_objects/emotion_stats.dart';
+import 'package:diary_mobile_client/src/feature/emotion_statistics/domain/value_objects/trigger_stat.dart';
 import 'package:diary_mobile_client/src/injection.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -96,6 +97,12 @@ class EmotionStatisticsPage extends StatelessWidget {
                     const _SectionTitle('최근 30일 작성 빈도'),
                     const SizedBox(height: 16),
                     _DailyTrendChart(stats: stats),
+                    const SizedBox(height: 36),
+                    const _SectionTitle('감정 트리거'),
+                    const SizedBox(height: 6),
+                    const _TriggerHint(),
+                    const SizedBox(height: 12),
+                    _TriggerSection(stats: stats),
                     const SizedBox(height: 24),
                   ],
                 ),
@@ -722,6 +729,162 @@ class _EmptyChart extends StatelessWidget {
             letterSpacing: -0.35,
             color: _kInkSecondary,
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TriggerHint extends StatelessWidget {
+  const _TriggerHint();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text(
+      '본문에 자주 등장한 키워드와 그때의 감정 분포예요. 모든 분석은 기기 안에서 처리됩니다.',
+      style: TextStyle(
+        fontSize: 13,
+        fontFamily: _kFont,
+        fontWeight: FontWeight.w400,
+        height: 1.5,
+        letterSpacing: -0.3,
+        color: _kInkSecondary,
+      ),
+    );
+  }
+}
+
+class _TriggerSection extends StatelessWidget {
+  final DiaryStatistics stats;
+  const _TriggerSection({required this.stats});
+
+  @override
+  Widget build(BuildContext context) {
+    final triggers = stats.triggerStats;
+    if (triggers.isEmpty) {
+      return const _EmptyChart(
+        message: '아직 의미 있는 키워드가 모이지 않았어요.\n조금 더 일기를 써보세요.',
+      );
+    }
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: _kSurface,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          for (var i = 0; i < triggers.length; i++)
+            Padding(
+              padding: EdgeInsets.only(top: i == 0 ? 4 : 14, bottom: 4),
+              child: _TriggerRow(stat: triggers[i]),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TriggerRow extends StatelessWidget {
+  final TriggerStat stat;
+  const _TriggerRow({required this.stat});
+
+  @override
+  Widget build(BuildContext context) {
+    final pct = (stat.dominantRatio * 100).round();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                stat.keyword,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontFamily: _kFont,
+                  fontWeight: FontWeight.w600,
+                  height: 1.4,
+                  letterSpacing: -0.35,
+                  color: _kInkPrimary,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            _ValenceBadge(valence: stat.dominantValence, percent: pct),
+            const SizedBox(width: 8),
+            Text(
+              '${stat.totalCount}건',
+              style: const TextStyle(
+                fontSize: 12,
+                fontFamily: _kFont,
+                fontWeight: FontWeight.w400,
+                height: 1.4,
+                letterSpacing: -0.3,
+                color: _kInkSecondary,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 6),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(6),
+          child: SizedBox(
+            height: 8,
+            child: Row(
+              children: [
+                if (stat.positiveCount > 0)
+                  Expanded(
+                    flex: stat.positiveCount,
+                    child: Container(color: _kAccent),
+                  ),
+                if (stat.neutralCount > 0)
+                  Expanded(
+                    flex: stat.neutralCount,
+                    child: Container(color: _kDivider),
+                  ),
+                if (stat.negativeCount > 0)
+                  Expanded(
+                    flex: stat.negativeCount,
+                    child: Container(color: _kNegative),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ValenceBadge extends StatelessWidget {
+  final TriggerValence valence;
+  final int percent;
+  const _ValenceBadge({required this.valence, required this.percent});
+
+  @override
+  Widget build(BuildContext context) {
+    final (bg, fg, label) = switch (valence) {
+      TriggerValence.positive => (_kAccentSoft, _kAccent, '긍정'),
+      TriggerValence.negative => (const Color(0xFFE6EAF0), _kNegative, '부정'),
+      TriggerValence.neutral => (const Color(0xFFEDEDED), _kInkSecondary, '중립'),
+    };
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Text(
+        '$label $percent%',
+        style: TextStyle(
+          fontSize: 12,
+          fontFamily: _kFont,
+          fontWeight: FontWeight.w600,
+          height: 1.2,
+          letterSpacing: -0.3,
+          color: fg,
         ),
       ),
     );

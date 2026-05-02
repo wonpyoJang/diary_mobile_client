@@ -1,7 +1,9 @@
 import 'package:diary_mobile_client/src/core/failure/local_failure.dart';
 import 'package:diary_mobile_client/src/feature/emotion_statistics/domain/repositories/interfaces/i_emotion_statistics_repository.dart';
+import 'package:diary_mobile_client/src/feature/emotion_statistics/domain/services/trigger_analyzer.dart';
 import 'package:diary_mobile_client/src/feature/emotion_statistics/domain/value_objects/diary_statistics.dart';
 import 'package:diary_mobile_client/src/feature/emotion_statistics/domain/value_objects/emotion_stats.dart';
+import 'package:diary_mobile_client/src/feature/emotion_statistics/domain/value_objects/trigger_stat.dart';
 import 'package:diary_mobile_client/src/feature/emotion_statistics/infrastructure/providers/interfaces/i_emotion_statistics_provider.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
@@ -9,8 +11,10 @@ import 'package:injectable/injectable.dart';
 @LazySingleton(as: IEmotionStatisticsRepository)
 class EmotionStatisticsRepository implements IEmotionStatisticsRepository {
   final IEmotionStatisticsProvider provider;
+  final TriggerAnalyzer _triggerAnalyzer;
 
-  EmotionStatisticsRepository(this.provider);
+  EmotionStatisticsRepository(this.provider)
+      : _triggerAnalyzer = const TriggerAnalyzer();
 
   @override
   Future<Either<LocalFailure, List<EmotionStats>>>
@@ -58,10 +62,20 @@ class EmotionStatisticsRepository implements IEmotionStatisticsRepository {
       filled[d] = rawDaily[d] ?? 0;
     }
 
+    // 트리거 분석은 본문 데이터가 있어야 의미가 있으므로 실패해도
+    // 전체 통계 페이지가 죽지 않도록 빈 리스트로 폴백한다.
+    final List<TriggerStat> triggerStats;
+    final samplesResult = await provider.getMomentValenceSamples();
+    triggerStats = samplesResult.fold(
+      (_) => const <TriggerStat>[],
+      (samples) => _triggerAnalyzer.analyze(samples),
+    );
+
     return right(DiaryStatistics(
       totalMoments: totalMoments,
       emotionStats: emotionStats,
       dailyMomentCounts: filled,
+      triggerStats: triggerStats,
     ));
   }
 }
