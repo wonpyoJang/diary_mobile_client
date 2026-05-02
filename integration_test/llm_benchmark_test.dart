@@ -86,7 +86,8 @@ class ScenarioResult {
         'qualityScore': double.parse(qualityScore.toStringAsFixed(3)),
         'peakHeapBytes': peakHeapBytes,
         'errors': errors,
-        if (coldStartLatencyMs != null) 'coldStartLatencyMs': coldStartLatencyMs,
+        if (coldStartLatencyMs != null)
+          'coldStartLatencyMs': coldStartLatencyMs,
       };
 }
 
@@ -203,9 +204,7 @@ Future<void> _bootstrap() async {
     anonKey:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFucG9seXh5Z3FuaXNtcnp2a2x6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MzAzNzIsImV4cCI6MjA3MTAwNjM3Mn0.1qmqNbZmxhmRa5AJ-b6D7OmuUXuXSWyNnL8c9VmKJwo',
   );
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   await configureDependencies();
 
@@ -260,7 +259,9 @@ Future<ScenarioResult> _runScenario(
 
   for (var i = 0; i < scenario.iterations; i++) {
     final sw = Stopwatch()..start();
-    final result = await provider.generateText(LlmRequest(prompt: scenario.prompt));
+    final result = await provider.generateText(
+      LlmRequest(prompt: scenario.prompt),
+    );
     sw.stop();
 
     final ms = sw.elapsedMilliseconds;
@@ -326,7 +327,9 @@ Future<ProviderResult> _benchmarkProvider(String name) async {
   }
 
   if (!available) {
-    debugPrint('[llm_benchmark] ${provider.providerId} not available, skipping');
+    debugPrint(
+      '[llm_benchmark] ${provider.providerId} not available, skipping',
+    );
     return ProviderResult(
       providerId: provider.providerId,
       available: false,
@@ -344,17 +347,19 @@ Future<ProviderResult> _benchmarkProvider(String name) async {
       results.add(await _runScenario(provider, scenario));
     } catch (e, st) {
       debugPrint('[llm_benchmark] scenario ${scenario.name} crashed: $e\n$st');
-      results.add(ScenarioResult(
-        name: scenario.name,
-        iterations: scenario.iterations,
-        latencyMsP50: 0,
-        latencyMsP95: 0,
-        outputLengthChars: 0,
-        outputTokensApprox: 0,
-        qualityScore: 0,
-        peakHeapBytes: null,
-        errors: scenario.iterations,
-      ));
+      results.add(
+        ScenarioResult(
+          name: scenario.name,
+          iterations: scenario.iterations,
+          latencyMsP50: 0,
+          latencyMsP95: 0,
+          outputLengthChars: 0,
+          outputTokensApprox: 0,
+          qualityScore: 0,
+          peakHeapBytes: null,
+          errors: scenario.iterations,
+        ),
+      );
     }
   }
 
@@ -392,7 +397,8 @@ Future<Directory> _resolveOutputDir() async {
 Future<void> _writeReports(List<ProviderResult> results) async {
   final dir = await _resolveOutputDir();
   final now = DateTime.now().toUtc().toIso8601String();
-  final device = '${Platform.operatingSystem} ${Platform.operatingSystemVersion}';
+  final device =
+      '${Platform.operatingSystem} ${Platform.operatingSystemVersion}';
 
   final json = <String, dynamic>{
     'timestamp': now,
@@ -415,8 +421,10 @@ Future<void> _writeReports(List<ProviderResult> results) async {
 
   for (final p in results) {
     md
-      ..writeln('## ${p.providerId} '
-          '(${p.available ? "available" : "skipped"})')
+      ..writeln(
+        '## ${p.providerId} '
+        '(${p.available ? "available" : "skipped"})',
+      )
       ..writeln();
     if (!p.available) {
       md
@@ -425,8 +433,10 @@ Future<void> _writeReports(List<ProviderResult> results) async {
       continue;
     }
     md
-      ..writeln('| Scenario | Iter | p50 (ms) | p95 (ms) | '
-          'Tokens~ | Quality | Errors |')
+      ..writeln(
+        '| Scenario | Iter | p50 (ms) | p95 (ms) | '
+        'Tokens~ | Quality | Errors |',
+      )
       ..writeln('| --- | --- | --- | --- | --- | --- | --- |');
     for (final s in p.scenarios) {
       md.writeln(
