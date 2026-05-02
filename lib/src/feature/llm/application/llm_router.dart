@@ -2,10 +2,6 @@ import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../core/llm/llm_failure.dart' as legacy;
-import '../../../core/llm/llm_query.dart';
-import '../../../core/llm/llm_response.dart';
-import '../../../core/llm/llm_service.dart';
 import '../domain/failures/llm_failure.dart';
 import '../domain/i_llm_provider.dart';
 import '../domain/i_llm_settings_repository.dart';
@@ -80,29 +76,5 @@ class LlmRouter {
     }
 
     return provider.generateText(request);
-  }
-
-  /// Returns the remote Gemini provider directly so legacy code paths that
-  /// require image/multimodal input (not yet modeled in [LlmRequest]) can
-  /// keep working.
-  ///
-  /// TODO(track-a): Extend [LlmRequest] to support image/inline-data parts
-  /// and remove this escape hatch once on-device providers can also handle
-  /// images.
-  ILlmProvider get geminiRemote => _gemini;
-
-  /// Multimodal escape hatch for callers that still need image/inline-data
-  /// support (which the current [LlmRequest] does not yet model).
-  ///
-  /// For now this always routes to the legacy [Gemini.query] entry point on
-  /// the remote backend, regardless of the user's selected mode. On-device
-  /// providers may not support images at all yet.
-  ///
-  /// TODO(track-a): Promote multimodal inputs to first-class on
-  /// [LlmRequest]/[ILlmProvider] and route through the selected provider.
-  Future<Either<legacy.LLMFailure, LLMResponse>> generateWithImages({
-    required LLMQuery query,
-  }) {
-    return Gemini.query(query: query);
   }
 }
