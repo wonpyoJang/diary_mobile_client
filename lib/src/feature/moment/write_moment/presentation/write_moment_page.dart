@@ -3,6 +3,9 @@
 import 'package:diary_mobile_client/src/feature/common/image_viewer.dart';
 import 'package:diary_mobile_client/src/feature/common/loading_indicator.dart';
 import 'package:diary_mobile_client/src/feature/common/yes_or_no_dialog.dart';
+import 'package:diary_mobile_client/src/feature/generated_image/application/generated_image_bloc.dart';
+import 'package:diary_mobile_client/src/feature/generated_image/application/generated_image_event.dart';
+import 'package:diary_mobile_client/src/feature/generated_image/application/generated_image_state.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/application/write_moment_event.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/date_box.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/emotion_blending_dialog.dart';
@@ -58,9 +61,18 @@ class WriteMomentPageState extends State<WriteMomentPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<WriteMomentBloc>(
-          param1: widget.arguments.moment, param2: widget.arguments.date),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => getIt<WriteMomentBloc>(
+              param1: widget.arguments.moment, param2: widget.arguments.date),
+        ),
+        BlocProvider(
+          create: (context) =>
+              getIt<GeneratedImageBloc>(param1: widget.arguments.moment)
+                ..add(const FetchGeneratedImage()),
+        ),
+      ],
       child: Builder(builder: (context) {
         return MultiBlocListener(
           listeners: [
@@ -154,6 +166,10 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                             if (context.mounted) {
                               await showEmotionBlending(context, state.moment);
                             }
+
+                            // if (context.mounted) {
+
+                            // }
                           },
                         ),
                       BlocListener<WriteMomentBloc, WriteMomentState>(
@@ -248,7 +264,7 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                                                               .toList(),
                                                           initialIndex: index,
                                                           title:
-                                                              "${widget.arguments.date.month}월 ${widget.arguments.date.day}일",
+                                                              "//${widget.arguments.date.month}월 ${widget.arguments.date.day}일",
                                                         ),
                                                       ),
                                                     );
@@ -303,6 +319,48 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                                         ),
                                       );
                                     },
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    child: BlocBuilder<GeneratedImageBloc,
+                                        GeneratedImageState>(
+                                      builder: (context, state) {
+                                        if (state.generatedImage != null) {
+                                          return InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ImageViewerPage(
+                                                    imageUrls: [
+                                                      state.generatedImage!.path
+                                                    ],
+                                                    initialIndex: 0,
+                                                    title:
+                                                        "//${widget.arguments.date.month}월 ${widget.arguments.date.day}일",
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: Image.file(
+                                                File(
+                                                    state.generatedImage!.path),
+                                                width: 100,
+                                                height: 100,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          return const SizedBox.shrink();
+                                        }
+                                      },
+                                    ),
                                   ),
                                   const SizedBox(height: 104),
                                 ],

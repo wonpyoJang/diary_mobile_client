@@ -248,7 +248,7 @@ class Calendar extends StatelessWidget {
                     // firstDay: listState.firstDay ??
                     firstDay: DateTime(1970),
                     lastDay: DateTime(DateTime.now().year + 100),
-                    focusedDay: DateTime.now(),
+                    focusedDay: calendarState.selectedPage ?? DateTime.now(),
                     // onDaySelected: (selectedDay, focusedDay) {
                     //   Navigator.of(context).push(MaterialPageRoute(
                     //   builder: (context) => WriteMomentPage(
@@ -444,12 +444,13 @@ class CalendarHeader extends StatelessWidget {
                         DateFormat('MMMM')
                             .format(state.selectedPage ?? DateTime.now()),
                         style: const TextStyle(
-                            fontSize: 32,
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.w700,
-                            height: 1.25,
-                            letterSpacing: -0.8,
-                            color: Color(0xFF53545B)),
+                          fontSize: 32,
+                          fontFamily: 'Pretendard',
+                          fontWeight: FontWeight.w700,
+                          height: 1.25,
+                          letterSpacing: -0.8,
+                          color: Color(0xFF53545B),
+                        ),
                       ),
                       const SizedBox(width: 20),
                       InkWell(

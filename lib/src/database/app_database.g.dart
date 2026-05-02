@@ -1147,6 +1147,321 @@ class UserTableCompanion extends UpdateCompanion<UserTableData> {
   }
 }
 
+class $GeneratedImageTableTable extends GeneratedImageTable
+    with TableInfo<$GeneratedImageTableTable, GeneratedImageTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GeneratedImageTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _momentIdMeta =
+      const VerificationMeta('momentId');
+  @override
+  late final GeneratedColumn<String> momentId = GeneratedColumn<String>(
+      'moment_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES moment_table (id)'));
+  static const VerificationMeta _pathMeta = const VerificationMeta('path');
+  @override
+  late final GeneratedColumn<String> path = GeneratedColumn<String>(
+      'path', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _mimeTypeMeta =
+      const VerificationMeta('mimeType');
+  @override
+  late final GeneratedColumn<String> mimeType = GeneratedColumn<String>(
+      'mime_type', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, momentId, path, mimeType, createdAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'generated_image_table';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<GeneratedImageTableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('moment_id')) {
+      context.handle(_momentIdMeta,
+          momentId.isAcceptableOrUnknown(data['moment_id']!, _momentIdMeta));
+    } else if (isInserting) {
+      context.missing(_momentIdMeta);
+    }
+    if (data.containsKey('path')) {
+      context.handle(
+          _pathMeta, path.isAcceptableOrUnknown(data['path']!, _pathMeta));
+    } else if (isInserting) {
+      context.missing(_pathMeta);
+    }
+    if (data.containsKey('mime_type')) {
+      context.handle(_mimeTypeMeta,
+          mimeType.isAcceptableOrUnknown(data['mime_type']!, _mimeTypeMeta));
+    } else if (isInserting) {
+      context.missing(_mimeTypeMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  GeneratedImageTableData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GeneratedImageTableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      momentId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}moment_id'])!,
+      path: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}path'])!,
+      mimeType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}mime_type'])!,
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+    );
+  }
+
+  @override
+  $GeneratedImageTableTable createAlias(String alias) {
+    return $GeneratedImageTableTable(attachedDatabase, alias);
+  }
+}
+
+class GeneratedImageTableData extends DataClass
+    implements Insertable<GeneratedImageTableData> {
+  final String id;
+  final String momentId;
+  final String path;
+  final String mimeType;
+  final DateTime createdAt;
+  const GeneratedImageTableData(
+      {required this.id,
+      required this.momentId,
+      required this.path,
+      required this.mimeType,
+      required this.createdAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['moment_id'] = Variable<String>(momentId);
+    map['path'] = Variable<String>(path);
+    map['mime_type'] = Variable<String>(mimeType);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  GeneratedImageTableCompanion toCompanion(bool nullToAbsent) {
+    return GeneratedImageTableCompanion(
+      id: Value(id),
+      momentId: Value(momentId),
+      path: Value(path),
+      mimeType: Value(mimeType),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory GeneratedImageTableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return GeneratedImageTableData(
+      id: serializer.fromJson<String>(json['id']),
+      momentId: serializer.fromJson<String>(json['momentId']),
+      path: serializer.fromJson<String>(json['path']),
+      mimeType: serializer.fromJson<String>(json['mimeType']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'momentId': serializer.toJson<String>(momentId),
+      'path': serializer.toJson<String>(path),
+      'mimeType': serializer.toJson<String>(mimeType),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  GeneratedImageTableData copyWith(
+          {String? id,
+          String? momentId,
+          String? path,
+          String? mimeType,
+          DateTime? createdAt}) =>
+      GeneratedImageTableData(
+        id: id ?? this.id,
+        momentId: momentId ?? this.momentId,
+        path: path ?? this.path,
+        mimeType: mimeType ?? this.mimeType,
+        createdAt: createdAt ?? this.createdAt,
+      );
+  GeneratedImageTableData copyWithCompanion(GeneratedImageTableCompanion data) {
+    return GeneratedImageTableData(
+      id: data.id.present ? data.id.value : this.id,
+      momentId: data.momentId.present ? data.momentId.value : this.momentId,
+      path: data.path.present ? data.path.value : this.path,
+      mimeType: data.mimeType.present ? data.mimeType.value : this.mimeType,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GeneratedImageTableData(')
+          ..write('id: $id, ')
+          ..write('momentId: $momentId, ')
+          ..write('path: $path, ')
+          ..write('mimeType: $mimeType, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, momentId, path, mimeType, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GeneratedImageTableData &&
+          other.id == this.id &&
+          other.momentId == this.momentId &&
+          other.path == this.path &&
+          other.mimeType == this.mimeType &&
+          other.createdAt == this.createdAt);
+}
+
+class GeneratedImageTableCompanion
+    extends UpdateCompanion<GeneratedImageTableData> {
+  final Value<String> id;
+  final Value<String> momentId;
+  final Value<String> path;
+  final Value<String> mimeType;
+  final Value<DateTime> createdAt;
+  final Value<int> rowid;
+  const GeneratedImageTableCompanion({
+    this.id = const Value.absent(),
+    this.momentId = const Value.absent(),
+    this.path = const Value.absent(),
+    this.mimeType = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  GeneratedImageTableCompanion.insert({
+    required String id,
+    required String momentId,
+    required String path,
+    required String mimeType,
+    required DateTime createdAt,
+    this.rowid = const Value.absent(),
+  })  : id = Value(id),
+        momentId = Value(momentId),
+        path = Value(path),
+        mimeType = Value(mimeType),
+        createdAt = Value(createdAt);
+  static Insertable<GeneratedImageTableData> custom({
+    Expression<String>? id,
+    Expression<String>? momentId,
+    Expression<String>? path,
+    Expression<String>? mimeType,
+    Expression<DateTime>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (momentId != null) 'moment_id': momentId,
+      if (path != null) 'path': path,
+      if (mimeType != null) 'mime_type': mimeType,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GeneratedImageTableCompanion copyWith(
+      {Value<String>? id,
+      Value<String>? momentId,
+      Value<String>? path,
+      Value<String>? mimeType,
+      Value<DateTime>? createdAt,
+      Value<int>? rowid}) {
+    return GeneratedImageTableCompanion(
+      id: id ?? this.id,
+      momentId: momentId ?? this.momentId,
+      path: path ?? this.path,
+      mimeType: mimeType ?? this.mimeType,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (momentId.present) {
+      map['moment_id'] = Variable<String>(momentId.value);
+    }
+    if (path.present) {
+      map['path'] = Variable<String>(path.value);
+    }
+    if (mimeType.present) {
+      map['mime_type'] = Variable<String>(mimeType.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GeneratedImageTableCompanion(')
+          ..write('id: $id, ')
+          ..write('momentId: $momentId, ')
+          ..write('path: $path, ')
+          ..write('mimeType: $mimeType, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
   $DatabaseManager get managers => $DatabaseManager(this);
@@ -1155,12 +1470,19 @@ abstract class _$Database extends GeneratedDatabase {
       $EmotionalIntensityTableTable(this);
   late final $MediaTableTable mediaTable = $MediaTableTable(this);
   late final $UserTableTable userTable = $UserTableTable(this);
+  late final $GeneratedImageTableTable generatedImageTable =
+      $GeneratedImageTableTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [momentTable, emotionalIntensityTable, mediaTable, userTable];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+        momentTable,
+        emotionalIntensityTable,
+        mediaTable,
+        userTable,
+        generatedImageTable
+      ];
 }
 
 typedef $$MomentTableTableCreateCompanionBuilder = MomentTableCompanion
@@ -1214,6 +1536,24 @@ final class $$MomentTableTableReferences
         .filter((f) => f.momentId.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_mediaTableRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$GeneratedImageTableTable,
+      List<GeneratedImageTableData>> _generatedImageTableRefsTable(
+          _$Database db) =>
+      MultiTypedResultKey.fromTable(db.generatedImageTable,
+          aliasName: $_aliasNameGenerator(
+              db.momentTable.id, db.generatedImageTable.momentId));
+
+  $$GeneratedImageTableTableProcessedTableManager get generatedImageTableRefs {
+    final manager = $$GeneratedImageTableTableTableManager(
+            $_db, $_db.generatedImageTable)
+        .filter((f) => f.momentId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache =
+        $_typedResult.readTableOrNull(_generatedImageTableRefsTable($_db));
     return ProcessedTableManager(
         manager.$state.copyWith(prefetchedData: cache));
   }
@@ -1276,6 +1616,27 @@ class $$MomentTableTableFilterComposer
             $$MediaTableTableFilterComposer(
               $db: $db,
               $table: $db.mediaTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+
+  Expression<bool> generatedImageTableRefs(
+      Expression<bool> Function($$GeneratedImageTableTableFilterComposer f) f) {
+    final $$GeneratedImageTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.generatedImageTable,
+        getReferencedColumn: (t) => t.momentId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$GeneratedImageTableTableFilterComposer(
+              $db: $db,
+              $table: $db.generatedImageTable,
               $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
               joinBuilder: joinBuilder,
               $removeJoinBuilderFromRootComposer:
@@ -1371,6 +1732,29 @@ class $$MomentTableTableAnnotationComposer
             ));
     return f(composer);
   }
+
+  Expression<T> generatedImageTableRefs<T extends Object>(
+      Expression<T> Function($$GeneratedImageTableTableAnnotationComposer a)
+          f) {
+    final $$GeneratedImageTableTableAnnotationComposer composer =
+        $composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.id,
+            referencedTable: $db.generatedImageTable,
+            getReferencedColumn: (t) => t.momentId,
+            builder: (joinBuilder,
+                    {$addJoinBuilderToRootComposer,
+                    $removeJoinBuilderFromRootComposer}) =>
+                $$GeneratedImageTableTableAnnotationComposer(
+                  $db: $db,
+                  $table: $db.generatedImageTable,
+                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                  joinBuilder: joinBuilder,
+                  $removeJoinBuilderFromRootComposer:
+                      $removeJoinBuilderFromRootComposer,
+                ));
+    return f(composer);
+  }
 }
 
 class $$MomentTableTableTableManager extends RootTableManager<
@@ -1385,7 +1769,9 @@ class $$MomentTableTableTableManager extends RootTableManager<
     (MomentTableData, $$MomentTableTableReferences),
     MomentTableData,
     PrefetchHooks Function(
-        {bool emotionalIntensityTableRefs, bool mediaTableRefs})> {
+        {bool emotionalIntensityTableRefs,
+        bool mediaTableRefs,
+        bool generatedImageTableRefs})> {
   $$MomentTableTableTableManager(_$Database db, $MomentTableTable table)
       : super(TableManagerState(
           db: db,
@@ -1431,12 +1817,15 @@ class $$MomentTableTableTableManager extends RootTableManager<
                   ))
               .toList(),
           prefetchHooksCallback: (
-              {emotionalIntensityTableRefs = false, mediaTableRefs = false}) {
+              {emotionalIntensityTableRefs = false,
+              mediaTableRefs = false,
+              generatedImageTableRefs = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [
                 if (emotionalIntensityTableRefs) db.emotionalIntensityTable,
-                if (mediaTableRefs) db.mediaTable
+                if (mediaTableRefs) db.mediaTable,
+                if (generatedImageTableRefs) db.generatedImageTable
               ],
               addJoins: null,
               getPrefetchedDataCallback: (items) async {
@@ -1466,6 +1855,19 @@ class $$MomentTableTableTableManager extends RootTableManager<
                         referencedItemsForCurrentItem: (item,
                                 referencedItems) =>
                             referencedItems.where((e) => e.momentId == item.id),
+                        typedResults: items),
+                  if (generatedImageTableRefs)
+                    await $_getPrefetchedData<MomentTableData,
+                            $MomentTableTable, GeneratedImageTableData>(
+                        currentTable: table,
+                        referencedTable: $$MomentTableTableReferences
+                            ._generatedImageTableRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$MomentTableTableReferences(db, table, p0)
+                                .generatedImageTableRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.momentId == item.id),
                         typedResults: items)
                 ];
               },
@@ -1486,7 +1888,9 @@ typedef $$MomentTableTableProcessedTableManager = ProcessedTableManager<
     (MomentTableData, $$MomentTableTableReferences),
     MomentTableData,
     PrefetchHooks Function(
-        {bool emotionalIntensityTableRefs, bool mediaTableRefs})>;
+        {bool emotionalIntensityTableRefs,
+        bool mediaTableRefs,
+        bool generatedImageTableRefs})>;
 typedef $$EmotionalIntensityTableTableCreateCompanionBuilder
     = EmotionalIntensityTableCompanion Function({
   required String id,
@@ -2181,6 +2585,286 @@ typedef $$UserTableTableProcessedTableManager = ProcessedTableManager<
     (UserTableData, BaseReferences<_$Database, $UserTableTable, UserTableData>),
     UserTableData,
     PrefetchHooks Function()>;
+typedef $$GeneratedImageTableTableCreateCompanionBuilder
+    = GeneratedImageTableCompanion Function({
+  required String id,
+  required String momentId,
+  required String path,
+  required String mimeType,
+  required DateTime createdAt,
+  Value<int> rowid,
+});
+typedef $$GeneratedImageTableTableUpdateCompanionBuilder
+    = GeneratedImageTableCompanion Function({
+  Value<String> id,
+  Value<String> momentId,
+  Value<String> path,
+  Value<String> mimeType,
+  Value<DateTime> createdAt,
+  Value<int> rowid,
+});
+
+final class $$GeneratedImageTableTableReferences extends BaseReferences<
+    _$Database, $GeneratedImageTableTable, GeneratedImageTableData> {
+  $$GeneratedImageTableTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static $MomentTableTable _momentIdTable(_$Database db) =>
+      db.momentTable.createAlias($_aliasNameGenerator(
+          db.generatedImageTable.momentId, db.momentTable.id));
+
+  $$MomentTableTableProcessedTableManager get momentId {
+    final $_column = $_itemColumn<String>('moment_id')!;
+
+    final manager = $$MomentTableTableTableManager($_db, $_db.momentTable)
+        .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_momentIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$GeneratedImageTableTableFilterComposer
+    extends Composer<_$Database, $GeneratedImageTableTable> {
+  $$GeneratedImageTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get path => $composableBuilder(
+      column: $table.path, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get mimeType => $composableBuilder(
+      column: $table.mimeType, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  $$MomentTableTableFilterComposer get momentId {
+    final $$MomentTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.momentId,
+        referencedTable: $db.momentTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$MomentTableTableFilterComposer(
+              $db: $db,
+              $table: $db.momentTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$GeneratedImageTableTableOrderingComposer
+    extends Composer<_$Database, $GeneratedImageTableTable> {
+  $$GeneratedImageTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get path => $composableBuilder(
+      column: $table.path, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get mimeType => $composableBuilder(
+      column: $table.mimeType, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  $$MomentTableTableOrderingComposer get momentId {
+    final $$MomentTableTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.momentId,
+        referencedTable: $db.momentTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$MomentTableTableOrderingComposer(
+              $db: $db,
+              $table: $db.momentTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$GeneratedImageTableTableAnnotationComposer
+    extends Composer<_$Database, $GeneratedImageTableTable> {
+  $$GeneratedImageTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get path =>
+      $composableBuilder(column: $table.path, builder: (column) => column);
+
+  GeneratedColumn<String> get mimeType =>
+      $composableBuilder(column: $table.mimeType, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  $$MomentTableTableAnnotationComposer get momentId {
+    final $$MomentTableTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.momentId,
+        referencedTable: $db.momentTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$MomentTableTableAnnotationComposer(
+              $db: $db,
+              $table: $db.momentTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$GeneratedImageTableTableTableManager extends RootTableManager<
+    _$Database,
+    $GeneratedImageTableTable,
+    GeneratedImageTableData,
+    $$GeneratedImageTableTableFilterComposer,
+    $$GeneratedImageTableTableOrderingComposer,
+    $$GeneratedImageTableTableAnnotationComposer,
+    $$GeneratedImageTableTableCreateCompanionBuilder,
+    $$GeneratedImageTableTableUpdateCompanionBuilder,
+    (GeneratedImageTableData, $$GeneratedImageTableTableReferences),
+    GeneratedImageTableData,
+    PrefetchHooks Function({bool momentId})> {
+  $$GeneratedImageTableTableTableManager(
+      _$Database db, $GeneratedImageTableTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$GeneratedImageTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$GeneratedImageTableTableOrderingComposer(
+                  $db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$GeneratedImageTableTableAnnotationComposer(
+                  $db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String> momentId = const Value.absent(),
+            Value<String> path = const Value.absent(),
+            Value<String> mimeType = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              GeneratedImageTableCompanion(
+            id: id,
+            momentId: momentId,
+            path: path,
+            mimeType: mimeType,
+            createdAt: createdAt,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            required String momentId,
+            required String path,
+            required String mimeType,
+            required DateTime createdAt,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              GeneratedImageTableCompanion.insert(
+            id: id,
+            momentId: momentId,
+            path: path,
+            mimeType: mimeType,
+            createdAt: createdAt,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$GeneratedImageTableTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: ({momentId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (momentId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.momentId,
+                    referencedTable:
+                        $$GeneratedImageTableTableReferences._momentIdTable(db),
+                    referencedColumn: $$GeneratedImageTableTableReferences
+                        ._momentIdTable(db)
+                        .id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$GeneratedImageTableTableProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    $GeneratedImageTableTable,
+    GeneratedImageTableData,
+    $$GeneratedImageTableTableFilterComposer,
+    $$GeneratedImageTableTableOrderingComposer,
+    $$GeneratedImageTableTableAnnotationComposer,
+    $$GeneratedImageTableTableCreateCompanionBuilder,
+    $$GeneratedImageTableTableUpdateCompanionBuilder,
+    (GeneratedImageTableData, $$GeneratedImageTableTableReferences),
+    GeneratedImageTableData,
+    PrefetchHooks Function({bool momentId})>;
 
 class $DatabaseManager {
   final _$Database _db;
@@ -2194,4 +2878,6 @@ class $DatabaseManager {
       $$MediaTableTableTableManager(_db, _db.mediaTable);
   $$UserTableTableTableManager get userTable =>
       $$UserTableTableTableManager(_db, _db.userTable);
+  $$GeneratedImageTableTableTableManager get generatedImageTable =>
+      $$GeneratedImageTableTableTableManager(_db, _db.generatedImageTable);
 }
