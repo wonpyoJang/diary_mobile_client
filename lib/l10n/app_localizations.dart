@@ -1101,6 +1101,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue with Apple'**
   String get appleLogin;
+
+  /// LLM settings page title
+  ///
+  /// In en, this message translates to:
+  /// **'AI processing mode'**
+  String get llmSettingsTitle;
+
+  /// Settings menu label to enter LLM settings
+  ///
+  /// In en, this message translates to:
+  /// **'AI processing mode'**
+  String get llmSettingsMenuLabel;
+
+  /// Remote LLM mode label
+  ///
+  /// In en, this message translates to:
+  /// **'Remote Gemini (default)'**
+  String get llmModeRemoteLabel;
+
+  /// On-device LLM mode label
+  ///
+  /// In en, this message translates to:
+  /// **'On-device'**
+  String get llmModeOnDeviceLabel;
+
+  /// Downloaded on-device backend label
+  ///
+  /// In en, this message translates to:
+  /// **'Downloaded model (Gemma 2B)'**
+  String get llmBackendDownloadLabel;
+
+  /// Platform-native on-device backend label
+  ///
+  /// In en, this message translates to:
+  /// **'Platform native (Apple Foundation Models)'**
+  String get llmBackendNativeLabel;
+
+  /// Platform-native unsupported notice
+  ///
+  /// In en, this message translates to:
+  /// **'Not supported on this device'**
+  String get llmBackendNativeUnsupported;
+
+  /// Gemma model download required notice
+  ///
+  /// In en, this message translates to:
+  /// **'Download required'**
+  String get llmDownloadRequired;
+
+  /// Gemma model download button
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get llmDownloadButton;
+
+  /// On-device mode privacy notice
+  ///
+  /// In en, this message translates to:
+  /// **'When on-device mode is used, your diary content is not sent to external services.'**
+  String get llmPrivacyNotice;
+
+  /// Opt-in dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Choose AI processing mode'**
+  String get llmOptInDialogTitle;
+
+  /// Opt-in dialog body
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how your diary content will be processed for AI analysis. You can change this anytime in settings.'**
+  String get llmOptInDialogBody;
+
+  /// Opt-in dialog - choose remote Gemini button
+  ///
+  /// In en, this message translates to:
+  /// **'Use remote Gemini'**
+  String get llmOptInButtonRemote;
+
+  /// Opt-in dialog - go to on-device settings button
+  ///
+  /// In en, this message translates to:
+  /// **'Configure on-device'**
+  String get llmOptInButtonOnDevice;
+
+  /// Opt-in dialog - decide later button
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get llmOptInButtonLater;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

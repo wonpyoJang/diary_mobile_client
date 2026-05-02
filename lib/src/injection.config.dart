@@ -82,6 +82,25 @@ import 'feature/generated_image/infrastructure/providers/interfaces/i_generated_
 import 'feature/generated_image/infrastructure/repositories/generate_image_repository.dart'
     as _i880;
 import 'feature/global_loading/application/global_loading_bloc.dart' as _i147;
+import 'feature/llm/application/gemma_download_bloc.dart' as _i380;
+import 'feature/llm/application/llm_dialog_trigger.dart' as _i1019;
+import 'feature/llm/application/llm_router.dart' as _i795;
+import 'feature/llm/application/llm_settings_bloc.dart' as _i238;
+import 'feature/llm/domain/i_llm_capability_probe.dart' as _i1000;
+import 'feature/llm/domain/i_llm_provider.dart' as _i952;
+import 'feature/llm/domain/i_llm_settings_repository.dart' as _i419;
+import 'feature/llm/infrastructure/providers/apple_foundation_provider.dart'
+    as _i323;
+import 'feature/llm/infrastructure/providers/gemini_remote_provider.dart'
+    as _i1038;
+import 'feature/llm/infrastructure/providers/gemma_local_provider.dart'
+    as _i638;
+import 'feature/llm/infrastructure/repositories/llm_settings_repository.dart'
+    as _i601;
+import 'feature/llm/infrastructure/services/device_capability_detector.dart'
+    as _i901;
+import 'feature/llm/infrastructure/services/gemma_model_download_manager.dart'
+    as _i593;
 import 'feature/lock/application/lock_cubit.dart' as _i600;
 import 'feature/lock/domain/repositories/interfaces/i_local_authenticator_repository.dart'
     as _i828;
@@ -235,21 +254,22 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i958.AnalyticsManager>(() => _i958.AnalyticsManager());
     gh.lazySingleton<_i461.Bus>(() => _i461.Bus());
     gh.lazySingleton<_i970.BackupNotifier>(() => _i970.BackupNotifier());
+    gh.lazySingleton<_i1019.LlmDialogTrigger>(
+        () => const _i1019.LlmDialogTrigger());
     gh.singleton<_i297.RemoteConfigClient>(
         () => _i297.RemoteConfigClient(gh<_i627.FirebaseRemoteConfig>()));
     gh.lazySingleton<_i633.ISupabaseUserExternalProvider>(
         () => _i48.SupabaseUserExternalProvider(gh<_i454.SupabaseClient>()));
     gh.lazySingleton<_i743.IVersionLocalProvider>(
         () => _i550.VersionLocalProvider());
-    gh.lazySingleton<_i1039.IWriteMomentExternalProvider>(
-        () => _i550.WriteMomentExternalProvider(
-              gh<_i681.Gemini>(),
-              gh<_i248.FirebaseClient>(),
-            ));
     gh.lazySingleton<_i42.ISupabaseAuthProvider>(
         () => _i65.SupabaseAuthProvider(gh<_i454.SupabaseClient>()));
     gh.lazySingleton<_i170.IVersionRepository>(
         () => _i191.VersionRepository(gh<_i743.IVersionLocalProvider>()));
+    gh.lazySingleton<_i952.ILlmProvider>(
+      () => _i1038.GeminiRemoteProvider(),
+      instanceName: 'gemini_remote',
+    );
     gh.lazySingleton<_i951.HiveClient>(() => const _i951.HiveClientImpl());
     gh.factory<_i895.IAuthenticatorProvider>(
         () => _i911.LocalAuthenticatorProvider());
@@ -260,10 +280,18 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i356.HttpClient>(() => _i356.HttpClient(gh<_i361.Dio>()));
     gh.lazySingleton<_i359.IBackupRemoteProvider>(
         () => _i93.BackupRemoteProvider(gh<_i178.ICloudService>()));
+    gh.lazySingleton<_i593.GemmaModelDownloadManager>(
+        () => _i593.GemmaModelDownloadManager(gh<_i361.Dio>()));
     gh.factory<_i1073.ICloudDestination>(
         () => _i1073.ICloudDestination(gh<_i178.ICloudService>()));
     gh.lazySingleton<_i23.IDeviceInfoLocalProvider>(
         () => _i505.DeviceInfoLocalProvider());
+    gh.lazySingleton<_i952.ILlmProvider>(
+      () => _i323.AppleFoundationProvider(),
+      instanceName: 'apple_foundation',
+    );
+    gh.lazySingleton<_i419.ILlmSettingsRepository>(
+        () => _i601.LlmSettingsRepository());
     gh.singleton<_i587.Database>(() => _i587.Database(gh<String>()));
     gh.lazySingleton<_i772.IWriteMomentInternalProvider>(
         () => _i603.WriteMomentInternalProvider(gh<_i356.HttpClient>()));
@@ -295,6 +323,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i216.BackupRestoreProvider(gh<_i587.Database>()));
     gh.lazySingleton<_i27.ILocalLockProvider>(
         () => _i625.LocalLockProvider(hiveClient: gh<_i951.HiveClient>()));
+    gh.lazySingleton<_i952.ILlmProvider>(
+      () => _i638.GemmaLocalProvider(gh<_i593.GemmaModelDownloadManager>()),
+      instanceName: 'gemma_local',
+    );
     gh.lazySingleton<_i1020.IBackupLocalProvider>(
         () => _i754.BackupLocalProvider(
               gh<_i587.Database>(),
@@ -302,8 +334,13 @@ extension GetItInjectableX on _i174.GetIt {
             ));
     gh.lazySingleton<_i24.IUserInternalProvider>(
         () => _i672.UserInternalProvider(gh<_i407.DriftClient>()));
+    gh.factory<_i380.GemmaDownloadBloc>(
+        () => _i380.GemmaDownloadBloc(gh<_i593.GemmaModelDownloadManager>()));
     gh.factory<_i163.ILocalDataControlProvider>(
         () => _i186.LocalDataControlProvider(gh<_i951.HiveClient>()));
+    gh.lazySingleton<_i1000.ILlmCapabilityProbe>(() =>
+        _i901.DeviceCapabilityDetector(
+            gh<_i952.ILlmProvider>(instanceName: 'apple_foundation')));
     gh.lazySingleton<_i1018.IDataControlRepository>(() =>
         _i489.DataControlRepository(
             dataControlProvider: gh<_i163.ILocalDataControlProvider>()));
@@ -319,6 +356,14 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.lazySingleton<_i696.IEmotionStatisticsProvider>(
         () => _i9.EmotionStatisticsProvider(gh<_i407.DriftClient>()));
+    gh.factory<_i238.LlmSettingsBloc>(() => _i238.LlmSettingsBloc(
+          gh<_i419.ILlmSettingsRepository>(),
+          gh<_i1000.ILlmCapabilityProbe>(),
+        ));
+    gh.lazySingleton<_i795.LlmRouter>(() => _i795.LlmRouter(
+          gh<_i952.ILlmProvider>(instanceName: 'gemini_remote'),
+          gh<_i419.ILlmSettingsRepository>(),
+        ));
     gh.lazySingleton<_i69.IRestoreRepository>(
         () => _i656.RestoreRepository(gh<_i319.IBackupRestoreProvider>()));
     gh.lazySingleton<_i1046.IGeneratedImageLocalProvider>(
@@ -342,16 +387,6 @@ extension GetItInjectableX on _i174.GetIt {
             ));
     gh.factory<_i136.LanguageCubit>(
         () => _i136.LanguageCubit(gh<_i890.SettingsController>()));
-    gh.lazySingleton<_i79.IWriteMomentRepository>(() =>
-        _i767.WriteMomentRepository(
-          writeMomentExternalProvider:
-              gh<_i1039.IWriteMomentExternalProvider>(),
-          writeMomentInternalProvider: gh<_i772.IWriteMomentInternalProvider>(),
-          writeMomentLocalProvider: gh<_i468.IWriteMomentLocalProvider>(),
-          deviceInfoLocalProvider: gh<_i23.IDeviceInfoLocalProvider>(),
-          mediaInfoLocalProvider: gh<_i579.IMediaInfoLocalProvider>(),
-          driftClient: gh<_i407.DriftClient>(),
-        ));
     gh.factory<_i825.ScheduleBloc>(() => _i825.ScheduleBloc(
           gh<_i955.IBackupRepository>(),
           gh<_i970.BackupNotifier>(),
@@ -362,6 +397,11 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i136.RestoreBloc>(
         () => _i136.RestoreBloc(gh<_i69.IRestoreRepository>()));
+    gh.lazySingleton<_i1039.IWriteMomentExternalProvider>(
+        () => _i550.WriteMomentExternalProvider(
+              gh<_i795.LlmRouter>(),
+              gh<_i248.FirebaseClient>(),
+            ));
     gh.lazySingleton<_i554.ILockRepository>(() =>
         _i522.LockRepository(localLockProvider: gh<_i27.ILocalLockProvider>()));
     gh.lazySingleton<_i142.IRecommendRepository>(
@@ -378,16 +418,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i461.Bus>(),
           gh<_i1053.IMomentListRepository>(),
           gh<_i160.DiaryHomeWidgetSync>(),
-        ));
-    gh.factoryParam<_i812.WriteMomentBloc, _i517.Moment?, DateTime>((
-      moment,
-      date,
-    ) =>
-        _i812.WriteMomentBloc(
-          gh<_i461.Bus>(),
-          moment,
-          date,
-          gh<_i79.IWriteMomentRepository>(),
         ));
     gh.singleton<_i428.UserBloc>(() => _i428.UserBloc(
           gh<_i586.IUserRepository>(),
@@ -415,15 +445,35 @@ extension GetItInjectableX on _i174.GetIt {
           moment,
           gh<_i461.Bus>(),
         ));
-    gh.lazySingleton<_i735.DeepLinkService>(() => _i735.DeepLinkService(
-          gh<_i79.IWriteMomentRepository>(),
-          gh<_i160.DiaryHomeWidgetSync>(),
-          gh<_i461.Bus>(),
-        ));
     gh.singleton<_i600.LockCubit>(() => _i600.LockCubit(
           authenticatorRepository: gh<_i828.IAuthenticatorRepository>(),
           lockRepository: gh<_i554.ILockRepository>(),
           passcode: gh<String>(),
+        ));
+    gh.lazySingleton<_i79.IWriteMomentRepository>(() =>
+        _i767.WriteMomentRepository(
+          writeMomentExternalProvider:
+              gh<_i1039.IWriteMomentExternalProvider>(),
+          writeMomentInternalProvider: gh<_i772.IWriteMomentInternalProvider>(),
+          writeMomentLocalProvider: gh<_i468.IWriteMomentLocalProvider>(),
+          deviceInfoLocalProvider: gh<_i23.IDeviceInfoLocalProvider>(),
+          mediaInfoLocalProvider: gh<_i579.IMediaInfoLocalProvider>(),
+          driftClient: gh<_i407.DriftClient>(),
+        ));
+    gh.factoryParam<_i812.WriteMomentBloc, _i517.Moment?, DateTime>((
+      moment,
+      date,
+    ) =>
+        _i812.WriteMomentBloc(
+          gh<_i461.Bus>(),
+          moment,
+          date,
+          gh<_i79.IWriteMomentRepository>(),
+        ));
+    gh.lazySingleton<_i735.DeepLinkService>(() => _i735.DeepLinkService(
+          gh<_i79.IWriteMomentRepository>(),
+          gh<_i160.DiaryHomeWidgetSync>(),
+          gh<_i461.Bus>(),
         ));
     gh.factory<_i740.DeepLinkCubit>(
         () => _i740.DeepLinkCubit(gh<_i735.DeepLinkService>()));

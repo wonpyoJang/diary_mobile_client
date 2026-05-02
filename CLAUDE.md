@@ -39,6 +39,15 @@ Flutter 모바일 앱. BLoC + injectable + hydrated_bloc 기반.
 
 각 검증의 상세 조건은 `~/.claude/projects/-Users-edjang-workplace-diary-diary-mobile-client/memory/feedback_*.md` 참고.
 
+## 토큰·레이트 리밋 (효율·예측)
+
+- **효율**: 불필요한 전체 파일 읽기·중복 도구 호출을 피하고, 긴 출력은 요약·부분 인용.
+- **한도 도달 시점 추정** (사용자가 `R` 남은 토큰, `U` 시간당 소비, `T_avg` 턴당 소비를 알려주면):
+  - 시간 기준: 대략 `R / U` (최근 소비율이 유지된다는 가정).
+  - 턴 기준: 대략 `R / T_avg`.
+  - 플랜별 수치는 공식 UI 기준; 고정 숫자로 단정하지 않음.
+- Cursor에서는 `.cursor/rules/token-rate-limit-awareness.mdc`와 함께 적용.
+
 ## 알려진 함정
 - `lib/main.dart`는 사용자가 자주 WIP 코드를 둘 수 있는 파일. 자동 편집 시 의도치 않은 hunk가 끼지 않았는지 diff 단계에서 특히 주의 (커밋 8b3db8c 사례).
 - iOS 디바이스명은 `"iPhone 16 Pro"` (Makefile / 설정 참조).

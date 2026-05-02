@@ -508,4 +508,49 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get appleLogin => 'Appleで始める';
+
+  @override
+  String get llmSettingsTitle => 'AI処理モード';
+
+  @override
+  String get llmSettingsMenuLabel => 'AI処理モード';
+
+  @override
+  String get llmModeRemoteLabel => 'リモートGemini（デフォルト）';
+
+  @override
+  String get llmModeOnDeviceLabel => 'オンデバイス';
+
+  @override
+  String get llmBackendDownloadLabel => 'ダウンロードモデル（Gemma 2B）';
+
+  @override
+  String get llmBackendNativeLabel => 'プラットフォームネイティブ（Apple Foundation Models）';
+
+  @override
+  String get llmBackendNativeUnsupported => 'この端末ではサポートされていません';
+
+  @override
+  String get llmDownloadRequired => 'ダウンロードが必要';
+
+  @override
+  String get llmDownloadButton => 'ダウンロード';
+
+  @override
+  String get llmPrivacyNotice => 'オンデバイスモード使用時、日記本文は外部に送信されません。';
+
+  @override
+  String get llmOptInDialogTitle => 'AI処理モードを選択';
+
+  @override
+  String get llmOptInDialogBody => 'AI分析のために日記本文をどのように処理するか選択してください。設定からいつでも変更できます。';
+
+  @override
+  String get llmOptInButtonRemote => 'リモートGeminiを使用';
+
+  @override
+  String get llmOptInButtonOnDevice => 'オンデバイス設定';
+
+  @override
+  String get llmOptInButtonLater => '後で';
 }

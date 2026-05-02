@@ -508,6 +508,51 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get appleLogin => '使用Apple登录';
+
+  @override
+  String get llmSettingsTitle => 'AI 处理模式';
+
+  @override
+  String get llmSettingsMenuLabel => 'AI 处理模式';
+
+  @override
+  String get llmModeRemoteLabel => '远程 Gemini（默认）';
+
+  @override
+  String get llmModeOnDeviceLabel => '设备端';
+
+  @override
+  String get llmBackendDownloadLabel => '下载模型（Gemma 2B）';
+
+  @override
+  String get llmBackendNativeLabel => '平台原生（Apple Foundation Models）';
+
+  @override
+  String get llmBackendNativeUnsupported => '此设备不支持';
+
+  @override
+  String get llmDownloadRequired => '需要下载';
+
+  @override
+  String get llmDownloadButton => '下载';
+
+  @override
+  String get llmPrivacyNotice => '使用设备端模式时，日记内容不会发送到外部服务。';
+
+  @override
+  String get llmOptInDialogTitle => '选择 AI 处理模式';
+
+  @override
+  String get llmOptInDialogBody => '请选择如何处理日记内容以进行 AI 分析。可随时在设置中更改。';
+
+  @override
+  String get llmOptInButtonRemote => '使用远程 Gemini';
+
+  @override
+  String get llmOptInButtonOnDevice => '配置设备端';
+
+  @override
+  String get llmOptInButtonLater => '稍后';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -1014,4 +1059,49 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get appleLogin => '使用Apple登入';
+
+  @override
+  String get llmSettingsTitle => 'AI 處理模式';
+
+  @override
+  String get llmSettingsMenuLabel => 'AI 處理模式';
+
+  @override
+  String get llmModeRemoteLabel => '遠端 Gemini（預設）';
+
+  @override
+  String get llmModeOnDeviceLabel => '裝置端';
+
+  @override
+  String get llmBackendDownloadLabel => '下載模型（Gemma 2B）';
+
+  @override
+  String get llmBackendNativeLabel => '平台原生（Apple Foundation Models）';
+
+  @override
+  String get llmBackendNativeUnsupported => '此裝置不支援';
+
+  @override
+  String get llmDownloadRequired => '需要下載';
+
+  @override
+  String get llmDownloadButton => '下載';
+
+  @override
+  String get llmPrivacyNotice => '使用裝置端模式時，日記內容不會傳送到外部服務。';
+
+  @override
+  String get llmOptInDialogTitle => '選擇 AI 處理模式';
+
+  @override
+  String get llmOptInDialogBody => '請選擇如何處理日記內容以進行 AI 分析。可隨時在設定中變更。';
+
+  @override
+  String get llmOptInButtonRemote => '使用遠端 Gemini';
+
+  @override
+  String get llmOptInButtonOnDevice => '設定裝置端';
+
+  @override
+  String get llmOptInButtonLater => '稍後';
 }
