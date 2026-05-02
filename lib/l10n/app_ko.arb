@@ -332,5 +332,8 @@
   "llmOptInButtonOnDevice": "온디바이스 설정",
   "@llmOptInButtonOnDevice": {"description": "옵트인 다이얼로그 - 온디바이스 설정으로 이동 버튼"},
   "llmOptInButtonLater": "나중에",
-  "@llmOptInButtonLater": {"description": "옵트인 다이얼로그 - 나중에 결정 버튼"}
+  "@llmOptInButtonLater": {"description": "옵트인 다이얼로그 - 나중에 결정 버튼"},
+  "voiceInput": "음성 입력",
+  "voiceInputUnavailable": "이 기기에서는 음성 입력을 사용할 수 없습니다.",
+  "voiceInputError": "음성 인식에 실패했습니다."
 }

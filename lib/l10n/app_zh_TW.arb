@@ -227,5 +227,8 @@
   "profile": "個人檔案",
   "editProfile": "編輯個人檔案",
   "userName": "使用者名稱",
-  "userEmail": "user@email.com"
+  "userEmail": "user@email.com",
+  "voiceInput": "語音輸入",
+  "voiceInputUnavailable": "此裝置不支援語音輸入。",
+  "voiceInputError": "語音辨識失敗。"
 }

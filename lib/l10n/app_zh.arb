@@ -227,5 +227,8 @@
   "profile": "个人资料",
   "editProfile": "编辑资料",
   "userName": "用户名",
-  "userEmail": "user@email.com"
+  "userEmail": "user@email.com",
+  "voiceInput": "语音输入",
+  "voiceInputUnavailable": "此设备不支持语音输入。",
+  "voiceInputError": "语音识别失败。"
 }
