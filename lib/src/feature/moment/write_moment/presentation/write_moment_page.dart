@@ -6,6 +6,7 @@ import 'package:diary_mobile_client/src/feature/common/yes_or_no_dialog.dart';
 import 'package:diary_mobile_client/src/feature/generated_image/application/generated_image_bloc.dart';
 import 'package:diary_mobile_client/src/feature/generated_image/application/generated_image_event.dart';
 import 'package:diary_mobile_client/src/feature/generated_image/application/generated_image_state.dart';
+import 'package:diary_mobile_client/src/feature/llm/application/llm_dialog_trigger.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/application/write_moment_event.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/date_box.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/presentation/widget/emotion_blending_dialog.dart';
@@ -87,7 +88,11 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                   showYesOrNoDialog(
                     context,
                     title: AppLocalizations.of(context)!.addImageToWrite,
-                    onConfirm: (value) {
+                    onConfirm: (value) async {
+                      // Show LLM opt-in dialog on first AI invocation
+                      // (no-op afterwards).
+                      await getIt<LlmDialogTrigger>().maybeShow(context);
+                      if (!context.mounted) return;
                       context.read<WriteMomentBloc>().add(const WriteByImage());
                     },
                   );

@@ -46,9 +46,7 @@ class _LlmSettingsView extends StatelessWidget {
                 _SectionHeader(
                   text: l10n.llmSettingsTitle,
                 ),
-                RadioListTile<LlmMode>(
-                  title: Text(l10n.llmModeRemoteLabel),
-                  value: LlmMode.remote,
+                RadioGroup<LlmMode>(
                   groupValue: state.mode,
                   onChanged: (mode) {
                     if (mode != null) {
@@ -57,24 +55,40 @@ class _LlmSettingsView extends StatelessWidget {
                           .add(ChangeMode(mode));
                     }
                   },
-                ),
-                RadioListTile<LlmMode>(
-                  title: Text(l10n.llmModeOnDeviceLabel),
-                  value: LlmMode.onDevice,
-                  groupValue: state.mode,
-                  onChanged: (mode) {
-                    if (mode != null) {
-                      context
-                          .read<LlmSettingsBloc>()
-                          .add(ChangeMode(mode));
-                    }
-                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RadioListTile<LlmMode>(
+                        title: Text(l10n.llmModeRemoteLabel),
+                        value: LlmMode.remote,
+                      ),
+                      RadioListTile<LlmMode>(
+                        title: Text(l10n.llmModeOnDeviceLabel),
+                        value: LlmMode.onDevice,
+                      ),
+                    ],
+                  ),
                 ),
                 if (state.mode == LlmMode.onDevice) ...[
                   const Divider(height: 24),
                   _SectionHeader(text: l10n.llmModeOnDeviceLabel),
-                  _DownloadedModelTile(state: state),
-                  _NativeBackendTile(state: state),
+                  RadioGroup<OnDeviceBackend>(
+                    groupValue: state.backend,
+                    onChanged: (backend) {
+                      if (backend != null) {
+                        context
+                            .read<LlmSettingsBloc>()
+                            .add(ChangeOnDeviceBackend(backend));
+                      }
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _DownloadedModelTile(state: state),
+                        _NativeBackendTile(state: state),
+                      ],
+                    ),
+                  ),
                 ],
                 const SizedBox(height: 24),
                 Padding(
@@ -125,14 +139,6 @@ class _DownloadedModelTile extends StatelessWidget {
     final needsDownload = !state.gemmaDownloaded;
     return RadioListTile<OnDeviceBackend>(
       value: OnDeviceBackend.downloadedModel,
-      groupValue: state.backend,
-      onChanged: (backend) {
-        if (backend != null) {
-          context
-              .read<LlmSettingsBloc>()
-              .add(ChangeOnDeviceBackend(backend));
-        }
-      },
       title: Text(l10n.llmBackendDownloadLabel),
       subtitle: needsDownload ? Text(l10n.llmDownloadRequired) : null,
       secondary: needsDownload
@@ -158,16 +164,7 @@ class _NativeBackendTile extends StatelessWidget {
     final disabled = !state.appleAvailable;
     return RadioListTile<OnDeviceBackend>(
       value: OnDeviceBackend.platformNative,
-      groupValue: state.backend,
-      onChanged: disabled
-          ? null
-          : (backend) {
-              if (backend != null) {
-                context
-                    .read<LlmSettingsBloc>()
-                    .add(ChangeOnDeviceBackend(backend));
-              }
-            },
+      enabled: !disabled,
       title: Text(l10n.llmBackendNativeLabel),
       subtitle: disabled ? Text(l10n.llmBackendNativeUnsupported) : null,
     );

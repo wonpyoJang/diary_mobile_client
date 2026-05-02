@@ -1,4 +1,6 @@
 import 'package:diary_mobile_client/src/core/analytics/analytics_manager.dart';
+import 'package:diary_mobile_client/src/feature/llm/application/llm_dialog_trigger.dart';
+import 'package:diary_mobile_client/src/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -21,7 +23,7 @@ class ExtractEmotionButon extends StatelessWidget {
             state.moment.medias.isNotEmpty;
         final isActive = isFilled && state.isLoading;
         return InkWell(
-          onTap: () {
+          onTap: () async {
             AnalyticsManager.logEvent('write_extract_emotion',
                 parameters: {'length': state.moment.reflection.length});
             if (state.moment.reflection.length < 20 &&
@@ -40,6 +42,10 @@ class ExtractEmotionButon extends StatelessWidget {
               );
               return;
             }
+
+            // Show LLM opt-in dialog on first AI invocation (no-op afterwards).
+            await getIt<LlmDialogTrigger>().maybeShow(context);
+            if (!context.mounted) return;
 
             context.read<WriteMomentBloc>().add(const Analyzed());
             FocusManager.instance.primaryFocus?.unfocus();
