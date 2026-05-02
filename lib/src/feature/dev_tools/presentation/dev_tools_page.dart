@@ -384,8 +384,7 @@ class _ActionTile extends StatelessWidget {
               foregroundColor: Colors.white,
               backgroundColor: buttonColor,
               disabledBackgroundColor: _kInkSecondary.withValues(alpha: 0.4),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),

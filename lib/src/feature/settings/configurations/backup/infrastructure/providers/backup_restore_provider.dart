@@ -100,8 +100,7 @@ class BackupRestoreProvider implements IBackupRestoreProvider {
           : 0;
 
       // mode 명시가 없거나 merge면 충돌 시뮬레이션 수행
-      final shouldSimulate =
-          mode == RestoreMode.merge || mode == null;
+      final shouldSimulate = mode == RestoreMode.merge || mode == null;
       var conflict = 0;
       var fresh = 0;
       if (shouldSimulate && supportedModes.contains(RestoreMode.merge)) {
@@ -144,8 +143,7 @@ class BackupRestoreProvider implements IBackupRestoreProvider {
     try {
       if (!preview.supportedModes.contains(mode)) {
         return left(
-          RestoreFailure(
-              message: '이 형식은 ${_modeLabel(mode)} 모드를 지원하지 않습니다'),
+          RestoreFailure(message: '이 형식은 ${_modeLabel(mode)} 모드를 지원하지 않습니다'),
         );
       }
 
@@ -205,7 +203,8 @@ class BackupRestoreProvider implements IBackupRestoreProvider {
       if (hasCsv && hasMediaDir) return RestoreFormat.csvMediaZip;
       if (hasCsv) return RestoreFormat.csvMediaZip; // medias 비어있어도 같이 처리
       final hasSqlite = archive.files.any(
-        (f) => p.extension(f.name).toLowerCase() == '.sqlite' ||
+        (f) =>
+            p.extension(f.name).toLowerCase() == '.sqlite' ||
             p.extension(f.name).toLowerCase() == '.db',
       );
       if (hasSqlite) return RestoreFormat.sqliteZip;
@@ -294,8 +293,7 @@ class BackupRestoreProvider implements IBackupRestoreProvider {
         final modifiedAt = iModified >= 0 && iModified < row.length
             ? DateTime.parse(row[iModified]).toLocal()
             : date;
-        final reflection =
-            iReflection < row.length ? row[iReflection] : '';
+        final reflection = iReflection < row.length ? row[iReflection] : '';
         final emotionsRaw =
             iEmotions >= 0 && iEmotions < row.length ? row[iEmotions] : '';
         final mediaCount = iMediaCount >= 0 && iMediaCount < row.length
@@ -594,9 +592,8 @@ class BackupRestoreProvider implements IBackupRestoreProvider {
     }
     if (m.modifiedAt.isAfter(existing.modifiedAt)) {
       // 빈 reflection으로 의미 있는 데이터를 덮어쓰지 않는다
-      final newReflection = m.reflection.trim().isEmpty
-          ? existing.reflection
-          : m.reflection;
+      final newReflection =
+          m.reflection.trim().isEmpty ? existing.reflection : m.reflection;
       await (_database.update(_database.momentTable)
             ..where((tbl) => tbl.id.equals(m.id)))
           .write(

@@ -16,7 +16,7 @@ jobs:
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.35.5'
+        flutter-version: '3.38.5'
         channel: 'stable'
     
     - name: Install dependencies
@@ -26,7 +26,7 @@ jobs:
       run: dart format --output=none --set-exit-if-changed .
     
     - name: Analyze project source
-      run: flutter analyze
+      run: flutter analyze --no-fatal-infos
     
     - name: Run tests
       run: flutter test

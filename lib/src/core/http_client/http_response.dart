@@ -1,4 +1,3 @@
-
 class HttpResponse {
   final Map<String, dynamic> data;
 

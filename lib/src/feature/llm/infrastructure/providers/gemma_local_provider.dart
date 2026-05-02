@@ -41,8 +41,7 @@ class GemmaLocalProvider implements ILlmProvider {
       return const Left(
         LlmFailure(
           kind: LlmFailureKind.modelNotDownloaded,
-          message:
-              'Gemma 2B 모델이 다운로드되지 않았습니다. 모델을 먼저 다운로드해주세요.',
+          message: 'Gemma 2B 모델이 다운로드되지 않았습니다. 모델을 먼저 다운로드해주세요.',
         ),
       );
     }

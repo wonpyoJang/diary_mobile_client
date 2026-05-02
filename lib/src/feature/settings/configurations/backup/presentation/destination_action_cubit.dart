@@ -48,7 +48,8 @@ class DestinationActionState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [isWorking, successMessage, failure, lastSuccessKind];
+  List<Object?> get props =>
+      [isWorking, successMessage, failure, lastSuccessKind];
 }
 
 /// 백업 페이지 전용의 가벼운 cubit.

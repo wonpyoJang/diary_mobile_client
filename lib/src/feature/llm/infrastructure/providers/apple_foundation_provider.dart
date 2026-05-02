@@ -68,7 +68,8 @@ class AppleFoundationProvider implements ILlmProvider {
     } on MissingPluginException catch (e) {
       return left(
         LlmFailure(
-          message: e.message ?? 'Apple Foundation Models channel not registered',
+          message:
+              e.message ?? 'Apple Foundation Models channel not registered',
           kind: LlmFailureKind.unavailable,
         ),
       );

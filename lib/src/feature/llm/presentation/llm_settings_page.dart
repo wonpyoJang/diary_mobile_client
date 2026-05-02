@@ -32,7 +32,8 @@ class _LlmSettingsView extends StatelessWidget {
       ),
       body: BlocBuilder<LlmSettingsBloc, LlmSettingsState>(
         builder: (context, state) {
-          if (state.isLoading && state.mode == LlmMode.remote &&
+          if (state.isLoading &&
+              state.mode == LlmMode.remote &&
               state.backend == null &&
               !state.gemmaDownloaded &&
               !state.appleAvailable) {
@@ -50,9 +51,7 @@ class _LlmSettingsView extends StatelessWidget {
                   groupValue: state.mode,
                   onChanged: (mode) {
                     if (mode != null) {
-                      context
-                          .read<LlmSettingsBloc>()
-                          .add(ChangeMode(mode));
+                      context.read<LlmSettingsBloc>().add(ChangeMode(mode));
                     }
                   },
                   child: Column(

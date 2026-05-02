@@ -35,8 +35,7 @@ class CommonLoadingIndicator extends StatelessWidget {
                 ],
                 strokeWidth: 2,
                 backgroundColor: Colors.transparent,
-                pathBackgroundColor: Colors.black
-                ),
+                pathBackgroundColor: Colors.black),
           ),
         ],
       ),

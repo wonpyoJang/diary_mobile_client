@@ -59,8 +59,7 @@ class BackupFilesList extends StatelessWidget {
       children: files!
           .map(
             (name) => Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               child: ListTile(
                 tileColor: Colors.white,
                 shape: RoundedRectangleBorder(
