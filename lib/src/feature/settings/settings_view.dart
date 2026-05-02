@@ -3,6 +3,7 @@ import 'package:diary_mobile_client/src/feature/data_control/application/data_co
 import 'package:diary_mobile_client/src/feature/data_control/application/data_control_state.dart';
 import 'package:diary_mobile_client/src/feature/lock/application/lock_cubit.dart';
 import 'package:diary_mobile_client/src/feature/settings/application/settings_bloc.dart';
+import 'package:diary_mobile_client/src/feature/llm/presentation/llm_settings_page.dart';
 import 'package:diary_mobile_client/src/feature/settings/configurations/language/presentation/language_setting_page.dart';
 import 'package:diary_mobile_client/src/feature/settings/configurations/version/application/version_bloc.dart';
 import 'package:diary_mobile_client/src/feature/user/application/user_bloc.dart';
@@ -60,6 +61,14 @@ class SettingsView extends StatelessWidget {
                         builder: (context) => const LanguageSettingPage(),
                       ),
                     );
+                  },
+                ),
+                ListTile(
+                  title:
+                      Text(AppLocalizations.of(context)!.llmSettingsMenuLabel),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () {
+                    Navigator.pushNamed(context, LlmSettingsPage.routeName);
                   },
                 ),
                 BlocBuilder<LockCubit, LockState>(

@@ -508,4 +508,49 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get appleLogin => 'Continue with Apple';
+
+  @override
+  String get llmSettingsTitle => 'AI processing mode';
+
+  @override
+  String get llmSettingsMenuLabel => 'AI processing mode';
+
+  @override
+  String get llmModeRemoteLabel => 'Remote Gemini (default)';
+
+  @override
+  String get llmModeOnDeviceLabel => 'On-device';
+
+  @override
+  String get llmBackendDownloadLabel => 'Downloaded model (Gemma 2B)';
+
+  @override
+  String get llmBackendNativeLabel => 'Platform native (Apple Foundation Models)';
+
+  @override
+  String get llmBackendNativeUnsupported => 'Not supported on this device';
+
+  @override
+  String get llmDownloadRequired => 'Download required';
+
+  @override
+  String get llmDownloadButton => 'Download';
+
+  @override
+  String get llmPrivacyNotice => 'When on-device mode is used, your diary content is not sent to external services.';
+
+  @override
+  String get llmOptInDialogTitle => 'Choose AI processing mode';
+
+  @override
+  String get llmOptInDialogBody => 'Choose how your diary content will be processed for AI analysis. You can change this anytime in settings.';
+
+  @override
+  String get llmOptInButtonRemote => 'Use remote Gemini';
+
+  @override
+  String get llmOptInButtonOnDevice => 'Configure on-device';
+
+  @override
+  String get llmOptInButtonLater => 'Later';
 }
