@@ -64,15 +64,14 @@ class _VoiceInputButtonState extends State<VoiceInputButton> {
       onError: (_) {
         if (!mounted) return;
         setState(() => _isListening = false);
-        messenger.showSnackBar(
-            SnackBar(content: Text(l10n.voiceInputError)));
+        messenger.showSnackBar(SnackBar(content: Text(l10n.voiceInputError)));
       },
     );
 
     if (!available) {
       if (!mounted) return;
-      messenger.showSnackBar(
-          SnackBar(content: Text(l10n.voiceInputUnavailable)));
+      messenger
+          .showSnackBar(SnackBar(content: Text(l10n.voiceInputUnavailable)));
       return;
     }
 
@@ -101,9 +100,8 @@ class _VoiceInputButtonState extends State<VoiceInputButton> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final color = _isListening
-        ? const Color(0xFFE53935)
-        : const Color(0xFFFF965C);
+    final color =
+        _isListening ? const Color(0xFFE53935) : const Color(0xFFFF965C);
     return Tooltip(
       message: l10n.voiceInput,
       child: InkWell(
