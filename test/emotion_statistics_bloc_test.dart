@@ -10,7 +10,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 
 class _MockEmotionStatisticsRepository implements IEmotionStatisticsRepository {
-  Future<Either<LocalFailure, List<EmotionStats>>> Function()? onGetEmotionStats;
+  Future<Either<LocalFailure, List<EmotionStats>>> Function()?
+      onGetEmotionStats;
   Future<Either<LocalFailure, DiaryStatistics>> Function(int)? onGetDiaryStats;
 
   @override
@@ -47,8 +48,8 @@ void main() {
     test('copyWith 는 명시한 필드만 변경해야 함', () {
       const original = EmotionalStatisticsState();
       final stats = [_stat(Emotion.happiness, 3)];
-      final updated =
-          original.copyWith(status: EmotionalStatisticsStatus.ready, emotionStats: stats);
+      final updated = original.copyWith(
+          status: EmotionalStatisticsStatus.ready, emotionStats: stats);
       expect(updated.status, EmotionalStatisticsStatus.ready);
       expect(updated.emotionStats, stats);
       expect(updated.failure, isNull);
@@ -116,8 +117,9 @@ void main() {
       bloc.add(const FetchEmotionalStatistics());
       await expectLater(
         bloc.stream,
-        emitsThrough(predicate<EmotionalStatisticsState>(
-            (s) => s.status == EmotionalStatisticsStatus.error && s.failure == failure)),
+        emitsThrough(predicate<EmotionalStatisticsState>((s) =>
+            s.status == EmotionalStatisticsStatus.error &&
+            s.failure == failure)),
       );
       await bloc.close();
     });
@@ -178,8 +180,9 @@ void main() {
       bloc.add(const FetchDiaryStatistics());
       await expectLater(
         bloc.stream,
-        emitsThrough(predicate<EmotionalStatisticsState>(
-            (s) => s.status == EmotionalStatisticsStatus.error && s.failure == failure)),
+        emitsThrough(predicate<EmotionalStatisticsState>((s) =>
+            s.status == EmotionalStatisticsStatus.error &&
+            s.failure == failure)),
       );
       await bloc.close();
     });

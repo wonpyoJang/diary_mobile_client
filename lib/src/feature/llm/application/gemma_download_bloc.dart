@@ -10,8 +10,7 @@ part 'gemma_download_state.dart';
 
 @injectable
 class GemmaDownloadBloc extends Bloc<GemmaDownloadEvent, GemmaDownloadState> {
-  GemmaDownloadBloc(this._downloadManager)
-      : super(const GemmaDownloadIdle()) {
+  GemmaDownloadBloc(this._downloadManager) : super(const GemmaDownloadIdle()) {
     on<GemmaDownloadStart>(_onStart);
     on<GemmaDownloadCancel>(_onCancel);
     on<GemmaDownloadProgressUpdated>(_onProgressUpdated);

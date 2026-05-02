@@ -138,10 +138,7 @@ class DiaryHomeWidgetSync {
     final sorted = counts.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
 
-    return sorted
-        .take(limit)
-        .map((e) => e.key.enName)
-        .join(', ');
+    return sorted.take(limit).map((e) => e.key.enName).join(', ');
   }
 
   Future<Map<Emotion, int>> _emotionCountsForMoments(

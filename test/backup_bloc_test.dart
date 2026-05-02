@@ -39,8 +39,9 @@ class _MockBackupRepository implements IBackupRepository {
       onExportCsv?.call() ?? Future.value(right(unit));
 
   @override
-  Future<Either<BackupFailure, Unit>> exportMomentsCsvWithMediaZipToUserICloud() =>
-      onExportCsvWithMedia?.call() ?? Future.value(right(unit));
+  Future<Either<BackupFailure, Unit>>
+      exportMomentsCsvWithMediaZipToUserICloud() =>
+          onExportCsvWithMedia?.call() ?? Future.value(right(unit));
 }
 
 void main() {
@@ -121,7 +122,8 @@ void main() {
   });
 
   group('BackupBloc — UploadBackup', () {
-    test('성공 시 successMessage 와 lastBackupDate 가 설정되고 isLoading: false', () async {
+    test('성공 시 successMessage 와 lastBackupDate 가 설정되고 isLoading: false',
+        () async {
       final repo = _MockBackupRepository()..onUpload = () async => right(unit);
       final bloc = BackupBloc(repo);
 
@@ -151,9 +153,7 @@ void main() {
         emitsInOrder([
           predicate<BackupState>((s) => s.isLoading == true),
           predicate<BackupState>((s) =>
-              !s.isLoading &&
-              s.failure == failure &&
-              s.successMessage == null),
+              !s.isLoading && s.failure == failure && s.successMessage == null),
         ]),
       );
       await bloc.close();
@@ -192,8 +192,8 @@ void main() {
         bloc.stream,
         emitsInOrder([
           predicate<BackupState>((s) => s.isLoading == true),
-          predicate<BackupState>((s) =>
-              !s.isLoading && s.files != null && s.files!.isEmpty),
+          predicate<BackupState>(
+              (s) => !s.isLoading && s.files != null && s.files!.isEmpty),
         ]),
       );
       await bloc.close();
@@ -208,9 +208,8 @@ void main() {
       bloc.add(ExportBackupToUserICloud());
       await expectLater(
         bloc.stream,
-        emitsThrough(predicate<BackupState>((s) =>
-            !s.isLoading &&
-            s.successMessage == '데이터베이스를 ZIP으로 내보냈습니다')),
+        emitsThrough(predicate<BackupState>(
+            (s) => !s.isLoading && s.successMessage == '데이터베이스를 ZIP으로 내보냈습니다')),
       );
       await bloc.close();
     });
@@ -236,8 +235,7 @@ void main() {
       await expectLater(
         bloc.stream,
         emitsThrough(predicate<BackupState>((s) =>
-            !s.isLoading &&
-            s.successMessage == 'CSV와 사진을 ZIP으로 내보냈습니다')),
+            !s.isLoading && s.successMessage == 'CSV와 사진을 ZIP으로 내보냈습니다')),
       );
       await bloc.close();
     });
@@ -250,8 +248,8 @@ void main() {
       bloc.add(ExportMomentsCsvToUserICloud());
       await expectLater(
         bloc.stream,
-        emitsThrough(predicate<BackupState>(
-            (s) => !s.isLoading && s.successMessage == null && s.failure == failure)),
+        emitsThrough(predicate<BackupState>((s) =>
+            !s.isLoading && s.successMessage == null && s.failure == failure)),
       );
       await bloc.close();
     });

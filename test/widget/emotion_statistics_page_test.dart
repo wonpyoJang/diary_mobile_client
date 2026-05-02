@@ -13,7 +13,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 
 class _StubRepository implements IEmotionStatisticsRepository {
-  Future<Either<LocalFailure, List<EmotionStats>>> Function()? onGetEmotionStats;
+  Future<Either<LocalFailure, List<EmotionStats>>> Function()?
+      onGetEmotionStats;
   Future<Either<LocalFailure, DiaryStatistics>> Function(int)? onGetDiaryStats;
 
   @override
@@ -70,8 +71,7 @@ void main() {
 
   testWidgets('초기 로딩 중에는 CircularProgressIndicator 가 보여야 함', (tester) async {
     final completer = Completer<Either<LocalFailure, DiaryStatistics>>();
-    final repo = _StubRepository()
-      ..onGetDiaryStats = (_) => completer.future;
+    final repo = _StubRepository()..onGetDiaryStats = (_) => completer.future;
     _registerBloc(repo);
 
     await tester.pumpWidget(_wrap(const EmotionStatisticsPage()));

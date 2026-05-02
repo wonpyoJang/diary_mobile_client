@@ -78,11 +78,10 @@ void main() {
 
     // 카운트는 RichText 의 TextSpan 으로 렌더되므로 plain Text finder 가 안 됨.
     // '편의 일기' 라벨을 포함하는 RichText 를 골라 누적 텍스트에 '42' 가 있는지 검증.
-    final countFinder = find.byWidgetPredicate((w) =>
-        w is RichText && w.text.toPlainText().contains('편의 일기'));
+    final countFinder = find.byWidgetPredicate(
+        (w) => w is RichText && w.text.toPlainText().contains('편의 일기'));
     expect(countFinder, findsOneWidget);
-    final plain =
-        tester.widget<RichText>(countFinder).text.toPlainText();
+    final plain = tester.widget<RichText>(countFinder).text.toPlainText();
     expect(plain, contains('42'));
   });
 

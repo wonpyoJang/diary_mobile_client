@@ -14,5 +14,6 @@ class LlmRequest extends Equatable {
   });
 
   @override
-  List<Object?> get props => [prompt, systemInstruction, maxTokens, temperature];
+  List<Object?> get props =>
+      [prompt, systemInstruction, maxTokens, temperature];
 }

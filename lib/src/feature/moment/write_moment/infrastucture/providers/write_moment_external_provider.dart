@@ -37,8 +37,7 @@ class WriteMomentExternalProvider implements IWriteMomentExternalProvider {
     // text-only — the previous behavior of also forwarding `moment.medias` to
     // the model is intentionally dropped here. Image-aware analysis can return
     // once `LlmRequest` gains an `images:` field (TODO track-a multimodal).
-    const systemInstruction =
-        "아래 일기를 쓴 사람에 드러난 감정을 감정의 세기와 함께 알려줘.\n"
+    const systemInstruction = "아래 일기를 쓴 사람에 드러난 감정을 감정의 세기와 함께 알려줘.\n"
         "출력 형식은 리스트에 문자열로 담아줘, 코드가 아닌 문자열 형식으로 출력해줘. "
         "intensity는 0~1 사이의 값으로 출력해줘. intensity의 합은 1이 되도록 출력해줘.";
 
@@ -106,8 +105,8 @@ CASE2:
 
     final emotions = json['emotions'];
     if (emotions is! List) {
-      return left(const LLMFailure(
-          message: "[AI] 응답에 'emotions' 필드가 없어요. 다시 시도해주세요."));
+      return left(
+          const LLMFailure(message: "[AI] 응답에 'emotions' 필드가 없어요. 다시 시도해주세요."));
     }
 
     final List<EmotionalIntensityDto> emotionalIntensities = emotions

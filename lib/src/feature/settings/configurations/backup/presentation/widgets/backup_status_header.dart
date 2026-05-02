@@ -68,9 +68,7 @@ class BackupStatusHeader extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              hasBackup
-                  ? '주기적으로 백업해서 안전하게 보관하세요.'
-                  : '첫 백업으로 추억을 안전하게 보관하세요.',
+              hasBackup ? '주기적으로 백업해서 안전하게 보관하세요.' : '첫 백업으로 추억을 안전하게 보관하세요.',
               style: const TextStyle(
                 fontFamily: 'Pretendard',
                 fontSize: 13,

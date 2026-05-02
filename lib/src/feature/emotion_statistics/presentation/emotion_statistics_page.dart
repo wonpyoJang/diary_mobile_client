@@ -25,8 +25,8 @@ class EmotionStatisticsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<EmotionalStatisticsBloc>()
-        ..add(const FetchDiaryStatistics()),
+      create: (context) =>
+          getIt<EmotionalStatisticsBloc>()..add(const FetchDiaryStatistics()),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -355,12 +355,9 @@ class _ValencePieChart extends StatelessWidget {
     }
 
     final sections = <PieChartSectionData>[
-      if (positive > 0)
-        _section(positive, total, _kAccent),
-      if (neutral > 0)
-        _section(neutral, total, _kDivider),
-      if (negative > 0)
-        _section(negative, total, _kNegative),
+      if (positive > 0) _section(positive, total, _kAccent),
+      if (neutral > 0) _section(neutral, total, _kDivider),
+      if (negative > 0) _section(negative, total, _kNegative),
     ];
 
     return Container(
@@ -601,7 +598,8 @@ class _DailyTrendChart extends StatelessWidget {
       for (var i = 0; i < entries.length; i++)
         FlSpot(i.toDouble(), entries[i].value.toDouble()),
     ];
-    final maxY = entries.map((e) => e.value).fold<int>(0, (a, b) => a > b ? a : b);
+    final maxY =
+        entries.map((e) => e.value).fold<int>(0, (a, b) => a > b ? a : b);
     final yMax = (maxY < 3 ? 3 : maxY + 1).toDouble();
 
     return Container(

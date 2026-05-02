@@ -92,9 +92,7 @@ class _SchedulePageBody extends StatelessWidget {
                   backgroundColor: Colors.red,
                 ),
               );
-              context
-                  .read<ScheduleBloc>()
-                  .add(const ClearScheduleMessage());
+              context.read<ScheduleBloc>().add(const ClearScheduleMessage());
             },
           ),
           BlocListener<ScheduleBloc, ScheduleState>(
@@ -108,9 +106,7 @@ class _SchedulePageBody extends StatelessWidget {
                   backgroundColor: Colors.green,
                 ),
               );
-              context
-                  .read<ScheduleBloc>()
-                  .add(const ClearScheduleMessage());
+              context.read<ScheduleBloc>().add(const ClearScheduleMessage());
             },
           ),
         ],
@@ -198,9 +194,7 @@ class _SummaryCard extends StatelessWidget {
               onPressed: state.isLoading
                   ? null
                   : () {
-                      context
-                          .read<ScheduleBloc>()
-                          .add(const RunBackupNow());
+                      context.read<ScheduleBloc>().add(const RunBackupNow());
                     },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF5361f1),
@@ -258,9 +252,7 @@ class _FrequencySelector extends StatelessWidget {
             // ignore: deprecated_member_use
             onChanged: (value) {
               if (value != null) {
-                context
-                    .read<ScheduleBloc>()
-                    .add(ChangeFrequency(value));
+                context.read<ScheduleBloc>().add(ChangeFrequency(value));
               }
             },
             title: Text(
@@ -324,9 +316,7 @@ class _PreferredHourTile extends StatelessWidget {
             initialTime: TimeOfDay(hour: hour, minute: 0),
           );
           if (picked != null && context.mounted) {
-            context
-                .read<ScheduleBloc>()
-                .add(ChangePreferredHour(picked.hour));
+            context.read<ScheduleBloc>().add(ChangePreferredHour(picked.hour));
           }
         },
       ),

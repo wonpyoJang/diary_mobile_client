@@ -91,7 +91,8 @@ class _RestoreView extends StatelessWidget {
                   ],
                 ),
               ),
-              if (state.isLoading) const Center(child: CommonLoadingIndicator()),
+              if (state.isLoading)
+                const Center(child: CommonLoadingIndicator()),
             ],
           );
         },
@@ -266,8 +267,7 @@ class _PickFileStep extends StatelessWidget {
               ),
               child: const Column(
                 children: [
-                  Icon(Icons.folder_open,
-                      size: 48, color: Color(0xFF4169E1)),
+                  Icon(Icons.folder_open, size: 48, color: Color(0xFF4169E1)),
                   SizedBox(height: 12),
                   Text(
                     '백업 파일 선택하기',
@@ -362,10 +362,10 @@ class _PreviewAndModeStep extends StatelessWidget {
                 subtitle: '현재 데이터를 모두 대체합니다',
                 icon: Icons.warning_amber_rounded,
                 iconColor: const Color(0xFFD93B3B),
-                disabledReason: preview.supportedModes
-                        .contains(RestoreMode.overwrite)
-                    ? null
-                    : '이 형식에서는 사용할 수 없습니다',
+                disabledReason:
+                    preview.supportedModes.contains(RestoreMode.overwrite)
+                        ? null
+                        : '이 형식에서는 사용할 수 없습니다',
                 selected: selectedMode == RestoreMode.overwrite,
                 onSelect: onSelectMode,
               ),
@@ -377,10 +377,10 @@ class _PreviewAndModeStep extends StatelessWidget {
                     '신규 ${preview.newCount}개 / 충돌 ${preview.conflictCount}개(최신 유지)',
                 icon: Icons.merge_type,
                 iconColor: const Color(0xFF4169E1),
-                disabledReason:
-                    preview.supportedModes.contains(RestoreMode.merge)
-                        ? null
-                        : 'SQLite 형식은 병합을 지원하지 않습니다.\n(두 DB를 동시에 다루는 비용을 피하기 위함)',
+                disabledReason: preview.supportedModes
+                        .contains(RestoreMode.merge)
+                    ? null
+                    : 'SQLite 형식은 병합을 지원하지 않습니다.\n(두 DB를 동시에 다루는 비용을 피하기 위함)',
                 selected: selectedMode == RestoreMode.merge,
                 onSelect: onSelectMode,
               ),

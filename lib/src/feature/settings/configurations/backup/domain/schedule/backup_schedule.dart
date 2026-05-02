@@ -41,8 +41,7 @@ class BackupSchedule extends Equatable {
       return last.add(frequency.interval);
     }
     final now = DateTime.now();
-    final candidate =
-        DateTime(now.year, now.month, now.day, preferredHour);
+    final candidate = DateTime(now.year, now.month, now.day, preferredHour);
     if (candidate.isAfter(now)) {
       return candidate;
     }
@@ -78,12 +77,10 @@ class BackupSchedule extends Equatable {
       orElse: () => BackupFrequency.off,
     );
     final hourRaw = json['preferredHour'];
-    final preferredHour = hourRaw is int
-        ? hourRaw
-        : (hourRaw is num ? hourRaw.toInt() : 21);
+    final preferredHour =
+        hourRaw is int ? hourRaw : (hourRaw is num ? hourRaw.toInt() : 21);
     final lastRaw = json['lastSuccessAt'];
-    final lastSuccessAt =
-        lastRaw is String ? DateTime.tryParse(lastRaw) : null;
+    final lastSuccessAt = lastRaw is String ? DateTime.tryParse(lastRaw) : null;
     return BackupSchedule(
       frequency: frequency,
       preferredHour: preferredHour,

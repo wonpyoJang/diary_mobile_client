@@ -61,8 +61,8 @@ void main() {
         totalMoments: 12,
         emotionStats: [
           _stat(Emotion.happiness, 5), // positive
-          _stat(Emotion.sadness, 4),   // negative
-          _stat(Emotion.mystery, 3),   // neutral (valence 0)
+          _stat(Emotion.sadness, 4), // negative
+          _stat(Emotion.mystery, 3), // neutral (valence 0)
         ],
         dailyMomentCounts: const {},
       );

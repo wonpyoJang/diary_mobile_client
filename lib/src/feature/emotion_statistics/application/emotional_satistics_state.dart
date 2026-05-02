@@ -19,8 +19,7 @@ class EmotionalStatisticsState extends Equatable {
   });
 
   @override
-  List<Object?> get props =>
-      [status, emotionStats, diaryStatistics, failure];
+  List<Object?> get props => [status, emotionStats, diaryStatistics, failure];
 
   EmotionalStatisticsState copyWith({
     EmotionalStatisticsStatus? status,

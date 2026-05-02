@@ -164,9 +164,8 @@ class _GemmaDownloadView extends StatelessWidget {
     if (state is GemmaDownloadDownloading ||
         state is GemmaDownloadCheckingSpace) {
       return ElevatedButton.icon(
-        onPressed: () => context
-            .read<GemmaDownloadBloc>()
-            .add(const GemmaDownloadCancel()),
+        onPressed: () =>
+            context.read<GemmaDownloadBloc>().add(const GemmaDownloadCancel()),
         icon: const Icon(Icons.cancel),
         label: const Text('취소'),
       );
@@ -178,9 +177,8 @@ class _GemmaDownloadView extends StatelessWidget {
       );
     }
     return ElevatedButton.icon(
-      onPressed: () => context
-          .read<GemmaDownloadBloc>()
-          .add(const GemmaDownloadStart()),
+      onPressed: () =>
+          context.read<GemmaDownloadBloc>().add(const GemmaDownloadStart()),
       icon: const Icon(Icons.download),
       label: const Text('다운로드 시작'),
     );

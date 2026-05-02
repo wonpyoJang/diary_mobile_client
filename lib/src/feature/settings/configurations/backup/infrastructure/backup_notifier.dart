@@ -36,8 +36,7 @@ class BackupNotifier {
         // 위치 설정 실패 시에도 기본 UTC로 동작하도록 무시.
       }
 
-      const androidInit =
-          AndroidInitializationSettings('@mipmap/ic_launcher');
+      const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
       const darwinInit = DarwinInitializationSettings(
         requestAlertPermission: true,
         requestBadgePermission: true,
@@ -52,9 +51,8 @@ class BackupNotifier {
       await _plugin.initialize(initSettings);
 
       // iOS 권한 요청 (initialize 시 옵션과 더불어 명시 호출)
-      final iosPlugin = _plugin
-          .resolvePlatformSpecificImplementation<
-              IOSFlutterLocalNotificationsPlugin>();
+      final iosPlugin = _plugin.resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin>();
       await iosPlugin?.requestPermissions(
         alert: true,
         badge: true,
@@ -62,9 +60,8 @@ class BackupNotifier {
       );
 
       // Android 13+ POST_NOTIFICATIONS 권한 요청
-      final androidPlugin = _plugin
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>();
+      final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>();
       await androidPlugin?.requestNotificationsPermission();
 
       _initialized = true;
@@ -77,8 +74,7 @@ class BackupNotifier {
 
   /// 자동 백업 성공 알림.
   Future<void> notifyBackupSuccess(DateTime at) async {
-    final formatted =
-        DateFormat('yyyy년 MM월 dd일 HH:mm').format(at.toLocal());
+    final formatted = DateFormat('yyyy년 MM월 dd일 HH:mm').format(at.toLocal());
     await _show(
       title: '백업 완료',
       body: '$formatted 자동 백업이 성공했습니다',

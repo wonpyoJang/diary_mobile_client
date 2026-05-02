@@ -70,7 +70,8 @@ void main() {
     await tester.pumpWidget(const MyApp());
     await _settleAfterSplash(tester);
 
-    final navigator = tester.state<NavigatorState>(find.byType(Navigator).first);
+    final navigator =
+        tester.state<NavigatorState>(find.byType(Navigator).first);
     navigator.pushNamed(SettingsView.routeName);
     await _settleAfterSplash(tester);
 
@@ -81,7 +82,8 @@ void main() {
     await tester.pumpWidget(const MyApp());
     await _settleAfterSplash(tester);
 
-    final navigator = tester.state<NavigatorState>(find.byType(Navigator).first);
+    final navigator =
+        tester.state<NavigatorState>(find.byType(Navigator).first);
     navigator.pushNamed(EmotionStatisticsPage.routeName);
 
     // 페이지가 마운트되고 BlocBuilder 가 첫 프레임을 그릴 때까지 충분히 대기.
@@ -105,7 +107,8 @@ void main() {
     await tester.pumpWidget(const MyApp());
     await _settleAfterSplash(tester);
 
-    final navigator = tester.state<NavigatorState>(find.byType(Navigator).first);
+    final navigator =
+        tester.state<NavigatorState>(find.byType(Navigator).first);
     navigator.pushNamed(DevToolsPage.routeName);
     await _settleAfterSplash(tester);
 
@@ -118,7 +121,8 @@ void main() {
     await tester.pumpWidget(const MyApp());
     await _settleAfterSplash(tester);
 
-    final navigator = tester.state<NavigatorState>(find.byType(Navigator).first);
+    final navigator =
+        tester.state<NavigatorState>(find.byType(Navigator).first);
     navigator.push(MaterialPageRoute<void>(
       builder: (_) => const BackupPage(),
     ));
