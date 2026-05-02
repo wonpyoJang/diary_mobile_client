@@ -332,5 +332,11 @@
   "llmOptInButtonOnDevice": "Configure on-device",
   "@llmOptInButtonOnDevice": {"description": "Opt-in dialog - go to on-device settings button"},
   "llmOptInButtonLater": "Later",
-  "@llmOptInButtonLater": {"description": "Opt-in dialog - decide later button"}
+  "@llmOptInButtonLater": {"description": "Opt-in dialog - decide later button"},
+  "voiceInput": "Voice input",
+  "@voiceInput": {"description": "Tooltip for the voice diary mic button"},
+  "voiceInputUnavailable": "Voice input is not available on this device.",
+  "@voiceInputUnavailable": {"description": "Shown when speech_to_text is unavailable or permission is denied"},
+  "voiceInputError": "Voice recognition failed.",
+  "@voiceInputError": {"description": "Shown when STT engine returns an error"}
 }

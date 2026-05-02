@@ -46,6 +46,13 @@ class GemmaModelDownloadManager {
   /// Returns the on-disk path the model will / does live at.
   Future<String> modelFilePath() async => (await _modelFile()).path;
 
+  /// Public accessor used by [GemmaLocalProvider] to hand the on-disk path
+  /// to flutter_gemma's `modelManager.setModelPath`.
+  Future<String> getModelPath() async {
+    final dir = await getApplicationDocumentsDirectory();
+    return '${dir.path}/$_modelFileName';
+  }
+
   /// Returns true if the model file already exists on disk.
   Future<bool> isDownloaded() async {
     final file = await _modelFile();

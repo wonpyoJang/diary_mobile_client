@@ -227,5 +227,8 @@
   "profile": "プロフィール",
   "editProfile": "プロフィール編集",
   "userName": "ユーザー名",
-  "userEmail": "user@email.com"
+  "userEmail": "user@email.com",
+  "voiceInput": "音声入力",
+  "voiceInputUnavailable": "このデバイスでは音声入力を利用できません。",
+  "voiceInputError": "音声認識に失敗しました。"
 }

@@ -1,16 +1,19 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:diary_mobile_client/src/core/firebase/firebase_client.dart';
 import 'package:diary_mobile_client/src/core/firebase/firebase_failure.dart';
 import 'package:diary_mobile_client/src/core/llm/llm_failure.dart';
-import 'package:diary_mobile_client/src/core/llm/llm_query.dart';
 import 'package:diary_mobile_client/src/feature/common/moment/domain/enums/emotion.dart';
 import 'package:diary_mobile_client/src/feature/common/moment/infrastructure/dtos/emotional_intensity_dto.dart';
 import 'package:diary_mobile_client/src/feature/common/moment/infrastructure/dtos/moment_dto.dart';
 import 'package:diary_mobile_client/src/feature/llm/application/llm_router.dart';
+import 'package:diary_mobile_client/src/feature/llm/domain/llm_image_part.dart';
 import 'package:diary_mobile_client/src/feature/llm/domain/llm_request.dart';
 import 'package:diary_mobile_client/src/feature/moment/write_moment/infrastucture/interfaces/i_write_moment_external_provider.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:image/image.dart' as img;
 import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: IWriteMomentExternalProvider)
@@ -117,36 +120,106 @@ CASE2:
 
   @override
   Future<Either<LLMFailure, String>> describeImage(MomentDto moment) async {
-    // Multimodal call (image + prompt). `LlmRequest` does not yet model image
-    // inputs, so we use `LlmRouter.generateWithImages` — Track A's escape
-    // hatch that always routes to the remote Gemini backend regardless of the
-    // user's selected mode (on-device providers are text-only for MVP).
+    // Multimodal call (image + prompt). Migrated from the legacy
+    // `LlmRouter.generateWithImages(LLMQuery)` escape hatch to the unified
+    // `LlmRouter.generate(LlmRequest with images)` introduced in #53.
     //
-    // TODO(track-a): Once `LlmRequest` gains first-class multimodal support,
-    // migrate this to `llmRouter.generate(...)` like `analyze()` above.
-    final result = await llmRouter.generateWithImages(
-      query: LLMQuery(
-          direction: "아래 이미지를 바탕으로 일기를 작성해줘. 인스타그래머블하게 작성해줘.",
-          outputDirection: "출력 형식은 문자열로 출력해줘",
-          data: "",
-          medias: moment.medias,
-          context: "",
-          outputExample: """
-      CASE1:
-      {
-        "reflection" :
-          🌙\n오늘은 좀… 조용한 하루였다.\n사람 많은 카페에 앉아 혼자 창밖만 오래 바라봤다.\n음악은 잔잔했고, 커피는 미지근했다.\n\n요즘은\n누가 나한테 진심으로 말을 걸어줬으면 좋겠다는\n생각을 자주 한다.\n\n괜찮냐는 말보다\n진짜 괜찮아지고 싶다.\n\n누군가에게 너무 이해받고 싶은 날이었다.\n괜히 울컥한 감정,\n괜히 쓸쓸한 밤.\n\n근데 또 이상하게,\n이런 감정들도\n조금은 예쁘다고 느껴졌다.\n\n아무것도 안 해도 괜찮은 하루였으니까.\n\n🩶
-      }
-      CASE2:
-      {
-        "reflection": "오늘은 카페에 앉아 창밖을 바라봤다. 음악이 나왔고, 커피를 마셨다. 특별한 대화 없이 시간을 보냈다. 하루가 조용히 지나갔다."
-      }
-      """),
-    );
+    // The on-device providers (`gemma_local`, `apple_native`) currently reject
+    // image inputs with `Left(deviceNotSupported)`; the remote Gemini provider
+    // is the only one that accepts them today.
+    const systemInstruction =
+        "아래 이미지를 바탕으로 일기를 작성해줘. 인스타그래머블하게 작성해줘.\n출력 형식은 문자열로 출력해줘";
+
+    const prompt = """
+[출력 예시]
+CASE1:
+{
+  "reflection" :
+    🌙\n오늘은 좀… 조용한 하루였다.\n사람 많은 카페에 앉아 혼자 창밖만 오래 바라봤다.\n음악은 잔잔했고, 커피는 미지근했다.\n\n요즘은\n누가 나한테 진심으로 말을 걸어줬으면 좋겠다는\n생각을 자주 한다.\n\n괜찮냐는 말보다\n진짜 괜찮아지고 싶다.\n\n누군가에게 너무 이해받고 싶은 날이었다.\n괜히 울컥한 감정,\n괜히 쓸쓸한 밤.\n\n근데 또 이상하게,\n이런 감정들도\n조금은 예쁘다고 느껴졌다.\n\n아무것도 안 해도 괜찮은 하루였으니까.\n\n🩶
+}
+CASE2:
+{
+  "reflection": "오늘은 카페에 앉아 창밖을 바라봤다. 음악이 나왔고, 커피를 마셨다. 특별한 대화 없이 시간을 보냈다. 하루가 조용히 지나갔다."
+}
+""";
+
+    final List<LlmImagePart> images;
+    try {
+      images = await Future.wait(moment.medias.map(_toImagePart));
+    } on Exception catch (e) {
+      return left(LLMFailure(message: '[AI] 이미지 처리 중 알 수 없는 오류: $e'));
+    } on Error catch (e) {
+      return left(LLMFailure(message: '[AI] 이미지 처리 중 치명적 오류: $e'));
+    }
+
+    final result = await llmRouter.generate(LlmRequest(
+      prompt: prompt,
+      systemInstruction: systemInstruction,
+      temperature: 0.7,
+      images: images,
+    ));
 
     return result.match(
-      (failure) => left(failure),
-      (result) => right(result.response['reflection']),
+      (failure) => left(LLMFailure(message: failure.message)),
+      _parseDescribedReflection,
     );
+  }
+
+  Either<LLMFailure, String> _parseDescribedReflection(String text) {
+    final trimmed = text.trim();
+    final isJsonFence =
+        trimmed.startsWith('```json\n') && trimmed.endsWith('\n```');
+    final jsonString = isJsonFence
+        ? trimmed.replaceFirst('```json\n', '').replaceFirst('\n```', '')
+        : trimmed;
+
+    Map<String, dynamic>? json;
+    try {
+      final decoded = jsonDecode(jsonString);
+      if (decoded is Map<String, dynamic>) {
+        json = decoded;
+      }
+    } on FormatException {
+      return left(const LLMFailure(
+          message: "[AI] 응답을 JSON 형식으로 변환하는데 실패했어요. 다시 시도해주세요."));
+    } on Exception catch (e) {
+      return left(LLMFailure(message: '[AI] JSON 파싱 중 알 수 없는 오류: $e'));
+    }
+
+    if (json == null || json.isEmpty) {
+      return left(const LLMFailure(
+          message: "[AI] 응답을 JSON 형식으로 변환했는데 결과값이 빈 값이에요. 다시 시도해주세요."));
+    }
+
+    final reflection = json['reflection'];
+    if (reflection is! String) {
+      return left(const LLMFailure(
+          message: "[AI] 응답에 'reflection' 필드가 없어요. 다시 시도해주세요."));
+    }
+    return right(reflection);
+  }
+
+  /// Reads, resizes (to 512x512 JPEG), and wraps the file as an
+  /// [LlmImagePart]. Mirrors the preprocessing previously performed by
+  /// `LLMQuery.getImageParts()`.
+  ///
+  /// Because the image is re-encoded as JPEG, the resulting mime type is
+  /// always `image/jpeg`.
+  Future<LlmImagePart> _toImagePart(File file) async {
+    final raw = await file.readAsBytes();
+    final resized = _resizeAsJpeg(raw);
+    return LlmImagePart(bytes: resized, mimeType: 'image/jpeg');
+  }
+
+  Uint8List _resizeAsJpeg(Uint8List bytes) {
+    final decoded = img.decodeImage(bytes);
+    if (decoded == null) {
+      // Decode failed; fall back to original bytes. Mime type is still
+      // declared as JPEG to match prior behavior — most picked images on
+      // device are JPEG, and Gemini will reject malformed payloads anyway.
+      return bytes;
+    }
+    final resized = img.copyResize(decoded, width: 512, height: 512);
+    return Uint8List.fromList(img.encodeJpg(resized));
   }
 }

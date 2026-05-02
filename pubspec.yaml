@@ -76,6 +76,7 @@ dependencies:
   file_picker: ^8.1.4
   flutter_local_notifications: ^17.2.4
   timezone: ^0.9.4
+  speech_to_text: ^7.0.0
 
 dev_dependencies:
   flutter_test:
