@@ -13,5 +13,6 @@
 
 **관련 저장소 문서**
 
+- **직군 간 GitHub 소통**: [`.github/COMMUNICATION.md`](../../.github/COMMUNICATION.md) (이슈 템플릿·`role/*` 라벨)
 - 전략 이슈 본문 초안: `.github/business-strategy-issue-body.md` → GitHub 이슈 [비즈니스 전략 계획 #38](https://github.com/wonpyoJang/diary_mobile_client/issues/38)
 - 그로스 이슈 본문 초안: `.github/growth-strategy-issue-body.md`

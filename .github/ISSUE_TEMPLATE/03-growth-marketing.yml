@@ -1,0 +1,46 @@
+name: "그로스 / 마케팅"
+description: "ASO, 스토어 카피, 온보딩·알림 문구, 퍼널, 실험, 캠페인"
+title: "[growth] "
+labels:
+  - role/growth
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **그로스·마케팅** 직군용 이슈입니다. 앱 내 카피 변경이 필요하면 `role/product` 또는 개발 이슈와 연결하세요.  
+        참고: `.github/growth-strategy-issue-body.md`
+  - type: dropdown
+    id: channel
+    attributes:
+      label: 채널 / 영역
+      options:
+        - ASO / 스토어
+        - 온보딩·카피 (앱 내)
+        - 푸시·알림
+        - 유료 광고
+        - 콘텐츠·커뮤니티
+        - 실험·측정 설계
+        - 기타
+    validations:
+      required: true
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: 가설 또는 목표
+      description: 무엇을 바꾸면 어떤 지표가 어떻게 움직일지
+    validations:
+      required: true
+  - type: textarea
+    id: deliverables
+    attributes:
+      label: 산출물
+      description: 카피 초안, 키워드 목록, 실험 설계표 등
+    validations:
+      required: false
+  - type: textarea
+    id: links
+    attributes:
+      label: 연관 이슈·문서
+      description: 비즈니스 전략 이슈, 분석 이벤트명, Figma 링크 등
+    validations:
+      required: false

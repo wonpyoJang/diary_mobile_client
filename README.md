@@ -11,6 +11,10 @@ Diary Mobile Client is a Flutter application for logging daily "moments" and vis
 - **Theme & Mode Settings**: Toggle calendar mode, switch between light/dark/system themes and other preferences.
 - **Cross‑Platform**: Runs on Android, iOS, Web, macOS, Windows and Linux via Flutter.
 
+## Collaboration (GitHub)
+
+Role-based issues and labels (engineering, business, growth, product) are described in [`.github/COMMUNICATION.md`](.github/COMMUNICATION.md).
+
 ## Project Structure
 
 The `lib` directory follows a layered approach:
