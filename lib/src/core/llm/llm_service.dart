@@ -21,6 +21,17 @@ class LLMService {
   }
 }
 
+/// Legacy direct entry point to Firebase AI's Gemini model.
+///
+/// Prefer the new `ILlmProvider` abstraction at
+/// `lib/src/feature/llm/` (specifically `LlmRouter` for text generation
+/// and `LlmRouter.generateWithImages` while multimodal support is being
+/// designed). This class is retained only because [LlmRouter.generateWithImages]
+/// still delegates here for image/inline-data inputs.
+///
+/// TODO(track-a): Remove once [LlmRequest] supports multimodal inputs and
+/// `WriteMomentExternalProvider` no longer needs the legacy entry point.
+@Deprecated('Use LlmRouter / ILlmProvider via lib/src/feature/llm instead.')
 @singleton
 class Gemini {
   static final model =
