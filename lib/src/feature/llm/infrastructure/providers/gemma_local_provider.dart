@@ -1,3 +1,4 @@
+import 'package:flutter_gemma/flutter_gemma.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 
@@ -6,14 +7,27 @@ import '../../domain/i_llm_provider.dart';
 import '../../domain/llm_request.dart';
 import '../services/gemma_model_download_manager.dart';
 
+/// Sentinel exception used internally to signal that the model file is
+/// missing on disk; mapped to [LlmFailureKind.modelNotDownloaded] by
+/// [generateText].
+class _ModelNotDownloadedException implements Exception {
+  const _ModelNotDownloadedException(this.message);
+  final String message;
+  @override
+  String toString() => message;
+}
+
 /// On-device LLM provider backed by `flutter_gemma`.
 ///
-/// The actual model initialization and inference calls are intentionally
-/// stubbed with TODOs because the flutter_gemma init API takes several
-/// not-yet-decided parameters (model path resolution, supported model
-/// type enum, max-tokens, GPU/CPU backend selection). The structure here
-/// is enough to compile and to be wired into DI; the inference body is
-/// the only piece that needs filling in once the API is locked.
+/// Wires the canonical flutter_gemma 0.11.x init/inference flow:
+///   1. `FlutterGemmaPlugin.instance.modelManager.setModelPath(...)`
+///   2. `plugin.createModel(...)` → cached [InferenceModel]
+///   3. Per-request `model.createSession(...)` → `addQueryChunk` →
+///      `getResponse` → `session.close()`
+///
+/// The model URL/filename are still placeholders (issue #31), so this
+/// provider compiles and is wired into DI but cannot actually run inference
+/// until that lands.
 @Named('gemma_local')
 @LazySingleton(as: ILlmProvider)
 class GemmaLocalProvider implements ILlmProvider {
@@ -21,12 +35,7 @@ class GemmaLocalProvider implements ILlmProvider {
 
   final GemmaModelDownloadManager _downloadManager;
 
-  // Lazily-initialized flutter_gemma model handle. Kept as `dynamic` to
-  // avoid hard-coupling to a specific flutter_gemma type until we settle
-  // on the init API shape.
-  // TODO(track-b): Replace `dynamic` with the concrete flutter_gemma
-  // inference model type once the init signature is finalized.
-  Object? _model;
+  InferenceModel? _model;
 
   @override
   String get providerId => 'gemma_2b_local';
@@ -36,20 +45,17 @@ class GemmaLocalProvider implements ILlmProvider {
 
   @override
   Future<Either<LlmFailure, String>> generateText(LlmRequest request) async {
-    final downloaded = await _downloadManager.isDownloaded();
-    if (!downloaded) {
-      return const Left(
-        LlmFailure(
-          kind: LlmFailureKind.modelNotDownloaded,
-          message: 'Gemma 2B 모델이 다운로드되지 않았습니다. 모델을 먼저 다운로드해주세요.',
-        ),
-      );
-    }
-
     try {
       await _ensureModelInitialized();
       final output = await _runInference(request);
       return Right(output);
+    } on _ModelNotDownloadedException catch (e) {
+      return Left(
+        LlmFailure(
+          kind: LlmFailureKind.modelNotDownloaded,
+          message: e.message,
+        ),
+      );
     } catch (e) {
       return Left(
         LlmFailure(
@@ -63,33 +69,56 @@ class GemmaLocalProvider implements ILlmProvider {
   Future<void> _ensureModelInitialized() async {
     if (_model != null) return;
 
-    // TODO(track-b): Initialize flutter_gemma with the downloaded model file.
-    // Pseudocode (the exact API depends on flutter_gemma 0.11.x):
-    //
-    //   final modelPath = await _downloadManager.modelFilePath();
-    //   final plugin = FlutterGemmaPlugin.instance;
-    //   await plugin.modelManager.setModelPath(modelPath);
-    //   _model = await plugin.createModel(
-    //     modelType: ModelType.gemmaIt,
-    //     maxTokens: request.maxTokens ?? 1024,
-    //     preferredBackend: PreferredBackend.gpu,
-    //   );
-    //
-    // For now we just mark the model as "initialized" so the rest of the
-    // structure compiles cleanly and behaves consistently.
-    _model = const Object();
+    final downloaded = await _downloadManager.isDownloaded();
+    if (!downloaded) {
+      throw const _ModelNotDownloadedException(
+        'Gemma 2B 모델이 다운로드되지 않았습니다. 모델을 먼저 다운로드해주세요.',
+      );
+    }
+
+    final modelPath = await _downloadManager.getModelPath();
+    final plugin = FlutterGemmaPlugin.instance;
+    await plugin.modelManager.setModelPath(modelPath);
+
+    _model = await plugin.createModel(
+      modelType: ModelType.gemmaIt,
+      preferredBackend: PreferredBackend.cpu,
+      maxTokens: 512,
+      supportImage: false,
+    );
   }
 
   Future<String> _runInference(LlmRequest request) async {
-    // TODO(track-b): Run real inference via flutter_gemma once
-    // _ensureModelInitialized is wired up. Should respect:
-    //   - request.systemInstruction (if non-null, prepend)
-    //   - request.maxTokens
-    //   - request.temperature
-    // and return the generated string.
-    throw UnimplementedError(
-      'flutter_gemma inference is not yet wired up. '
-      'See TODO in GemmaLocalProvider._runInference.',
+    final model = _model;
+    if (model == null) {
+      // Should be unreachable because _ensureModelInitialized assigns _model
+      // before _runInference is called, but guard defensively.
+      throw StateError('GemmaLocalProvider: model not initialized.');
+    }
+
+    final session = await model.createSession(
+      temperature: request.temperature ?? 0.7,
+      topK: 40,
+      randomSeed: 42,
     );
+
+    try {
+      final fullPrompt = request.systemInstruction == null
+          ? request.prompt
+          : '${request.systemInstruction}\n\n${request.prompt}';
+      await session.addQueryChunk(Message.text(text: fullPrompt));
+      return await session.getResponse();
+    } finally {
+      await session.close();
+    }
+  }
+
+  /// Releases the cached [InferenceModel]. Safe to call multiple times.
+  Future<void> dispose() async {
+    final model = _model;
+    _model = null;
+    if (model != null) {
+      await model.close();
+    }
   }
 }
