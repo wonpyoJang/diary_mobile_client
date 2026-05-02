@@ -33,7 +33,6 @@ import 'core/home_widget/diary_home_widget_sync.dart' as _i160;
 import 'core/http_client/dio_module.dart' as _i871;
 import 'core/http_client/http_client.dart' as _i356;
 import 'core/image_picker/image_picker_client.dart' as _i917;
-import 'core/llm/llm_service.dart' as _i681;
 import 'core/media/domain/repositories/i_mieda_info_repository.dart' as _i1057;
 import 'core/media/infrastructure/providers/interfaces/i_media_info_local_provider.dart'
     as _i579;
@@ -239,7 +238,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i348.LocalFolderDestination());
     gh.factory<_i584.SettingsBloc>(() => _i584.SettingsBloc());
     gh.factory<_i307.MomentCalendarBloc>(() => _i307.MomentCalendarBloc());
-    gh.singleton<_i681.Gemini>(() => _i681.Gemini());
     gh.singleton<_i891.FileManager>(() => _i891.FileManager());
     gh.singleton<_i917.ImagePickerClient>(() => _i917.ImagePickerClient());
     gh.singleton<_i248.FirebaseClient>(() => _i248.FirebaseClient());
