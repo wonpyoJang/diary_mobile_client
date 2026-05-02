@@ -102,8 +102,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get webNotSupported => '此功能不支持网页端。';
 
   @override
-  String get appDownloadLink =>
-      'App下载链接: https://testflight.apple.com/join/9Z7cKQSj';
+  String get appDownloadLink => 'App下载链接: https://testflight.apple.com/join/9Z7cKQSj';
 
   @override
   String get shareEmotion => '分享今日情感。';
@@ -175,22 +174,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get emotion_happiness_name => '幸福';
 
   @override
-  String get emotion_happiness_explanation =>
-      '一种喜悦和满足的状态，在小瞬间和成就中感受到。\n\n带来正能量并提升生活质量。';
+  String get emotion_happiness_explanation => '一种喜悦和满足的状态，在小瞬间和成就中感受到。\n\n带来正能量并提升生活质量。';
 
   @override
   String get emotion_calmness_name => '平静';
 
   @override
-  String get emotion_calmness_explanation =>
-      '一种安宁和稳定的状态，远离噪音和压力。\n\n常在冥想或大自然中体验。';
+  String get emotion_calmness_explanation => '一种安宁和稳定的状态，远离噪音和压力。\n\n常在冥想或大自然中体验。';
 
   @override
   String get emotion_hope_name => '希望';
 
   @override
-  String get emotion_hope_explanation =>
-      '对未来的积极期待，即使在困难时期也能给予前进的力量。\n\n是生活的动力。';
+  String get emotion_hope_explanation => '对未来的积极期待，即使在困难时期也能给予前进的力量。\n\n是生活的动力。';
 
   @override
   String get emotion_mystery_name => '神秘';
@@ -202,50 +198,43 @@ class AppLocalizationsZh extends AppLocalizations {
   String get emotion_stability_name => '安定';
 
   @override
-  String get emotion_stability_explanation =>
-      '一种稳定不变的状态，在生活可预测和安全时感受到。\n\n提供心理安全感并减少压力。';
+  String get emotion_stability_explanation => '一种稳定不变的状态，在生活可预测和安全时感受到。\n\n提供心理安全感并减少压力。';
 
   @override
   String get emotion_gentleness_name => '温柔';
 
   @override
-  String get emotion_gentleness_explanation =>
-      '一种柔和和善良的感觉，在体贴和关心他人时体验。\n\n促进关系和理解。';
+  String get emotion_gentleness_explanation => '一种柔和和善良的感觉，在体贴和关心他人时体验。\n\n促进关系和理解。';
 
   @override
   String get emotion_freshness_name => '新鲜';
 
   @override
-  String get emotion_freshness_explanation =>
-      '一种新颖和清新的感觉，常在新开始或变化时感受到。\n\n为日常生活带来活力。';
+  String get emotion_freshness_explanation => '一种新颖和清新的感觉，常在新开始或变化时感受到。\n\n为日常生活带来活力。';
 
   @override
   String get emotion_boredom_name => '无聊';
 
   @override
-  String get emotion_boredom_explanation =>
-      '一种无趣和单调的状态，常在重复的情境中感受到。\n\n能激发寻找新刺激的动力。';
+  String get emotion_boredom_explanation => '一种无趣和单调的状态，常在重复的情境中感受到。\n\n能激发寻找新刺激的动力。';
 
   @override
   String get emotion_anger_name => '愤怒';
 
   @override
-  String get emotion_anger_explanation =>
-      '一种愤怒的状态，常在不公平的情境中感受到。\n\n有时是变革的强大动力。';
+  String get emotion_anger_explanation => '一种愤怒的状态，常在不公平的情境中感受到。\n\n有时是变革的强大动力。';
 
   @override
   String get emotion_excitement_name => '兴奋';
 
   @override
-  String get emotion_excitement_explanation =>
-      '一种充满期待和活力的状态，在特殊事件或成就前感受到。\n\n提升能量和积极行动。';
+  String get emotion_excitement_explanation => '一种充满期待和活力的状态，在特殊事件或成就前感受到。\n\n提升能量和积极行动。';
 
   @override
   String get emotion_sadness_name => '悲伤';
 
   @override
-  String get emotion_sadness_explanation =>
-      '一种痛苦和忧郁的状态，在失落或失望后感受到。\n\n有助于加深同理心和理解。';
+  String get emotion_sadness_explanation => '一种痛苦和忧郁的状态，在失落或失望后感受到。\n\n有助于加深同理心和理解。';
 
   @override
   String get emotion_fear_name => '恐惧';
@@ -257,15 +246,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get emotion_surprise_name => '惊讶';
 
   @override
-  String get emotion_surprise_explanation =>
-      '对意外事件的反应，在正面和负面事件中瞬间感受到。\n\n提升专注力和学习能力。';
+  String get emotion_surprise_explanation => '对意外事件的反应，在正面和负面事件中瞬间感受到。\n\n提升专注力和学习能力。';
 
   @override
   String get emotion_disgust_name => '厌恶';
 
   @override
-  String get emotion_disgust_explanation =>
-      '一种不喜欢和不适的感觉，对不愉快的情境或物质的本能反应。\n\n本能地保护健康和安全。';
+  String get emotion_disgust_explanation => '一种不喜欢和不适的感觉，对不愉快的情境或物质的本能反应。\n\n本能地保护健康和安全。';
 
   @override
   String get emotion_love_name => '爱';
@@ -295,22 +282,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get emotion_envy_name => '嫉妒';
 
   @override
-  String get emotion_envy_explanation =>
-      '对他人拥有的东西的渴望，在羡慕他人成功或财物时体验。\n\n可以成为动力来源。';
+  String get emotion_envy_explanation => '对他人拥有的东西的渴望，在羡慕他人成功或财物时体验。\n\n可以成为动力来源。';
 
   @override
   String get emotion_jealousy_name => '吃醋';
 
   @override
-  String get emotion_jealousy_explanation =>
-      '对失去珍贵事物的担忧，在他人成功或幸福时体验。\n\n本能地保护关系。';
+  String get emotion_jealousy_explanation => '对失去珍贵事物的担忧，在他人成功或幸福时体验。\n\n本能地保护关系。';
 
   @override
   String get emotion_contentment_name => '满足';
 
   @override
-  String get emotion_contentment_explanation =>
-      '对现状的满足感，在生活平衡和和谐时体验。\n\n提供心理稳定并减少压力。';
+  String get emotion_contentment_explanation => '对现状的满足感，在生活平衡和和谐时体验。\n\n提供心理稳定并减少压力。';
 
   @override
   String get emotion_gratitude_name => '感激';
@@ -322,15 +306,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get emotion_nostalgia_name => '怀旧';
 
   @override
-  String get emotion_nostalgia_explanation =>
-      '对过去的怀念，在回忆童年或特殊时刻时体验。\n\n珍惜过去的经历并丰富现在。';
+  String get emotion_nostalgia_explanation => '对过去的怀念，在回忆童年或特殊时刻时体验。\n\n珍惜过去的经历并丰富现在。';
 
   @override
   String get emotion_loneliness_name => '孤独';
 
   @override
-  String get emotion_loneliness_explanation =>
-      '一种孤单和隔离的感觉，在缺乏社交联系时体验。\n\n提醒关系的重要性并激励新联系。';
+  String get emotion_loneliness_explanation => '一种孤单和隔离的感觉，在缺乏社交联系时体验。\n\n提醒关系的重要性并激励新联系。';
 
   @override
   String get emotion_frustration_name => '挫折';
@@ -348,15 +330,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get emotion_amusement_name => '娱乐';
 
   @override
-  String get emotion_amusement_explanation =>
-      '通过幽默或娱乐感受到的乐趣和享受。\n\n缓解压力并带来正能量。';
+  String get emotion_amusement_explanation => '通过幽默或娱乐感受到的乐趣和享受。\n\n缓解压力并带来正能量。';
 
   @override
   String get emotion_relief_name => '宽慰';
 
   @override
-  String get emotion_relief_explanation =>
-      '担忧消失后的舒适状态，在紧张解除时体验。\n\n带来心理稳定和积极变化。';
+  String get emotion_relief_explanation => '担忧消失后的舒适状态，在紧张解除时体验。\n\n带来心理稳定和积极变化。';
 
   @override
   String get emotion_curiosity_name => '好奇';
@@ -386,8 +366,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get emotion_comfort_name => '舒适';
 
   @override
-  String get emotion_comfort_explanation =>
-      '无压力和担忧时的舒适和稳定状态。\n\n提供心理稳定并提升生活质量。';
+  String get emotion_comfort_explanation => '无压力和担忧时的舒适和稳定状态。\n\n提供心理稳定并提升生活质量。';
 
   @override
   String get emotion_joy_name => '喜悦';
@@ -399,15 +378,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get emotion_affection_name => '亲情';
 
   @override
-  String get emotion_affection_explanation =>
-      '在亲密关系中体验到的深厚感情和依恋。\n\n加强纽带并赋予生活意义。';
+  String get emotion_affection_explanation => '在亲密关系中体验到的深厚感情和依恋。\n\n加强纽带并赋予生活意义。';
 
   @override
   String get emotion_excitementNew_name => '激动';
 
   @override
-  String get emotion_excitementNew_explanation =>
-      '在特殊事件或成就前感受到的充满期待和活力的状态。\n\n提升能量和积极行动。';
+  String get emotion_excitementNew_explanation => '在特殊事件或成就前感受到的充满期待和活力的状态。\n\n提升能量和积极行动。';
 
   @override
   String get emotion_anxiety_name => '焦虑';
@@ -419,15 +396,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get emotion_tension_name => '紧张';
 
   @override
-  String get emotion_tension_explanation =>
-      '面对重要任务或挑战时的紧张和焦虑。\n\n提升专注力和解决问题的能力。';
+  String get emotion_tension_explanation => '面对重要任务或挑战时的紧张和焦虑。\n\n提升专注力和解决问题的能力。';
 
   @override
   String get emotion_depression_name => '抑郁';
 
   @override
-  String get emotion_depression_explanation =>
-      '在失落或失望后感受到的痛苦和忧郁状态。\n\n有助于加深同理心和理解。';
+  String get emotion_depression_explanation => '在失落或失望后感受到的痛苦和忧郁状态。\n\n有助于加深同理心和理解。';
 
   @override
   String get emotion_passion_name => '激情';
@@ -439,8 +414,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get emotion_cheerfulness_name => '开朗';
 
   @override
-  String get emotion_cheerfulness_explanation =>
-      '轻松明快的心情，让日常更有生气。\n\n把正能量传递给他人。';
+  String get emotion_cheerfulness_explanation => '轻松明快的心情，让日常更有生气。\n\n把正能量传递给他人。';
 
   @override
   String get emotion_peace_name => '和平';
@@ -536,54 +510,63 @@ class AppLocalizationsZh extends AppLocalizations {
   String get appleLogin => '使用Apple登录';
 
   @override
-  String get llmSettingsTitle => 'AI 处理模式';
+  String get llmSettingsTitle => 'AI processing mode';
 
   @override
-  String get llmSettingsMenuLabel => 'AI 处理模式';
+  String get llmSettingsMenuLabel => 'AI processing mode';
 
   @override
-  String get llmModeRemoteLabel => '远程 Gemini（默认）';
+  String get llmModeRemoteLabel => 'Remote Gemini (default)';
 
   @override
-  String get llmModeOnDeviceLabel => '设备端';
+  String get llmModeOnDeviceLabel => 'On-device';
 
   @override
-  String get llmBackendDownloadLabel => '下载模型（Gemma 2B）';
+  String get llmBackendDownloadLabel => 'Downloaded model (Gemma 2B)';
 
   @override
-  String get llmBackendNativeLabel => '平台原生（Apple Foundation Models）';
+  String get llmBackendNativeLabel => 'Platform native (Apple Foundation Models)';
 
   @override
-  String get llmBackendNativeUnsupported => '此设备不支持';
+  String get llmBackendNativeUnsupported => 'Not supported on this device';
 
   @override
-  String get llmDownloadRequired => '需要下载';
+  String get llmDownloadRequired => 'Download required';
 
   @override
-  String get llmDownloadButton => '下载';
+  String get llmDownloadButton => 'Download';
 
   @override
-  String get llmPrivacyNotice => '使用设备端模式时，日记内容不会发送到外部服务。';
+  String get llmPrivacyNotice => 'When on-device mode is used, your diary content is not sent to external services.';
 
   @override
-  String get llmOptInDialogTitle => '选择 AI 处理模式';
+  String get llmOptInDialogTitle => 'Choose AI processing mode';
 
   @override
-  String get llmOptInDialogBody => '请选择如何处理日记内容以进行 AI 分析。可随时在设置中更改。';
+  String get llmOptInDialogBody => 'Choose how your diary content will be processed for AI analysis. You can change this anytime in settings.';
 
   @override
-  String get llmOptInButtonRemote => '使用远程 Gemini';
+  String get llmOptInButtonRemote => 'Use remote Gemini';
 
   @override
-  String get llmOptInButtonOnDevice => '配置设备端';
+  String get llmOptInButtonOnDevice => 'Configure on-device';
 
   @override
-  String get llmOptInButtonLater => '稍后';
+  String get llmOptInButtonLater => 'Later';
+
+  @override
+  String get voiceInput => '语音输入';
+
+  @override
+  String get voiceInputUnavailable => '此设备不支持语音输入。';
+
+  @override
+  String get voiceInputError => '语音识别失败。';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
 class AppLocalizationsZhTw extends AppLocalizationsZh {
-  AppLocalizationsZhTw() : super('zh_TW');
+  AppLocalizationsZhTw(): super('zh_TW');
 
   @override
   String get appTitle => '情感日記';
@@ -679,8 +662,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get webNotSupported => '此功能不支援網頁端。';
 
   @override
-  String get appDownloadLink =>
-      'App下載連結: https://testflight.apple.com/join/9Z7cKQSj';
+  String get appDownloadLink => 'App下載連結: https://testflight.apple.com/join/9Z7cKQSj';
 
   @override
   String get shareEmotion => '分享今日情感。';
@@ -752,22 +734,19 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get emotion_happiness_name => '幸福';
 
   @override
-  String get emotion_happiness_explanation =>
-      '一種喜悅和滿足的狀態，在小瞬間和成就中感受到。\n\n帶來正能量並提升生活品質。';
+  String get emotion_happiness_explanation => '一種喜悅和滿足的狀態，在小瞬間和成就中感受到。\n\n帶來正能量並提升生活品質。';
 
   @override
   String get emotion_calmness_name => '平靜';
 
   @override
-  String get emotion_calmness_explanation =>
-      '一種安寧和穩定的狀態，遠離噪音和壓力。\n\n常在冥想或大自然中體驗。';
+  String get emotion_calmness_explanation => '一種安寧和穩定的狀態，遠離噪音和壓力。\n\n常在冥想或大自然中體驗。';
 
   @override
   String get emotion_hope_name => '希望';
 
   @override
-  String get emotion_hope_explanation =>
-      '對未來的積極期待，即使在困難時期也能給予前進的力量。\n\n是生活的動力。';
+  String get emotion_hope_explanation => '對未來的積極期待，即使在困難時期也能給予前進的力量。\n\n是生活的動力。';
 
   @override
   String get emotion_mystery_name => '神祕';
@@ -779,50 +758,43 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get emotion_stability_name => '安定';
 
   @override
-  String get emotion_stability_explanation =>
-      '一種穩定不變的狀態，在生活可預測和安全時感受到。\n\n提供心理安全感並減少壓力。';
+  String get emotion_stability_explanation => '一種穩定不變的狀態，在生活可預測和安全時感受到。\n\n提供心理安全感並減少壓力。';
 
   @override
   String get emotion_gentleness_name => '溫柔';
 
   @override
-  String get emotion_gentleness_explanation =>
-      '一種柔和和善良的感覺，在體貼和關心他人時體驗。\n\n促進關係和理解。';
+  String get emotion_gentleness_explanation => '一種柔和和善良的感覺，在體貼和關心他人時體驗。\n\n促進關係和理解。';
 
   @override
   String get emotion_freshness_name => '新鮮';
 
   @override
-  String get emotion_freshness_explanation =>
-      '一種新穎和清新的感覺，常在新開始或變化時感受到。\n\n為日常生活帶來活力。';
+  String get emotion_freshness_explanation => '一種新穎和清新的感覺，常在新開始或變化時感受到。\n\n為日常生活帶來活力。';
 
   @override
   String get emotion_boredom_name => '無聊';
 
   @override
-  String get emotion_boredom_explanation =>
-      '一種無趣和單調的狀態，常在重複的情境中感受到。\n\n能激發尋找新刺激的動力。';
+  String get emotion_boredom_explanation => '一種無趣和單調的狀態，常在重複的情境中感受到。\n\n能激發尋找新刺激的動力。';
 
   @override
   String get emotion_anger_name => '憤怒';
 
   @override
-  String get emotion_anger_explanation =>
-      '一種憤怒的狀態，常在不公平的情境中感受到。\n\n有時是變革的強大動力。';
+  String get emotion_anger_explanation => '一種憤怒的狀態，常在不公平的情境中感受到。\n\n有時是變革的強大動力。';
 
   @override
   String get emotion_excitement_name => '興奮';
 
   @override
-  String get emotion_excitement_explanation =>
-      '一種充滿期待和活力的狀態，在特殊事件或成就前感受到。\n\n提升能量和積極行動。';
+  String get emotion_excitement_explanation => '一種充滿期待和活力的狀態，在特殊事件或成就前感受到。\n\n提升能量和積極行動。';
 
   @override
   String get emotion_sadness_name => '悲傷';
 
   @override
-  String get emotion_sadness_explanation =>
-      '一種痛苦和憂鬱的狀態，在失落或失望後感受到。\n\n有助於加深同理心和理解。';
+  String get emotion_sadness_explanation => '一種痛苦和憂鬱的狀態，在失落或失望後感受到。\n\n有助於加深同理心和理解。';
 
   @override
   String get emotion_fear_name => '恐懼';
@@ -834,15 +806,13 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get emotion_surprise_name => '驚訝';
 
   @override
-  String get emotion_surprise_explanation =>
-      '對意外事件的反應，在正面和負面事件中瞬間感受到。\n\n提升專注力和學習能力。';
+  String get emotion_surprise_explanation => '對意外事件的反應，在正面和負面事件中瞬間感受到。\n\n提升專注力和學習能力。';
 
   @override
   String get emotion_disgust_name => '厭惡';
 
   @override
-  String get emotion_disgust_explanation =>
-      '一種不喜歡和不適的感覺，對不愉快的情境或物質的本能反應。\n\n本能地保護健康和安全。';
+  String get emotion_disgust_explanation => '一種不喜歡和不適的感覺，對不愉快的情境或物質的本能反應。\n\n本能地保護健康和安全。';
 
   @override
   String get emotion_love_name => '愛';
@@ -872,22 +842,19 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get emotion_envy_name => '嫉妒';
 
   @override
-  String get emotion_envy_explanation =>
-      '對他人擁有的東西的渴望，在羨慕他人成功或財物時體驗。\n\n可以成為動力來源。';
+  String get emotion_envy_explanation => '對他人擁有的東西的渴望，在羨慕他人成功或財物時體驗。\n\n可以成為動力來源。';
 
   @override
   String get emotion_jealousy_name => '吃醋';
 
   @override
-  String get emotion_jealousy_explanation =>
-      '對失去珍貴事物的擔憂，在他人成功或幸福時體驗。\n\n本能地保護關係。';
+  String get emotion_jealousy_explanation => '對失去珍貴事物的擔憂，在他人成功或幸福時體驗。\n\n本能地保護關係。';
 
   @override
   String get emotion_contentment_name => '滿足';
 
   @override
-  String get emotion_contentment_explanation =>
-      '對現狀的滿足感，在生活平衡和和諧時體驗。\n\n提供心理穩定並減少壓力。';
+  String get emotion_contentment_explanation => '對現狀的滿足感，在生活平衡和和諧時體驗。\n\n提供心理穩定並減少壓力。';
 
   @override
   String get emotion_gratitude_name => '感激';
@@ -899,15 +866,13 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get emotion_nostalgia_name => '懷舊';
 
   @override
-  String get emotion_nostalgia_explanation =>
-      '對過去的懷念，在回憶童年或特殊時刻時體驗。\n\n珍惜過去的經歷並豐富現在。';
+  String get emotion_nostalgia_explanation => '對過去的懷念，在回憶童年或特殊時刻時體驗。\n\n珍惜過去的經歷並豐富現在。';
 
   @override
   String get emotion_loneliness_name => '孤獨';
 
   @override
-  String get emotion_loneliness_explanation =>
-      '一種孤單和隔離的感覺，在缺乏社交聯繫時體驗。\n\n提醒關係的重要性並激勵新聯繫。';
+  String get emotion_loneliness_explanation => '一種孤單和隔離的感覺，在缺乏社交聯繫時體驗。\n\n提醒關係的重要性並激勵新聯繫。';
 
   @override
   String get emotion_frustration_name => '挫折';
@@ -925,15 +890,13 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get emotion_amusement_name => '娛樂';
 
   @override
-  String get emotion_amusement_explanation =>
-      '透過幽默或娛樂感受到的樂趣和享受。\n\n緩解壓力並帶來正能量。';
+  String get emotion_amusement_explanation => '透過幽默或娛樂感受到的樂趣和享受。\n\n緩解壓力並帶來正能量。';
 
   @override
   String get emotion_relief_name => '寬慰';
 
   @override
-  String get emotion_relief_explanation =>
-      '擔憂消失後的舒適狀態，在緊張解除時體驗。\n\n帶來心理穩定和積極變化。';
+  String get emotion_relief_explanation => '擔憂消失後的舒適狀態，在緊張解除時體驗。\n\n帶來心理穩定和積極變化。';
 
   @override
   String get emotion_curiosity_name => '好奇';
@@ -963,8 +926,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get emotion_comfort_name => '舒適';
 
   @override
-  String get emotion_comfort_explanation =>
-      '無壓力和擔憂時的舒適和穩定狀態。\n\n提供心理穩定並提升生活品質。';
+  String get emotion_comfort_explanation => '無壓力和擔憂時的舒適和穩定狀態。\n\n提供心理穩定並提升生活品質。';
 
   @override
   String get emotion_joy_name => '喜悅';
@@ -976,15 +938,13 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get emotion_affection_name => '親情';
 
   @override
-  String get emotion_affection_explanation =>
-      '在親密關係中體驗到的深厚感情和依戀。\n\n加強連結並賦予生活意義。';
+  String get emotion_affection_explanation => '在親密關係中體驗到的深厚感情和依戀。\n\n加強連結並賦予生活意義。';
 
   @override
   String get emotion_excitementNew_name => '激動';
 
   @override
-  String get emotion_excitementNew_explanation =>
-      '在特殊事件或成就前感受到的充滿期待和活力的狀態。\n\n提升能量和積極行動。';
+  String get emotion_excitementNew_explanation => '在特殊事件或成就前感受到的充滿期待和活力的狀態。\n\n提升能量和積極行動。';
 
   @override
   String get emotion_anxiety_name => '焦慮';
@@ -996,15 +956,13 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get emotion_tension_name => '緊張';
 
   @override
-  String get emotion_tension_explanation =>
-      '面對重要任務或挑戰時的緊張和焦慮。\n\n提升專注力和解決問題的能力。';
+  String get emotion_tension_explanation => '面對重要任務或挑戰時的緊張和焦慮。\n\n提升專注力和解決問題的能力。';
 
   @override
   String get emotion_depression_name => '憂鬱';
 
   @override
-  String get emotion_depression_explanation =>
-      '在失落或失望後感受到的痛苦和憂鬱狀態。\n\n有助於加深同理心和理解。';
+  String get emotion_depression_explanation => '在失落或失望後感受到的痛苦和憂鬱狀態。\n\n有助於加深同理心和理解。';
 
   @override
   String get emotion_passion_name => '熱情';
@@ -1016,8 +974,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get emotion_cheerfulness_name => '開朗';
 
   @override
-  String get emotion_cheerfulness_explanation =>
-      '輕快明亮的心情，讓日常更有生氣。\n\n把正能量傳遞給他人。';
+  String get emotion_cheerfulness_explanation => '輕快明亮的心情，讓日常更有生氣。\n\n把正能量傳遞給他人。';
 
   @override
   String get emotion_peace_name => '和平';
@@ -1113,47 +1070,11 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get appleLogin => '使用Apple登入';
 
   @override
-  String get llmSettingsTitle => 'AI 處理模式';
+  String get voiceInput => '語音輸入';
 
   @override
-  String get llmSettingsMenuLabel => 'AI 處理模式';
+  String get voiceInputUnavailable => '此裝置不支援語音輸入。';
 
   @override
-  String get llmModeRemoteLabel => '遠端 Gemini（預設）';
-
-  @override
-  String get llmModeOnDeviceLabel => '裝置端';
-
-  @override
-  String get llmBackendDownloadLabel => '下載模型（Gemma 2B）';
-
-  @override
-  String get llmBackendNativeLabel => '平台原生（Apple Foundation Models）';
-
-  @override
-  String get llmBackendNativeUnsupported => '此裝置不支援';
-
-  @override
-  String get llmDownloadRequired => '需要下載';
-
-  @override
-  String get llmDownloadButton => '下載';
-
-  @override
-  String get llmPrivacyNotice => '使用裝置端模式時，日記內容不會傳送到外部服務。';
-
-  @override
-  String get llmOptInDialogTitle => '選擇 AI 處理模式';
-
-  @override
-  String get llmOptInDialogBody => '請選擇如何處理日記內容以進行 AI 分析。可隨時在設定中變更。';
-
-  @override
-  String get llmOptInButtonRemote => '使用遠端 Gemini';
-
-  @override
-  String get llmOptInButtonOnDevice => '設定裝置端';
-
-  @override
-  String get llmOptInButtonLater => '稍後';
+  String get voiceInputError => '語音辨識失敗。';
 }

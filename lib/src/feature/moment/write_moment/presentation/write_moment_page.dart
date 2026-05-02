@@ -376,7 +376,7 @@ class WriteMomentPageState extends State<WriteMomentPage> {
                                 if (state.mode == WriteMode.view) {
                                   return const NextButton();
                                 } else {
-                                  return const ImageButtons();
+                                  return ImageButtons(controller: _controller);
                                 }
                               },
                             ),
