@@ -65,6 +65,12 @@ import 'feature/emotion_statistics/infrastructure/providers/interfaces/i_emotion
     as _i696;
 import 'feature/emotion_statistics/infrastructure/repositories/emotion_statistics_repository.dart'
     as _i446;
+import 'feature/llm/application/gemma_download_bloc.dart' as _i380;
+import 'feature/llm/domain/i_llm_provider.dart' as _i952;
+import 'feature/llm/infrastructure/providers/gemma_local_provider.dart'
+    as _i638;
+import 'feature/llm/infrastructure/services/gemma_model_download_manager.dart'
+    as _i593;
 import 'feature/lock/application/lock_cubit.dart' as _i600;
 import 'feature/lock/domain/repositories/interfaces/i_local_authenticator_repository.dart'
     as _i828;
@@ -195,6 +201,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i738.IAuthRepository>(
         () => _i174.AuthRepository(gh<_i42.ISupabaseAuthProvider>()));
     gh.singleton<_i356.HttpClient>(() => _i356.HttpClient(gh<_i361.Dio>()));
+    gh.lazySingleton<_i593.GemmaModelDownloadManager>(
+        () => _i593.GemmaModelDownloadManager(gh<_i361.Dio>()));
     gh.lazySingleton<_i130.IMeidaInfoLocalProvider>(
         () => _i1061.MediaInfoLocalProvider());
     gh.lazySingleton<_i23.IDeviceInfoLocalProvider>(
@@ -220,8 +228,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i190.ToastBloc>(() => _i190.ToastBloc(gh<_i461.Bus>()));
     gh.lazySingleton<_i27.ILocalLockProvider>(
         () => _i625.LocalLockProvider(hiveClient: gh<_i951.HiveClient>()));
+    gh.lazySingleton<_i952.ILlmProvider>(
+      () => _i638.GemmaLocalProvider(gh<_i593.GemmaModelDownloadManager>()),
+      instanceName: 'gemma_local',
+    );
     gh.lazySingleton<_i24.IUserInternalProvider>(
         () => _i672.UserInternalProvider(gh<_i407.DriftClient>()));
+    gh.factory<_i380.GemmaDownloadBloc>(
+        () => _i380.GemmaDownloadBloc(gh<_i593.GemmaModelDownloadManager>()));
     gh.factory<_i163.ILocalDataControlProvider>(
         () => _i186.LocalDataControlProvider(gh<_i951.HiveClient>()));
     gh.lazySingleton<_i1018.IDataControlRepository>(() =>
