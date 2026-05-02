@@ -14,6 +14,19 @@ Flutter 모바일 앱. BLoC + injectable + hydrated_bloc 기반.
 | 캐시까지 정리 | `make clean-all` |
 | iOS 시뮬레이터 실행 | `flutter run -d "iPhone 16 Pro"` |
 
+## AI 도구 설정 (저장소로 관리)
+
+팀·CI와 동일한 가이드를 쓰려면 아래는 **반드시 커밋**한다. 로컬 전용 캐시는 `.gitignore`로 제외한다.
+
+| 구분 | 경로 | 설명 |
+|------|------|------|
+| **Cursor Rules** | `.cursor/rules/*.mdc` | 에디터 규칙(토큰·레이트 등). 새 규칙 추가 시 이 디렉터리에 두고 커밋. |
+| **Cursor 서브에이전트** | `.cursor/agents/*.md` | 프로젝트 전용 서브에이전트. |
+| **Claude Code 서브에이전트** | `.claude/agents/*.md` | Cursor와 **동일 역할**을 두 도구에서 쓰도록 내용을 맞춘다. |
+
+- 역할 인덱스: [`.claude/agents/business-team.md`](.claude/agents/business-team.md) — marketer, business-strategist 요약 및 관련 이슈 링크.
+- **제외**: `.claude/worktrees/`는 Claude Code 로컬 워크트리로, 저장소에 넣지 않음.
+
 ## 디렉토리 규약
 - `lib/src/feature/<도메인>/` — 화면/위젯/BLoC 묶음 (auth, backup, emotion_statistics, dev_tools 등)
 - `lib/src/core/` — 공용 유틸/모델
