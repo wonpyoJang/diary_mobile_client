@@ -65,14 +65,25 @@ import 'feature/emotion_statistics/infrastructure/providers/interfaces/i_emotion
     as _i696;
 import 'feature/emotion_statistics/infrastructure/repositories/emotion_statistics_repository.dart'
     as _i446;
+import 'feature/llm/application/gemma_download_bloc.dart' as _i380;
 import 'feature/llm/application/llm_dialog_trigger.dart' as _i1019;
+import 'feature/llm/application/llm_router.dart' as _i795;
 import 'feature/llm/application/llm_settings_bloc.dart' as _i238;
 import 'feature/llm/domain/i_llm_capability_probe.dart' as _i1000;
+import 'feature/llm/domain/i_llm_provider.dart' as _i952;
 import 'feature/llm/domain/i_llm_settings_repository.dart' as _i419;
+import 'feature/llm/infrastructure/providers/apple_foundation_provider.dart'
+    as _i323;
+import 'feature/llm/infrastructure/providers/gemini_remote_provider.dart'
+    as _i1038;
+import 'feature/llm/infrastructure/providers/gemma_local_provider.dart'
+    as _i638;
 import 'feature/llm/infrastructure/repositories/llm_settings_repository.dart'
     as _i601;
-import 'feature/llm/infrastructure/services/stub_llm_capability_probe.dart'
-    as _i370;
+import 'feature/llm/infrastructure/services/device_capability_detector.dart'
+    as _i901;
+import 'feature/llm/infrastructure/services/gemma_model_download_manager.dart'
+    as _i593;
 import 'feature/lock/application/lock_cubit.dart' as _i600;
 import 'feature/lock/domain/repositories/interfaces/i_local_authenticator_repository.dart'
     as _i828;
@@ -190,27 +201,30 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i48.SupabaseUserExternalProvider(gh<_i454.SupabaseClient>()));
     gh.lazySingleton<_i743.IVersionLocalProvider>(
         () => _i550.VersionLocalProvider());
-    gh.lazySingleton<_i1000.ILlmCapabilityProbe>(
-        () => const _i370.StubLlmCapabilityProbe());
-    gh.lazySingleton<_i1039.IWriteMomentExternalProvider>(
-        () => _i550.WriteMomentExternalProvider(
-              gh<_i681.Gemini>(),
-              gh<_i248.FirebaseClient>(),
-            ));
     gh.lazySingleton<_i42.ISupabaseAuthProvider>(
         () => _i65.SupabaseAuthProvider(gh<_i454.SupabaseClient>()));
     gh.lazySingleton<_i170.IVersionRepository>(
         () => _i191.VersionRepository(gh<_i743.IVersionLocalProvider>()));
+    gh.lazySingleton<_i952.ILlmProvider>(
+      () => _i1038.GeminiRemoteProvider(),
+      instanceName: 'gemini_remote',
+    );
     gh.lazySingleton<_i951.HiveClient>(() => const _i951.HiveClientImpl());
     gh.factory<_i895.IAuthenticatorProvider>(
         () => _i911.LocalAuthenticatorProvider());
     gh.lazySingleton<_i738.IAuthRepository>(
         () => _i174.AuthRepository(gh<_i42.ISupabaseAuthProvider>()));
     gh.singleton<_i356.HttpClient>(() => _i356.HttpClient(gh<_i361.Dio>()));
+    gh.lazySingleton<_i593.GemmaModelDownloadManager>(
+        () => _i593.GemmaModelDownloadManager(gh<_i361.Dio>()));
     gh.lazySingleton<_i130.IMeidaInfoLocalProvider>(
         () => _i1061.MediaInfoLocalProvider());
     gh.lazySingleton<_i23.IDeviceInfoLocalProvider>(
         () => _i505.DeviceInfoLocalProvider());
+    gh.lazySingleton<_i952.ILlmProvider>(
+      () => _i323.AppleFoundationProvider(),
+      instanceName: 'apple_foundation',
+    );
     gh.lazySingleton<_i419.ILlmSettingsRepository>(
         () => _i601.LlmSettingsRepository());
     gh.singleton<_i587.Database>(() => _i587.Database(gh<String>()));
@@ -234,10 +248,19 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i190.ToastBloc>(() => _i190.ToastBloc(gh<_i461.Bus>()));
     gh.lazySingleton<_i27.ILocalLockProvider>(
         () => _i625.LocalLockProvider(hiveClient: gh<_i951.HiveClient>()));
+    gh.lazySingleton<_i952.ILlmProvider>(
+      () => _i638.GemmaLocalProvider(gh<_i593.GemmaModelDownloadManager>()),
+      instanceName: 'gemma_local',
+    );
     gh.lazySingleton<_i24.IUserInternalProvider>(
         () => _i672.UserInternalProvider(gh<_i407.DriftClient>()));
+    gh.factory<_i380.GemmaDownloadBloc>(
+        () => _i380.GemmaDownloadBloc(gh<_i593.GemmaModelDownloadManager>()));
     gh.factory<_i163.ILocalDataControlProvider>(
         () => _i186.LocalDataControlProvider(gh<_i951.HiveClient>()));
+    gh.lazySingleton<_i1000.ILlmCapabilityProbe>(() =>
+        _i901.DeviceCapabilityDetector(
+            gh<_i952.ILlmProvider>(instanceName: 'apple_foundation')));
     gh.lazySingleton<_i1018.IDataControlRepository>(() =>
         _i489.DataControlRepository(
             dataControlProvider: gh<_i163.ILocalDataControlProvider>()));
@@ -252,6 +275,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i238.LlmSettingsBloc>(() => _i238.LlmSettingsBloc(
           gh<_i419.ILlmSettingsRepository>(),
           gh<_i1000.ILlmCapabilityProbe>(),
+        ));
+    gh.lazySingleton<_i795.LlmRouter>(() => _i795.LlmRouter(
+          gh<_i952.ILlmProvider>(instanceName: 'gemini_remote'),
+          gh<_i419.ILlmSettingsRepository>(),
         ));
     gh.lazySingleton<_i1.DataControlBloc>(() => _i1.DataControlBloc(
           dataControlRepository: gh<_i1018.IDataControlRepository>(),
@@ -268,6 +295,11 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i579.IMomentListLocalProvider>(),
           gh<_i407.DriftClient>(),
         ));
+    gh.lazySingleton<_i1039.IWriteMomentExternalProvider>(
+        () => _i550.WriteMomentExternalProvider(
+              gh<_i795.LlmRouter>(),
+              gh<_i248.FirebaseClient>(),
+            ));
     gh.lazySingleton<_i554.ILockRepository>(() =>
         _i522.LockRepository(localLockProvider: gh<_i27.ILocalLockProvider>()));
     gh.lazySingleton<_i142.IRecommendRepository>(
