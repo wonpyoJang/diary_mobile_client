@@ -65,6 +65,12 @@ import 'feature/emotion_statistics/infrastructure/providers/interfaces/i_emotion
     as _i696;
 import 'feature/emotion_statistics/infrastructure/repositories/emotion_statistics_repository.dart'
     as _i446;
+import 'feature/llm/domain/i_llm_capability_probe.dart' as _i1000;
+import 'feature/llm/domain/i_llm_provider.dart' as _i952;
+import 'feature/llm/infrastructure/providers/apple_foundation_provider.dart'
+    as _i323;
+import 'feature/llm/infrastructure/services/device_capability_detector.dart'
+    as _i901;
 import 'feature/lock/application/lock_cubit.dart' as _i600;
 import 'feature/lock/domain/repositories/interfaces/i_local_authenticator_repository.dart'
     as _i828;
@@ -199,6 +205,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i1061.MediaInfoLocalProvider());
     gh.lazySingleton<_i23.IDeviceInfoLocalProvider>(
         () => _i505.DeviceInfoLocalProvider());
+    gh.lazySingleton<_i952.ILlmProvider>(
+      () => _i323.AppleFoundationProvider(),
+      instanceName: 'apple_foundation',
+    );
     gh.singleton<_i587.Database>(() => _i587.Database(gh<String>()));
     gh.lazySingleton<_i772.IWriteMomentInternalProvider>(
         () => _i603.WriteMomentInternalProvider(gh<_i356.HttpClient>()));
@@ -224,6 +234,9 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i672.UserInternalProvider(gh<_i407.DriftClient>()));
     gh.factory<_i163.ILocalDataControlProvider>(
         () => _i186.LocalDataControlProvider(gh<_i951.HiveClient>()));
+    gh.lazySingleton<_i1000.ILlmCapabilityProbe>(() =>
+        _i901.DeviceCapabilityDetector(
+            gh<_i952.ILlmProvider>(instanceName: 'apple_foundation')));
     gh.lazySingleton<_i1018.IDataControlRepository>(() =>
         _i489.DataControlRepository(
             dataControlProvider: gh<_i163.ILocalDataControlProvider>()));
