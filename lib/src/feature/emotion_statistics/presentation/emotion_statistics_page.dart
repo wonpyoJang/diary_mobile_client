@@ -867,10 +867,8 @@ class _ValenceBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final (bg, fg, label) = switch (valence) {
       TriggerValence.positive => (_kAccentSoft, _kAccent, '긍정'),
-      TriggerValence.negative =>
-        (const Color(0xFFE6EAF0), _kNegative, '부정'),
-      TriggerValence.neutral =>
-        (const Color(0xFFEDEDED), _kInkSecondary, '중립'),
+      TriggerValence.negative => (const Color(0xFFE6EAF0), _kNegative, '부정'),
+      TriggerValence.neutral => (const Color(0xFFEDEDED), _kInkSecondary, '중립'),
     };
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),

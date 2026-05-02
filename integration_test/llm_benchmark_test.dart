@@ -86,7 +86,8 @@ class ScenarioResult {
         'qualityScore': double.parse(qualityScore.toStringAsFixed(3)),
         'peakHeapBytes': peakHeapBytes,
         'errors': errors,
-        if (coldStartLatencyMs != null) 'coldStartLatencyMs': coldStartLatencyMs,
+        if (coldStartLatencyMs != null)
+          'coldStartLatencyMs': coldStartLatencyMs,
       };
 }
 
@@ -260,7 +261,8 @@ Future<ScenarioResult> _runScenario(
 
   for (var i = 0; i < scenario.iterations; i++) {
     final sw = Stopwatch()..start();
-    final result = await provider.generateText(LlmRequest(prompt: scenario.prompt));
+    final result =
+        await provider.generateText(LlmRequest(prompt: scenario.prompt));
     sw.stop();
 
     final ms = sw.elapsedMilliseconds;
@@ -326,7 +328,8 @@ Future<ProviderResult> _benchmarkProvider(String name) async {
   }
 
   if (!available) {
-    debugPrint('[llm_benchmark] ${provider.providerId} not available, skipping');
+    debugPrint(
+        '[llm_benchmark] ${provider.providerId} not available, skipping');
     return ProviderResult(
       providerId: provider.providerId,
       available: false,
@@ -392,7 +395,8 @@ Future<Directory> _resolveOutputDir() async {
 Future<void> _writeReports(List<ProviderResult> results) async {
   final dir = await _resolveOutputDir();
   final now = DateTime.now().toUtc().toIso8601String();
-  final device = '${Platform.operatingSystem} ${Platform.operatingSystemVersion}';
+  final device =
+      '${Platform.operatingSystem} ${Platform.operatingSystemVersion}';
 
   final json = <String, dynamic>{
     'timestamp': now,
