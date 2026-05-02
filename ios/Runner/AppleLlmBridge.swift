@@ -5,9 +5,8 @@ import Foundation
 import FoundationModels
 #endif
 
-/// Bridge that exposes Apple Foundation Models (iOS 18.1+) to Flutter via a
-/// MethodChannel. The bridge is intentionally compiled with availability
-/// guards so older Xcode SDKs that lack `FoundationModels` continue to build.
+/// Bridge that exposes Apple Foundation Models to Flutter via a MethodChannel.
+/// API availability follows the active Xcode SDK (see `#available` below).
 final class AppleLlmBridge: NSObject {
     static let channelName = "com.cassette.diary/apple_llm"
 
@@ -42,7 +41,7 @@ final class AppleLlmBridge: NSObject {
 
     private func checkIsAvailable() -> Bool {
         #if canImport(FoundationModels)
-        if #available(iOS 18.1, *) {
+        if #available(iOS 26.0, *) {
             switch SystemLanguageModel.default.availability {
             case .available:
                 return true
@@ -77,7 +76,7 @@ final class AppleLlmBridge: NSObject {
         let temperature = args["temperature"] as? Double
 
         #if canImport(FoundationModels)
-        if #available(iOS 18.1, *) {
+        if #available(iOS 26.0, *) {
             // Inspect availability before attempting generation so we can map
             // the underlying reason to a stable FlutterError code.
             switch SystemLanguageModel.default.availability {
@@ -141,7 +140,7 @@ final class AppleLlmBridge: NSObject {
         } else {
             result(FlutterError(
                 code: "device_not_eligible",
-                message: "iOS 18.1+ is required for Apple Foundation Models",
+                message: "A supported iOS version is required for Apple Foundation Models",
                 details: nil
             ))
         }
@@ -157,7 +156,7 @@ final class AppleLlmBridge: NSObject {
     // MARK: - Helpers
 
     #if canImport(FoundationModels)
-    @available(iOS 18.1, *)
+    @available(iOS 26.0, *)
     private static func makeGenerationOptions(
         maxTokens: Int?,
         temperature: Double?
@@ -169,7 +168,7 @@ final class AppleLlmBridge: NSObject {
         )
     }
 
-    @available(iOS 18.1, *)
+    @available(iOS 26.0, *)
     private static func flutterError(
         forUnavailableReason reason: SystemLanguageModel.Availability.UnavailableReason
     ) -> FlutterError {
