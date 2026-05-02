@@ -4,13 +4,24 @@ import WebKit
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
+  // Strong reference to the Apple Foundation Models bridge. The bridge owns
+  // its FlutterMethodChannel, which retains its handler weakly, so we must
+  // keep it alive here.
+  private var _appleLlmBridge: AppleLlmBridge?
   private var icloudChannel: ICloudChannel?
+
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     GeneratedPluginRegistrant.register(with: self)
-    
+
+    // Apple Foundation Models bridge (iOS 18.1+) — keep a strong reference so
+    // the MethodChannel handler remains alive for the app lifetime.
+    if let controller = window?.rootViewController as? FlutterViewController {
+      _appleLlmBridge = AppleLlmBridge(messenger: controller.binaryMessenger)
+    }
+
     // WKWebView 기본 설정 위임
     WebViewManager.configureDefaults()
     
