@@ -12,6 +12,9 @@
 .swiftpm/
 migrate_working_dir/
 
+# Claude Code — 로컬 작업 트리·캐시 (버전 관리 대상은 `.claude/agents/`만)
+.claude/worktrees/
+
 # IntelliJ related
 *.iml
 *.ipr

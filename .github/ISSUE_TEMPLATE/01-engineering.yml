@@ -1,0 +1,52 @@
+name: "개발 / 엔지니어링"
+description: "버그, 기능, 리팩터, CI, 성능, DB 등 코드·빌드와 직접 연결된 작업"
+title: "[dev] "
+labels:
+  - role/engineering
+body:
+  - type: markdown
+    attributes:
+      value: |
+        개발 직군용 이슈입니다. **관련 PR**이 있으면 본문에 링크하고, 필요하면 `@` 멘션으로 리뷰어를 지정하세요.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: 유형
+      options:
+        - 버그
+        - 기능
+        - 리팩터 / 부채
+        - 성능
+        - 테스트 / CI
+        - 의존성 / 빌드
+        - 기타
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: 요약
+      description: 한 줄로 무엇을 할지 (또는 무엇이 깨졌는지)
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: 맥락 / 재현
+      description: 재현 절차, 스크린샷, 로그, 플랫폼(iOS/Android), 브랜치·커밋 등
+    validations:
+      required: false
+  - type: textarea
+    id: links
+    attributes:
+      label: 연관 이슈·PR
+      description: `Closes #`, `Related to #` 형식으로 링크
+    validations:
+      required: false
+  - type: checkboxes
+    id: cross_team
+    attributes:
+      label: 다른 직군 공유
+      options:
+        - label: "제품/비즈니스에도 알려야 함 (채널: 이슈 댓글에 @ 또는 링크)"
+          required: false

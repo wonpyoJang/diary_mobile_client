@@ -1,0 +1,43 @@
+name: "기획 / 디자인 · UX"
+description: "화면 흐름, UX, 비개발 산출물, 스토어 외 카피 검토"
+title: "[product] "
+labels:
+  - role/product
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **기획·디자인** 직군용 이슈입니다. 구현이 필요하면 **별도로** `[dev]` 개발 이슈를 열고 이 이슈를 링크하면 소통이 명확해집니다.
+  - type: dropdown
+    id: scope
+    attributes:
+      label: 범위
+      options:
+        - 신규 화면 / 플로우
+        - 기존 화면 개선
+        - 디자인 시스템 / 컴포넌트
+        - 카피·톤 (제품)
+        - 접근성
+        - 기타
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: 사용자 문제 / 목표
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 완료 조건 (Acceptance)
+      description: 체크 가능한 조건. 디자인 링크(Figma 등)가 있으면 함께 적기
+    validations:
+      required: false
+  - type: textarea
+    id: links
+    attributes:
+      label: 연관 이슈·디자인
+      description: `Related to #`, Figma, 스크린샷
+    validations:
+      required: false

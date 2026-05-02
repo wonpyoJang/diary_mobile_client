@@ -14,6 +14,20 @@ Flutter 모바일 앱. BLoC + injectable + hydrated_bloc 기반.
 | 캐시까지 정리 | `make clean-all` |
 | iOS 시뮬레이터 실행 | `flutter run -d "iPhone 16 Pro"` |
 
+## AI 도구 설정 (저장소로 관리)
+
+팀·CI와 동일한 가이드를 쓰려면 아래는 **반드시 커밋**한다. 로컬 전용 캐시는 `.gitignore`로 제외한다.
+
+| 구분 | 경로 | 설명 |
+|------|------|------|
+| **Cursor Rules** | `.cursor/rules/*.mdc` | 에디터 규칙(토큰·레이트·로컬 모델 우선 등). 새 규칙 추가 시 이 디렉터리에 두고 커밋. |
+| **Cursor 서브에이전트** | `.cursor/agents/*.md` | 프로젝트 전용 서브에이전트. |
+| **Claude Code 서브에이전트** | `.claude/agents/*.md` | Cursor와 **동일 역할**을 두 도구에서 쓰도록 내용을 맞춘다. |
+
+- 역할 인덱스: [`.claude/agents/business-team.md`](.claude/agents/business-team.md) — marketer, business-strategist, product-planner 요약 및 관련 이슈 링크.
+- GitHub 직군 소통(이슈 템플릿·`role/*` 라벨): [`.github/COMMUNICATION.md`](.github/COMMUNICATION.md)
+- **제외**: `.claude/worktrees/`는 Claude Code 로컬 워크트리로, 저장소에 넣지 않음.
+
 ## 디렉토리 규약
 - `lib/src/feature/<도메인>/` — 화면/위젯/BLoC 묶음 (auth, backup, emotion_statistics, dev_tools 등)
 - `lib/src/core/` — 공용 유틸/모델
@@ -39,6 +53,13 @@ Flutter 모바일 앱. BLoC + injectable + hydrated_bloc 기반.
 
 각 검증의 상세 조건은 `~/.claude/projects/-Users-edjang-workplace-diary-diary-mobile-client/memory/feedback_*.md` 참고.
 
+## 로컬 모델 우선
+
+- **원칙**: 로컬(또는 온디바이스) 모델로도 **목표 품질까지 도달할 수 있는** 작업이면, 클라우드·고급 모델보다 **로컬·경량 모델을 먼저** 쓰는 것을 권장한다(한도·비용·지연·프라이버시).
+- **로컬에 잘 맞는 예**: 소규모 수정·규칙 기반 리팩터·린트/포맷·저장소 검색으로 답 가능한 질문·이미 프로젝트 패턴이 분명한 반복 작업.
+- **고급 모델이 유리한 예**: 큰 설계·모호한 디버깅·초대형 컨텍스트 비교, 사용자가 명시적으로 고급 모델을 요청한 경우.
+- Cursor 에이전트 세부 문구는 `.cursor/rules/local-model-preference.mdc`와 동일 계열로 맞춘다. 특정 로컬 모델명·하드웨어 요구는 단정하지 않는다.
+
 ## 토큰·레이트 리밋 (효율·예측)
 
 - **효율**: 불필요한 전체 파일 읽기·중복 도구 호출을 피하고, 긴 출력은 요약·부분 인용.
@@ -46,7 +67,7 @@ Flutter 모바일 앱. BLoC + injectable + hydrated_bloc 기반.
   - 시간 기준: 대략 `R / U` (최근 소비율이 유지된다는 가정).
   - 턴 기준: 대략 `R / T_avg`.
   - 플랜별 수치는 공식 UI 기준; 고정 숫자로 단정하지 않음.
-- Cursor에서는 `.cursor/rules/token-rate-limit-awareness.mdc`와 함께 적용.
+- Cursor에서는 `.cursor/rules/token-rate-limit-awareness.mdc`, `.cursor/rules/local-model-preference.mdc`와 함께 적용.
 
 ## 알려진 함정
 - `lib/main.dart`는 사용자가 자주 WIP 코드를 둘 수 있는 파일. 자동 편집 시 의도치 않은 hunk가 끼지 않았는지 diff 단계에서 특히 주의 (커밋 8b3db8c 사례).
