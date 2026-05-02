@@ -508,4 +508,49 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get appleLogin => 'Apple로 시작하기';
+
+  @override
+  String get llmSettingsTitle => 'AI 처리 방식';
+
+  @override
+  String get llmSettingsMenuLabel => 'AI 처리 방식';
+
+  @override
+  String get llmModeRemoteLabel => '원격 Gemini (기본)';
+
+  @override
+  String get llmModeOnDeviceLabel => '온디바이스';
+
+  @override
+  String get llmBackendDownloadLabel => '다운로드 모델 (Gemma 2B)';
+
+  @override
+  String get llmBackendNativeLabel => '플랫폼 네이티브 (Apple Foundation Models)';
+
+  @override
+  String get llmBackendNativeUnsupported => '이 기기에서 지원되지 않음';
+
+  @override
+  String get llmDownloadRequired => '다운로드 필요';
+
+  @override
+  String get llmDownloadButton => '다운로드';
+
+  @override
+  String get llmPrivacyNotice => '온디바이스 모드 사용 시 일기 본문은 외부로 전송되지 않습니다.';
+
+  @override
+  String get llmOptInDialogTitle => 'AI 처리 방식 선택';
+
+  @override
+  String get llmOptInDialogBody => 'AI 분석을 위해 일기 본문을 어떻게 처리할지 선택해주세요. 설정에서 언제든 변경할 수 있습니다.';
+
+  @override
+  String get llmOptInButtonRemote => '원격 Gemini 사용';
+
+  @override
+  String get llmOptInButtonOnDevice => '온디바이스 설정';
+
+  @override
+  String get llmOptInButtonLater => '나중에';
 }

@@ -65,6 +65,14 @@ import 'feature/emotion_statistics/infrastructure/providers/interfaces/i_emotion
     as _i696;
 import 'feature/emotion_statistics/infrastructure/repositories/emotion_statistics_repository.dart'
     as _i446;
+import 'feature/llm/application/llm_dialog_trigger.dart' as _i1019;
+import 'feature/llm/application/llm_settings_bloc.dart' as _i238;
+import 'feature/llm/domain/i_llm_capability_probe.dart' as _i1000;
+import 'feature/llm/domain/i_llm_settings_repository.dart' as _i419;
+import 'feature/llm/infrastructure/repositories/llm_settings_repository.dart'
+    as _i601;
+import 'feature/llm/infrastructure/services/stub_llm_capability_probe.dart'
+    as _i370;
 import 'feature/lock/application/lock_cubit.dart' as _i600;
 import 'feature/lock/domain/repositories/interfaces/i_local_authenticator_repository.dart'
     as _i828;
@@ -174,12 +182,16 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i735.DeepLinkService>(() => _i735.DeepLinkService.new());
     gh.lazySingleton<_i958.AnalyticsManager>(() => _i958.AnalyticsManager());
     gh.lazySingleton<_i461.Bus>(() => _i461.Bus());
+    gh.lazySingleton<_i1019.LlmDialogTrigger>(
+        () => const _i1019.LlmDialogTrigger());
     gh.singleton<_i297.RemoteConfigClient>(
         () => _i297.RemoteConfigClient(gh<_i627.FirebaseRemoteConfig>()));
     gh.lazySingleton<_i633.ISupabaseUserExternalProvider>(
         () => _i48.SupabaseUserExternalProvider(gh<_i454.SupabaseClient>()));
     gh.lazySingleton<_i743.IVersionLocalProvider>(
         () => _i550.VersionLocalProvider());
+    gh.lazySingleton<_i1000.ILlmCapabilityProbe>(
+        () => const _i370.StubLlmCapabilityProbe());
     gh.lazySingleton<_i1039.IWriteMomentExternalProvider>(
         () => _i550.WriteMomentExternalProvider(
               gh<_i681.Gemini>(),
@@ -199,6 +211,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i1061.MediaInfoLocalProvider());
     gh.lazySingleton<_i23.IDeviceInfoLocalProvider>(
         () => _i505.DeviceInfoLocalProvider());
+    gh.lazySingleton<_i419.ILlmSettingsRepository>(
+        () => _i601.LlmSettingsRepository());
     gh.singleton<_i587.Database>(() => _i587.Database(gh<String>()));
     gh.lazySingleton<_i772.IWriteMomentInternalProvider>(
         () => _i603.WriteMomentInternalProvider(gh<_i356.HttpClient>()));
@@ -235,6 +249,10 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.lazySingleton<_i696.IEmotionStatisticsProvider>(
         () => _i9.EmotionStatisticsProvider(gh<_i407.DriftClient>()));
+    gh.factory<_i238.LlmSettingsBloc>(() => _i238.LlmSettingsBloc(
+          gh<_i419.ILlmSettingsRepository>(),
+          gh<_i1000.ILlmCapabilityProbe>(),
+        ));
     gh.lazySingleton<_i1.DataControlBloc>(() => _i1.DataControlBloc(
           dataControlRepository: gh<_i1018.IDataControlRepository>(),
           authenticatorRepository: gh<_i828.IAuthenticatorRepository>(),
